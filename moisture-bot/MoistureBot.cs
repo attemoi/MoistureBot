@@ -17,10 +17,14 @@ namespace moisturebot
 
 		private bool isRunning;
 
+		// Bot properties
 		public string user { get; set; }
 		public string pass { get; set; }
-
 		public ulong chatId { get; set; }
+
+		// Events
+		public delegate void ChatMsgHandler (object sender, ChatMsgEventArgs data);
+		public event ChatMsgHandler chatMsgHandler;
 
 		public MoistureBot ()
 		{
@@ -47,7 +51,7 @@ namespace moisturebot
 
 			// Friends
 			new Callback<SteamFriends.ChatEnterCallback> ( OnChatEnter, manager);
-			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsg, manager);
+			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsgReceived, manager);
 
 		}
 
@@ -143,15 +147,28 @@ namespace moisturebot
 			Console.WriteLine( "Successfully joined chat!" );
 		}
 
-		private void OnChatMsg( SteamFriends.ChatMsgCallback callback )
+		protected void OnChatMsg (object sender, ChatMsgEventArgs data)
 		{
+			if (chatMsgHandler != null) {
+				chatMsgHandler (this, data);
+			}
+		}
+
+		private void OnChatMsgReceived( SteamFriends.ChatMsgCallback callback )
+		{
+
+			string message = callback.Message;
+			string sender = steamFriends.GetFriendPersonaName(callback.ChatterID);
+
+			OnChatMsg(this, new ChatMsgEventArgs( callback ));
 
 			string[] greetings = {
 				"Moi", "Moikka", "Terve", "Hello", "Tsau",
 				"Hei", "Moi kaikki", "Moikka taas", "Moikkamoi",
 				"Heippa", "Heips", "Moips", "Moik", "Hoi",
-				"Hola", "Iltaa", "Päivää", "Huomenta"
-			};
+				"Hola", "Iltaa", "Päivää", "Huomenta",
+				"Moi Moisture-bot"
+				};
 
 			Regex rgx = new Regex("[^a-zA-Z0-9 -]");
 			string originalMsg = callback.Message;
@@ -165,7 +182,7 @@ namespace moisturebot
 				steamFriends.SendChatRoomMessage (
 					new SteamID (chatId), 
 					EChatEntryType.ChatMsg,
-					greetings [msgIndex] + " " + steamFriends.GetFriendPersonaName (callback.ChatterID) + "!"
+					greetings [msgIndex] + " " + sender + "!"
 				);
 			}
 

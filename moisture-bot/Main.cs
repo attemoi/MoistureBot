@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.IO;
+using Mono.Addins;
+using moisturebot.contracts;
+
+[assembly:AddinRoot ("Moisture-bot", "1.0")]
 
 namespace moisturebot
 {
@@ -11,10 +15,23 @@ namespace moisturebot
 		static void Run(string[] args)
 		{
 
+			AddinManager.AddinLoadError += OnLoadError;
+			AddinManager.AddinLoaded += OnLoad;
+			AddinManager.AddinUnloaded += OnUnload;
+
+			AddinManager.Initialize ();
+			AddinManager.Registry.Update ();
+
 			MoistureBot bot = new MoistureBot ();
-			bot.user = "Moisturebot";
+			bot.user = "Moisturebo";
 			bot.pass = "JEApileet";
 			bot.chatId = 103582791429523393;
+
+			bot.chatMsgHandler += (object sender, ChatMsgEventArgs data) => 
+			{
+				foreach (IChatCommand cmd in AddinManager.GetExtensionObjects<IChatCommand> ())
+					cmd.MessageReceived(data.Callback.Message);
+			};
 
 			if (args.Length == 1)
 			{
@@ -61,6 +78,23 @@ namespace moisturebot
 					? Environment.ExitCode : 100;
 			}
 
+		}
+
+		static void OnLoadError (object s, AddinErrorEventArgs args)
+		{
+			Console.WriteLine ("Add-in error: " + args.Message);
+			Console.WriteLine (args.AddinId);
+			Console.WriteLine (args.Exception);
+		}
+
+		static void OnLoad (object s, AddinEventArgs args)
+		{
+			Console.WriteLine ("Add-in loaded: " + args.AddinId);
+		}
+
+		static void OnUnload (object s, AddinEventArgs args)
+		{
+			Console.WriteLine ("Add-in unloaded: " + args.AddinId);
 		}
 
 	}
