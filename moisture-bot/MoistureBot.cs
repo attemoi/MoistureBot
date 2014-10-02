@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -8,28 +7,23 @@ using System.Text.RegularExpressions;
 
 namespace moisturebot
 {
-	class MoistureBot
+	public class MoistureBot
 	{
-		static SteamClient steamClient;
-		static CallbackManager manager;
+		private SteamClient steamClient;
+		private CallbackManager manager;
 
-		static SteamUser steamUser;
-		static SteamFriends steamFriends;
+		private SteamUser steamUser;
+		private SteamFriends steamFriends;
 
-		static bool isRunning;
+		private bool isRunning;
 
-		static string user, pass;
+		public string user { get; set; }
+		public string pass { get; set; }
 
-		static ulong chatId;
+		public ulong chatId { get; set; }
 
-
-		static void Main( string[] args )
+		public MoistureBot ()
 		{
-
-			// save our logon details
-			user = "Moisturebot";
-			pass = "JEApileet";
-			chatId = 103582791429523393;
 
 			// create our steamclient instance
 			steamClient = new SteamClient();
@@ -55,11 +49,14 @@ namespace moisturebot
 			new Callback<SteamFriends.ChatEnterCallback> ( OnChatEnter, manager);
 			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsg, manager);
 
+		}
+
+		public void start()
+		{
 			isRunning = true;
 
 			Console.WriteLine( "Connecting to Steam..." );
 
-			// initiate the connection
 			steamClient.Connect();
 
 			// create our callback handling loop
@@ -68,9 +65,17 @@ namespace moisturebot
 				// in order for the callbacks to get routed, they need to be handled by the manager
 				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 1 ) );
 			}
+
 		}
 
-		static void OnConnected( SteamClient.ConnectedCallback callback )
+		public void stop()
+		{
+			isRunning = false;
+			steamClient.Disconnect();
+		}
+
+
+		private void OnConnected( SteamClient.ConnectedCallback callback )
 		{
 			if ( callback.Result != EResult.OK )
 			{
@@ -89,7 +94,7 @@ namespace moisturebot
 				} );
 		}
 
-		static void OnAccountInfo( SteamUser.AccountInfoCallback callback )
+		private void OnAccountInfo( SteamUser.AccountInfoCallback callback )
 		{
 			// before being able to interact with friends, you must wait for the account info callback
 			// this callback is posted shortly after a successful logon
@@ -98,14 +103,14 @@ namespace moisturebot
 			steamFriends.SetPersonaState( EPersonaState.Online );
 		}
 
-		static void OnDisconnected( SteamClient.DisconnectedCallback callback )
+		private void OnDisconnected( SteamClient.DisconnectedCallback callback )
 		{
 			Console.WriteLine( "Disconnected from Steam" );
 
 			isRunning = false;
 		}
 
-		static void OnLoggedOn( SteamUser.LoggedOnCallback callback )
+		private void OnLoggedOn( SteamUser.LoggedOnCallback callback )
 		{
 			if ( callback.Result != EResult.OK )
 			{
@@ -128,21 +133,19 @@ namespace moisturebot
 			}
 
 			Console.WriteLine( "Successfully logged on!" );
-
 			// at this point, we'd be able to perform actions on Steam
 			Console.WriteLine( "Joining chat room '{0}'...", chatId );
 			steamFriends.JoinChat (new SteamID(chatId));
-		
 		}
 
-		static void OnChatEnter( SteamFriends.ChatEnterCallback callback )
+		private void OnChatEnter( SteamFriends.ChatEnterCallback callback )
 		{
 			Console.WriteLine( "Successfully joined chat!" );
 		}
 
-		static void OnChatMsg( SteamFriends.ChatMsgCallback callback )
+		private void OnChatMsg( SteamFriends.ChatMsgCallback callback )
 		{
-		
+
 			string[] greetings = {
 				"Moi", "Moikka", "Terve", "Hello", "Tsau",
 				"Hei", "Moi kaikki", "Moikka taas", "Moikkamoi",
@@ -156,7 +159,7 @@ namespace moisturebot
 			// Find message index, ignore case
 			int msgIndex = Array.FindIndex(greetings, t => t.IndexOf(strippedMsg, StringComparison.InvariantCultureIgnoreCase) >=0);
 
-			if (msgIndex > -1) {
+			if (!strippedMsg.Equals("") && msgIndex > -1) {
 
 				Console.WriteLine ("Greeting received, replying");
 				steamFriends.SendChatRoomMessage (
@@ -174,13 +177,12 @@ namespace moisturebot
 				);
 			}
 
-			if 
-				
 		}
 
-		static void OnLoggedOff( SteamUser.LoggedOffCallback callback )
+		private void OnLoggedOff( SteamUser.LoggedOffCallback callback )
 		{
 			Console.WriteLine( "Logged off of Steam: {0}", callback.Result );
 		}
 	}
 }
+
