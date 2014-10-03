@@ -1,15 +1,19 @@
 ﻿using System;
 using Mono.Addins;
-using moisturebot.contracts;
+using moisturebot.lib;
 
 [assembly:Addin]
 [assembly:AddinDependency ("Moisture-bot", "1.0")]
 
-[Extension]
-public class Moikkaaja: IChatCommand
+namespace moisturebot
 {
-	public void MessageReceived (string content)
+
+	[Extension]
+	public class Moikkaaja: IChatCommand
 	{
-		Console.WriteLine ("MOIMOIMOIMOI!");
+		public void MessageReceived (string content)
+		{
+			Console.WriteLine ("MOIMOIMOIMOI!");
+		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace moisturebot.contracts
+namespace moisturebot.lib
 {
 	public class ChatMessage
 	{

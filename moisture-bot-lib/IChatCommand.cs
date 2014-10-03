@@ -1,7 +1,7 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace moisturebot.contracts
+namespace moisturebot.lib
 {
 	[TypeExtensionPoint]
 	public interface IChatCommand
