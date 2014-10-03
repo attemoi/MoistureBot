@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-
 using SteamKit2;
 using System.Text.RegularExpressions;
 using Mono.Addins;
@@ -25,6 +24,12 @@ namespace moisturebot
 		public string Pass { get; set; }
 		public ulong ChatId { get; set; }
 
+		public delegate void ConnectedHandler(object sender);
+		public delegate void ChatEnterHandler(object sender);
+
+		public event ConnectedHandler Connected;
+		public event ChatEnterHandler ChatEnter;
+
 		public MoistureBot ()
 		{
 
@@ -40,7 +45,7 @@ namespace moisturebot
 			// register a few callbacks we're interested in
 			// these are registered upon creation to a callback manager, which will then route the callbacks
 			// to the functions specified
-			new Callback<SteamClient.ConnectedCallback>( OnConnected, manager );
+			new Callback<SteamClient.ConnectedCallback>( ConnectedCallback, manager );
 			new Callback<SteamClient.DisconnectedCallback>( OnDisconnected, manager );
 
 			// User
@@ -49,28 +54,29 @@ namespace moisturebot
 			new Callback<SteamUser.AccountInfoCallback>( OnAccountInfo, manager );
 
 			// Friends
-			new Callback<SteamFriends.ChatEnterCallback> ( OnChatEnter, manager);
+			new Callback<SteamFriends.ChatEnterCallback> ( ChatEnterCallback, manager);
 			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsg, manager);
 
 		}
 
 		public void connect()
 		{
-			isRunning = true;
-
 			Console.WriteLine( "Connecting to Steam..." );
-
 			steamClient.Connect();
+		}
 
+		public void start ()
+		{
+			isRunning = true;
 			while ( isRunning )
 			{
-				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 3 ) );
+				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 1 ) );
 			}
+		}
 
-			string line;
-			while ((line = Console.ReadLine()) != null)
-				Console.WriteLine(line);
-
+		public void stop ()
+		{
+			isRunning = false;
 		}
 
 		public void disconnect()
@@ -80,7 +86,7 @@ namespace moisturebot
 		}
 
 
-		private void OnConnected( SteamClient.ConnectedCallback callback )
+		private void ConnectedCallback( SteamClient.ConnectedCallback callback )
 		{
 			if ( callback.Result != EResult.OK )
 			{
@@ -90,13 +96,14 @@ namespace moisturebot
 				return;
 			}
 
-			Console.WriteLine( "Connected to Steam! Logging in '{0}'...", User );
+			Console.WriteLine ("Connected to Steam!");
+			Console.WriteLine( "Logging in '{0}'...", User );
 
 			steamUser.LogOn( new SteamUser.LogOnDetails
-				{
-					Username = User,
-					Password = Pass,
-				} );
+			{
+				Username = User,
+				Password = Pass,
+			} );
 		}
 
 		private void OnAccountInfo( SteamUser.AccountInfoCallback callback )
@@ -137,15 +144,18 @@ namespace moisturebot
 				return;
 			}
 
-			Console.WriteLine( "Successfully logged on!" );
-			// at this point, we'd be able to perform actions on Steam
-			Console.WriteLine( "Joining chat room '{0}'...", ChatId );
-			steamFriends.JoinChat (new SteamID(ChatId));
+			OnConnected (this);
+
 		}
 
-		private void OnChatEnter( SteamFriends.ChatEnterCallback callback )
+		private void ChatEnterCallback( SteamFriends.ChatEnterCallback callback )
 		{
 			Console.WriteLine( "Successfully joined chat!" );
+			OnChatEnter (this);
+		}
+
+		public void JoinChatRoom(ulong chatRoomId) {
+			steamFriends.JoinChat (new SteamID(chatRoomId));
 		}
 
 		public void SendChatRoomMessage(String message) {
@@ -173,6 +183,27 @@ namespace moisturebot
 		{
 			Console.WriteLine( "Logged off of Steam: {0}", callback.Result );
 		}
+			
+		protected void OnConnected (object sender)
+		{
+			// Check if there are any Subscribers
+			if (Connected != null)
+			{
+				// Call the Event
+				Connected (this);
+			}
+		}
+
+		protected void OnChatEnter (object sender)
+		{
+			// Check if there are any Subscribers
+			if (ChatEnter != null)
+			{
+				// Call the Event
+				ChatEnter (this);
+			}
+		}
+
 	}
 }
 
