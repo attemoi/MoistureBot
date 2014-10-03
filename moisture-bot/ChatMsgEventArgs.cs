@@ -5,10 +5,12 @@ namespace moisturebot
 {
 	public class ChatMsgEventArgs : EventArgs
 	{
-		public SteamFriends.ChatMsgCallback Callback { get; internal set; }
-		public ChatMsgEventArgs(SteamFriends.ChatMsgCallback callback)
+		public string Message { get; internal set; }
+		public string Sender { get; internal set; }
+		public ChatMsgEventArgs(string message, string sender)
 		{
-			this.Callback = callback;
+			this.Message = message;
+			this.Sender = sender;
 		}
 	}
 }

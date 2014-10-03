@@ -6,7 +6,7 @@ using System.IO;
 using Mono.Addins;
 using moisturebot.lib;
 
-[assembly:AddinRoot ("Moisture-bot", "1.0")]
+[assembly:AddinRoot ("moisturebot", "1.0")]
 [assembly:ImportAddinAssembly ("moisture-bot-lib.dll")]
 
 namespace moisturebot
@@ -17,7 +17,7 @@ namespace moisturebot
 		{
 
 			MoistureBot bot = new MoistureBot ();
-			bot.user = "Moisturebo";
+			bot.user = "Moisturebot";
 			bot.pass = "JEApileet";
 			bot.chatId = 103582791429523393;
 
@@ -49,11 +49,15 @@ namespace moisturebot
 			AddinManager.Initialize (".", ".", ".");
 			AddinManager.Registry.Update ();
 
-			bot.chatMsgHandler += (object sender, ChatMsgEventArgs data) => 
+			bot.onChatMsgReceived += (object sender, ChatMsgEventArgs data) => 
 			{
 				foreach (IChatCommand cmd in AddinManager.GetExtensionObjects<IChatCommand> ())
 				{
-					cmd.MessageReceived(data.Callback.Message);
+					string reply = cmd.ReplyToMessage(new ChatMessage(data.Message, data.Sender));
+					if (reply != null)
+					{
+						bot.SendChatRoomMessage(reply);
+					}
 				}
 			};
 

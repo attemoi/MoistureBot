@@ -6,7 +6,7 @@ namespace moisturebot.lib
 	[TypeExtensionPoint]
 	public interface IChatCommand
 	{
-		void MessageReceived(string content);
+		string ReplyToMessage(ChatMessage message);
 	}
 }
 

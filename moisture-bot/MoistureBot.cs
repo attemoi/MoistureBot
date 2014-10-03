@@ -24,7 +24,7 @@ namespace moisturebot
 
 		// Events
 		public delegate void ChatMsgHandler (object sender, ChatMsgEventArgs data);
-		public event ChatMsgHandler chatMsgHandler;
+		public event ChatMsgHandler onChatMsgReceived;
 
 		public MoistureBot ()
 		{
@@ -149,9 +149,17 @@ namespace moisturebot
 
 		protected void OnChatMsg (object sender, ChatMsgEventArgs data)
 		{
-			if (chatMsgHandler != null) {
-				chatMsgHandler (this, data);
+			if (onChatMsgReceived != null) {
+				onChatMsgReceived (this, data);
 			}
+		}
+
+		public void SendChatRoomMessage(String message) {
+			steamFriends.SendChatRoomMessage (
+				new SteamID (chatId), 
+				EChatEntryType.ChatMsg,
+				message
+			);
 		}
 
 		private void OnChatMsgReceived( SteamFriends.ChatMsgCallback callback )
@@ -160,39 +168,7 @@ namespace moisturebot
 			string message = callback.Message;
 			string sender = steamFriends.GetFriendPersonaName(callback.ChatterID);
 
-			OnChatMsg(this, new ChatMsgEventArgs( callback ));
-
-			string[] greetings = {
-				"Moi", "Moikka", "Terve", "Hello", "Tsau",
-				"Hei", "Moi kaikki", "Moikka taas", "Moikkamoi",
-				"Heippa", "Heips", "Moips", "Moik", "Hoi",
-				"Hola", "Iltaa", "Päivää", "Huomenta",
-				"Moi Moisture-bot"
-				};
-
-			Regex rgx = new Regex("[^a-zA-Z0-9 -]");
-			string originalMsg = callback.Message;
-			string strippedMsg = rgx.Replace(callback.Message, "").ToLower();
-			// Find message index, ignore case
-			int msgIndex = Array.FindIndex(greetings, t => t.IndexOf(strippedMsg, StringComparison.InvariantCultureIgnoreCase) >=0);
-
-			if (!strippedMsg.Equals("") && msgIndex > -1) {
-
-				Console.WriteLine ("Greeting received, replying");
-				steamFriends.SendChatRoomMessage (
-					new SteamID (chatId), 
-					EChatEntryType.ChatMsg,
-					greetings [msgIndex] + " " + sender + "!"
-				);
-			}
-
-			if (strippedMsg.StartsWith ("miksi") || strippedMsg.StartsWith ("miksei")) {
-				steamFriends.SendChatRoomMessage (
-					new SteamID (chatId), 
-					EChatEntryType.ChatMsg,
-					"En tiedä :("
-				);
-			}
+			OnChatMsg(this, new ChatMsgEventArgs( message, sender ));
 
 		}
 

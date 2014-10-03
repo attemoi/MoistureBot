@@ -1,16 +1,15 @@
 ﻿using System;
 
-namespace moisturebot.lib
+namespace moisturebot
 {
 	public class ChatMessage
 	{
 		public string Message { get; internal set; }
-		public string SenderName { get; internal set; }
-
-		public ChatMessage(string message, string senderName)
+		public string Sender { get; internal set; }
+		public ChatMessage(string message, string sender)
 		{
 			this.Message = message;
-			this.SenderName = senderName;
+			this.Sender = sender;
 		}
 	}
 }
