@@ -4,22 +4,21 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using Mono.Addins;
-using moisturebot.lib;
 
 [assembly:AddinRoot ("moisturebot", "1.0")]
-[assembly:ImportAddinAssembly ("moisture-bot-lib.dll")]
+[assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
 
 namespace moisturebot
 {
+
 	class Program
 	{
 		static void Run(string[] args)
 		{
 
-			MoistureBot bot = new MoistureBot ();
-			bot.user = "Moisturebot";
-			bot.pass = "JEApileet";
-			bot.chatId = 103582791429523393;
+			string user = "Moisturebot";
+			string pass = "JEApileet";
+			ulong chatId = 103582791429523393;
 
 			if (args.Length == 1)
 			{
@@ -33,10 +32,10 @@ namespace moisturebot
 
 			if ( args.Length == 3 )
 			{
-				bot.user = args [0];
-				bot.pass = args [1];
+				user = args [0];
+				pass = args [1];
 				try {
-					bot.chatId = Convert.ToUInt64(args [2]);
+					chatId = Convert.ToUInt64(args [2]);
 				} catch {
 					Console.Error.WriteLine("Invalid chat room id");
 				}
@@ -49,23 +48,19 @@ namespace moisturebot
 			AddinManager.Initialize (".", ".", ".");
 			AddinManager.Registry.Update ();
 
-			bot.onChatMsgReceived += (object sender, ChatMsgEventArgs data) => 
+			MoistureBot bot = new MoistureBot ();
+
+			bot.User = user;
+			bot.Pass = pass;
+			bot.ChatId = chatId;
+
+			foreach (IGroupChatAddin addin in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
 			{
-				foreach (IChatCommand cmd in AddinManager.GetExtensionObjects<IChatCommand> ())
-				{
-					string reply = cmd.ReplyToMessage(new ChatMessage(data.Message, data.Sender));
-					if (reply != null)
-					{
-						bot.SendChatRoomMessage(reply);
-					}
-				}
-			};
+				addin.Initialize (bot);
+			}
 
-			bot.start();
+			bot.connect();
 
-			string line;
-			while ((line = Console.ReadLine()) != null)
-				Console.WriteLine(line);
 		}
 
 		static int Main( string[] args )

@@ -34,18 +34,18 @@
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="SteamKit2">
-      <HintPath>..\packages\SteamKit2.1.5.1\lib\net40\SteamKit2.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Addins">
       <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
     </Reference>
+    <Reference Include="SteamKit2">
+      <HintPath>..\packages\SteamKit2.1.5.1\lib\net40\SteamKit2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoistureBot.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="ChatMsgEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MoistureBot.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

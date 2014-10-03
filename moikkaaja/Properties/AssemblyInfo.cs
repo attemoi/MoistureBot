@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("Atte")]
+[assembly: AssemblyCopyright ("Atte Moisio")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 

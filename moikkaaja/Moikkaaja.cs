@@ -1,6 +1,5 @@
 ﻿using System;
 using Mono.Addins;
-using moisturebot.lib;
 using System.Text.RegularExpressions;
 
 [assembly:Addin]
@@ -10,34 +9,33 @@ namespace moisturebot
 {
 
 	[Extension]
-	public class Moikkaaja: IChatCommand
+	public class Moikkaaja: IGroupChatAddin
 	{
-		public string ReplyToMessage (ChatMessage message)
+		private IMoistureBot Bot { get; set; }
+
+		public void Initialize (IMoistureBot bot)
+		{
+			this.Bot = bot;
+		}
+
+		public void MessageReceived (ChatMessage message)
 		{
 			string[] greetings = {
-				"Moi", "Moikka", "Terve", "Hello", "Tsau",
-				"Hei", "Moi kaikki", "Moikka taas", "Moikkamoi",
-				"Heippa", "Heips", "Moips", "Moik", "Hoi",
-				"Hola", "Iltaa", "Päivää", "Huomenta",
-				"Moi Moisture-bot"
+				"Moikka taas", "Moi kaikki", "Moikkamoi", "Moikka", "Moips", "Moiks", "Moik", "Moi", 
+				"Terve", "Hello", "Tsau", "Heippa", "Heips", "Hei",
+				"Hoi", "Hola", "Iltaa", "Päivää", "Huomenta", "Moro"
 			};
 
 			Regex rgx = new Regex("[^a-zA-Z0-9 -]");
-			string originalMsg = message.Message;
 			string strippedMsg = rgx.Replace(message.Message, "").ToLower();
-			// Find message index, ignore case
-			int msgIndex = Array.FindIndex(greetings, t => t.IndexOf(strippedMsg, StringComparison.InvariantCultureIgnoreCase) >=0);
+			string msg = Array.Find(greetings, t => t.Equals(strippedMsg, StringComparison.InvariantCultureIgnoreCase));
 
-			if (!strippedMsg.Equals("") && msgIndex > -1) {
+			if (msg != null && !msg.Equals("") ){
 				Console.WriteLine ("Greeting received, replying");
-				return (greetings [msgIndex] + " " + message.Sender + "!");
-			}
+				msg += " " + message.Sender + "!";
 
-			if (strippedMsg.StartsWith ("miksi") || strippedMsg.StartsWith ("miksei")) {
-				return "En tiedä :(";
+				Bot.SendChatRoomMessage (msg);
 			}
-
-			return null;
 		}
 	}
 }

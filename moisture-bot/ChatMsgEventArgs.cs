@@ -1,5 +1,4 @@
 ﻿using System;
-using SteamKit2;
 
 namespace moisturebot
 {

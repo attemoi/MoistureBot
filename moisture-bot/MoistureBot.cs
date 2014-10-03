@@ -4,11 +4,14 @@ using System.Text;
 
 using SteamKit2;
 using System.Text.RegularExpressions;
+using Mono.Addins;
 
 namespace moisturebot
 {
-	public class MoistureBot
+
+	public class MoistureBot : IMoistureBot
 	{
+
 		private SteamClient steamClient;
 		private CallbackManager manager;
 
@@ -18,13 +21,9 @@ namespace moisturebot
 		private bool isRunning;
 
 		// Bot properties
-		public string user { get; set; }
-		public string pass { get; set; }
-		public ulong chatId { get; set; }
-
-		// Events
-		public delegate void ChatMsgHandler (object sender, ChatMsgEventArgs data);
-		public event ChatMsgHandler onChatMsgReceived;
+		public string User { get; set; }
+		public string Pass { get; set; }
+		public ulong ChatId { get; set; }
 
 		public MoistureBot ()
 		{
@@ -51,11 +50,11 @@ namespace moisturebot
 
 			// Friends
 			new Callback<SteamFriends.ChatEnterCallback> ( OnChatEnter, manager);
-			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsgReceived, manager);
+			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsg, manager);
 
 		}
 
-		public void start()
+		public void connect()
 		{
 			isRunning = true;
 
@@ -72,7 +71,7 @@ namespace moisturebot
 
 		}
 
-		public void stop()
+		public void disconnect()
 		{
 			isRunning = false;
 			steamClient.Disconnect();
@@ -89,12 +88,12 @@ namespace moisturebot
 				return;
 			}
 
-			Console.WriteLine( "Connected to Steam! Logging in '{0}'...", user );
+			Console.WriteLine( "Connected to Steam! Logging in '{0}'...", User );
 
 			steamUser.LogOn( new SteamUser.LogOnDetails
 				{
-					Username = user,
-					Password = pass,
+					Username = User,
+					Password = Pass,
 				} );
 		}
 
@@ -138,8 +137,8 @@ namespace moisturebot
 
 			Console.WriteLine( "Successfully logged on!" );
 			// at this point, we'd be able to perform actions on Steam
-			Console.WriteLine( "Joining chat room '{0}'...", chatId );
-			steamFriends.JoinChat (new SteamID(chatId));
+			Console.WriteLine( "Joining chat room '{0}'...", ChatId );
+			steamFriends.JoinChat (new SteamID(ChatId));
 		}
 
 		private void OnChatEnter( SteamFriends.ChatEnterCallback callback )
@@ -147,28 +146,24 @@ namespace moisturebot
 			Console.WriteLine( "Successfully joined chat!" );
 		}
 
-		protected void OnChatMsg (object sender, ChatMsgEventArgs data)
-		{
-			if (onChatMsgReceived != null) {
-				onChatMsgReceived (this, data);
-			}
-		}
-
 		public void SendChatRoomMessage(String message) {
 			steamFriends.SendChatRoomMessage (
-				new SteamID (chatId), 
+				new SteamID (ChatId), 
 				EChatEntryType.ChatMsg,
 				message
 			);
 		}
 
-		private void OnChatMsgReceived( SteamFriends.ChatMsgCallback callback )
+		private void OnChatMsg( SteamFriends.ChatMsgCallback callback )
 		{
 
 			string message = callback.Message;
 			string sender = steamFriends.GetFriendPersonaName(callback.ChatterID);
 
-			OnChatMsg(this, new ChatMsgEventArgs( message, sender ));
+			foreach (IGroupChatAddin cmd in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
+			{
+				cmd.MessageReceived(new ChatMessage(message, sender));
+			}
 
 		}
 
