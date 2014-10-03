@@ -21,9 +21,12 @@ namespace moisturebot
 		public void MessageReceived (ChatMessage message)
 		{
 			string[] greetings = {
-				"Moikka taas", "Moi kaikki", "Moikkamoi", "Moikka", "Moips", "Moiks", "Moik", "Moi", 
-				"Terve", "Hello", "Tsau", "Heippa", "Heips", "Hei",
-				"Hoi", "Hola", "Iltaa", "Päivää", "Huomenta", "Moro"
+				"Moikka taas", "Moikkelis", "Moi kaikki", "Moikkamoi", 
+				"Moikka", "Moips", "Moiks", "Moik", "Moi", "Terve", 
+				"Hello", "Tsau", "Heippa", "Heips", "Hei",
+				"Hoi", "Hola", "Iltaa", "Päivää", "Huomenta", "Moro",
+				"Hyvää yötä", "Hyvää päivää", "Hyvää huomenta", "Hyvää iltaa", 
+				"Näkemiin", "Hei hei", "Moikka moi"
 			};
 
 			Regex rgx = new Regex("[^a-zA-Z0-9 -]");

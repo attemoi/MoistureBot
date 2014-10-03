@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.IO;
 using Mono.Addins;
+using System.Threading.Tasks;
 
 [assembly:AddinRoot ("moisturebot", "1.0")]
 [assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
@@ -59,7 +60,11 @@ namespace moisturebot
 				addin.Initialize (bot);
 			}
 
-			bot.connect();
+			var botTask = Task.Factory.StartNew(() => { bot.connect(); });
+
+			string line;
+			while ((line = Console.ReadLine()) != null)
+				Console.WriteLine(line);
 
 		}
 

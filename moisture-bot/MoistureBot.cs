@@ -62,12 +62,14 @@ namespace moisturebot
 
 			steamClient.Connect();
 
-			// create our callback handling loop
 			while ( isRunning )
 			{
-				// in order for the callbacks to get routed, they need to be handled by the manager
-				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 1 ) );
+				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 3 ) );
 			}
+
+			string line;
+			while ((line = Console.ReadLine()) != null)
+				Console.WriteLine(line);
 
 		}
 
