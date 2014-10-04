@@ -1,6 +1,7 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace moisturebot.commands
 {
@@ -10,39 +11,36 @@ namespace moisturebot.commands
 		public string[] Args { get; set; }
 
 		public Boolean help;
-		public string chatId;
-		public string msg;
 
 		private OptionSet options;
 
 		public SendMessageCommand() {
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
-					h => help = h != null },
-				{ "c=|chat=", "Chat id" ,
-					c => chatId = c},
-				{ "m=|msg=", "Message content" ,
-					m => msg = m}
+					h => help = h != null }
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"send a chat message", 
-				"msg -chat=<chat_id>",
+				"msg <chat_id> <message>",
 				options);
 		}
 
 		public bool Execute (IMoistureBot bot)
 		{
 
-			List<string> Extra = options.Parse(Args);
+			List<string> extra = options.Parse(Args);
 
-			if (help || chatId == null || msg == null) {
+			if (help || extra.Count != 2) {
 				WriteHelp ();
 			}
 
-			ulong id = 0;
+			string chatId = extra.ElementAt (0);
+			string message = extra.ElementAt (1);
+
+			ulong id;
 			try {
 				id = UInt64.Parse(chatId);
 			} catch {
@@ -52,7 +50,7 @@ namespace moisturebot.commands
 
 			Console.WriteLine( "Sending chat message '{0}'...", chatId);
 
-			bot.SendChatMessage( msg, id );
+			bot.SendChatMessage( message, id );
 
 			return false;
 		}

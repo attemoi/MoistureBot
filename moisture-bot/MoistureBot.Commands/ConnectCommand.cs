@@ -19,9 +19,9 @@ namespace moisturebot.commands
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					h => help = h != null },
-				{ "u|username", "login username" ,
+				{ "u=|username=", "login username" ,
 					u => user = u},
-				{ "p|password", "login password" ,
+				{ "p=|password=", "login password" ,
 					p => pass = p}
 			};
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace moisturebot.commands
 {
@@ -16,16 +17,14 @@ namespace moisturebot.commands
 		public HelpCommand() {
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
-					h => help = h != null },
-				{ "c=|command=", "command name" ,
-					c => command = c}
+					h => help = h != null }
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"print help for a command.", 
-				"help command=<command_name>",
+				"help <command_name>",
 				options);
 		}
 
@@ -36,9 +35,13 @@ namespace moisturebot.commands
 
 			if (help) {
 				Console.WriteLine ();
-				Console.WriteLine ("Usage: help -command=<command_name>");
+				Console.WriteLine ("Usage: help <command_name>");
 				options.WriteOptionDescriptions (Console.Out);
-			} else if (command != null) {
+				return false;
+			}
+			if (extra.Count > 0 ) {
+				command = extra.First ();
+
 				switch (command) {
 				case "help":
 					new HelpCommand ().WriteHelp ();
@@ -61,10 +64,10 @@ namespace moisturebot.commands
 				Console.WriteLine ();
 				Console.WriteLine ("Available commands: ");
 				Console.WriteLine ();
-				Console.WriteLine ("  help [OPTIONS]+        - show this message");
+				Console.WriteLine ("  help <command>         - show help for a specific command");
 				Console.WriteLine ("  connect [OPTIONS]+     - connect to steam and log in");
 				Console.WriteLine ("  disconnect             - disconnect from steam");
-				Console.WriteLine ("  join [OPTIONS]+        - join chat");
+				Console.WriteLine ("  join <chatid>          - join chat");
 				Console.WriteLine ();
 				Console.WriteLine ("Type 'help -command <command_name>' to get help for a specific command");
 			}
