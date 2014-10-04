@@ -50,8 +50,9 @@
     <Compile Include="LaunchOptions.cs" />
     <Compile Include="IOptions.cs" />
     <Compile Include="CommandParser.cs" />
-    <Compile Include="MoistureBot.Commands\ICommand.cs" />
     <Compile Include="MoistureBot.Commands\ExitCommand.cs" />
+    <Compile Include="MoistureBot.Commands\ConnectCommand.cs" />
+    <Compile Include="MoistureBot.Commands\JoinChatCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

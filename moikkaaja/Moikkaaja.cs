@@ -32,7 +32,7 @@ namespace moisturebot
 				Console.WriteLine ("moikkaaja: Greeting received, replying");
 				msg += " " + message.Sender + "!";
 
-				Bot.SendChatRoomMessage (msg, message.ChatRoomId);
+				Bot.SendChatMessage (msg, message.ChatRoomId);
 			}
 		}
 	}

@@ -6,8 +6,8 @@ namespace moisturebot
 	{
 		void Connect(string username, string password);
 		void Disconnect();
-		void JoinChatRoom(ulong chatRoomId);
-		void SendChatRoomMessage(String message, ulong chatId);
+		void JoinChat(ulong id);
+		void SendChatMessage(String message, ulong chatId);
 	}
 }
 

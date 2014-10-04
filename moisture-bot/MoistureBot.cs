@@ -24,12 +24,6 @@ namespace moisturebot
 		private string user;
 		private string pass;
 
-		public delegate void ConnectedHandler(object sender);
-		public delegate void ChatEnterHandler(object sender);
-
-		public event ConnectedHandler ConnectionAttemptFinished;
-		public event ChatEnterHandler ChatEnter;
-
 		public MoistureBot ()
 		{
 
@@ -106,7 +100,6 @@ namespace moisturebot
 			if ( callback.Result != EResult.OK )
 			{
 				Console.WriteLine( "Unable to connect to Steam: {0}", callback.Result );
-				OnConnectionAttemptFinished (this);
 				return;
 			}
 
@@ -132,7 +125,6 @@ namespace moisturebot
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
 			Console.WriteLine( "Disconnected from Steam" );
-			OnConnectionAttemptFinished (this);
 		}
 
 		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
@@ -156,21 +148,27 @@ namespace moisturebot
 			}
 		
 			Console.WriteLine( "Successfully logged on!" );
-			OnConnectionAttemptFinished (this);
 
 		}
 
 		private void ChatEnterCallback( SteamFriends.ChatEnterCallback callback )
 		{
-			Console.WriteLine( "Successfully joined chat!" );
-			OnChatEnter (this);
+			switch (callback.EnterResponse) {
+			case EChatRoomEnterResponse.Success:
+				Console.WriteLine ("Successfully joined chat!");
+				break;
+			default:
+				Console.WriteLine ("Failed to join chat: {0}", callback.EnterResponse);
+				break;
+			}
+				
 		}
 
-		public void JoinChatRoom(ulong chatRoomId) {
-			steamFriends.JoinChat (new SteamID(chatRoomId));
+		public void JoinChat(ulong id) {
+			steamFriends.JoinChat (new SteamID(id));
 		}
 
-		public void SendChatRoomMessage(String message, ulong chatId) {
+		public void SendChatMessage(String message, ulong chatId) {
 			steamFriends.SendChatRoomMessage (
 				new SteamID (chatId), 
 				EChatEntryType.ChatMsg,
@@ -194,22 +192,6 @@ namespace moisturebot
 		private void LoggedOffCallback( SteamUser.LoggedOffCallback callback )
 		{
 			Console.WriteLine( "Logged off of Steam: {0}", callback.Result );
-		}
-			
-		protected void OnConnectionAttemptFinished (object sender)
-		{
-			if (ConnectionAttemptFinished != null)
-			{
-				ConnectionAttemptFinished (this);
-			}
-		}
-
-		protected void OnChatEnter (object sender)
-		{
-			if (ChatEnter != null)
-			{
-				ChatEnter (this);
-			}
 		}
 
 	}

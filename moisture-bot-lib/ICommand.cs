@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace moisturebot.commands
+namespace moisturebot
 {
 	public interface ICommand
 	{

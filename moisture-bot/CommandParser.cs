@@ -12,16 +12,25 @@ namespace moisturebot
 			// Parse your string and create Command object
 			var commandParts = commandString.Split(' ').ToList();
 			var commandName = commandParts[0];
-			var args = commandParts.Skip(1).ToList(); // the arguments is after the command
+			var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
-			switch(commandName)
-			{
-			// Create command based on CommandName (and maybe arguments)
-			case "exit": return new ExitCommand();
-				// .
-				// .
-				// .
-				// .
+			switch (commandName) {
+			case "exit":
+				return new ExitCommand ();
+			case "quit":
+				return new ExitCommand ();
+			}
+
+			ICommandWithArgs command;
+			switch (commandName) {
+			case "connect": 
+				command = new ConnectCommand ();
+				command.Args = args;
+				return command;
+			case "join":
+				command = new JoinChatCommand ();
+				command.Args = args;
+				return command;
 			}
 
 			return null;

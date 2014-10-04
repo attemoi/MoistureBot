@@ -43,6 +43,8 @@
     <Compile Include="IGroupChatAddin.cs" />
     <Compile Include="IMoistureBot.cs" />
     <Compile Include="IMoistureBotAddin.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="ICommandWithArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

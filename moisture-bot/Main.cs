@@ -8,6 +8,7 @@ using Mono.Addins;
 using System.Threading.Tasks;
 using Mono.Options;
 using System.Threading;
+using moisturebot.commands;
 
 [assembly:AddinRoot ("moisturebot", "1.0")]
 [assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
@@ -39,7 +40,6 @@ namespace moisturebot
 			AddinManager.Registry.Update ();
 
 			Bot = new MoistureBot ();
-			Bot.ConnectionAttemptFinished += new MoistureBot.ConnectedHandler (BotConnected);
 
 			foreach (IGroupChatAddin addin in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
 			{
@@ -47,13 +47,10 @@ namespace moisturebot
 			}
 
 			if (options.AutoConnect) {
-
-
 				if (String.IsNullOrEmpty (options.User) || String.IsNullOrEmpty (options.Pass)) {
 					Console.WriteLine ("Autoconnect failed. Username and/or password not set.");
 				} else {
 					Bot.Connect (options.User, options.Pass);
-					BlockUntilConnected ();
 				}
 
 			}
@@ -66,58 +63,17 @@ namespace moisturebot
 
 			Console.WriteLine ("Type 'help' for a list of commands.");
 
-			string line;
 			var exit = false;
 			while (exit == false)
 			{
 
-				Console.WriteLine();
-				Console.WriteLine("Enter command (help to display help): "); 
 				var command = CommandParser.Parse(Console.ReadLine());
-				exit = command.Execute(Bot);
-
-				// TODO: move these to parser implementation
-
-//				line = Console.ReadLine ();
-
-//				if (line == null || line.Equals ("/exit") || line.Equals ("/quit")) {
-//					Bot.Disconnect ();
-//					break;
-//				} else if (line.Equals ("/connect")) {
-//
-//					string user, pass;
-//
-//					Console.Write ("username:");
-//					user = Console.ReadLine ();
-//					Console.Write ("password:");
-//					pass = ConsoleUtils.ReadPassword ();
-//
-//					Bot.Connect(user, pass);
-//					BlockUntilConnected ();
-//
-//				} else if (line.Equals ("/join")) {
-//					Console.WriteLine( "Joining chat room '{0}'...", 103582791429523393);
-//					Bot.JoinChatRoom (103582791429523393);
-//				} else {
-//					Console.WriteLine("Invalid command!");
-//					Console.WriteLine("Type 'help' for a list of commands.");
-//				}
-
+				if (command == null) {
+					Console.WriteLine ("Invalid command!");
+				} else {
+					exit = command.Execute(Bot);
+				}
 			}
-
-		}
-
-		static void BlockUntilConnected() {
-			_connectionWaitHandle.WaitOne ();
-		}
-
-		static void ProceedAfterConnected() {
-			_connectionWaitHandle.Set ();
-		}
-
-		static void BotConnected(object sender)
-		{
-			ProceedAfterConnected ();
 		}
 
 		static int Main( string[] args )
