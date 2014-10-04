@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace moisturebot.commands
 {
-	public class ConnectCommand : ICommandWithArgs
+	public class ConnectCommand : ICommand
 	{
 
 		public string[] Args { get; set; }
@@ -36,10 +36,11 @@ namespace moisturebot.commands
 		public bool Execute (IMoistureBot bot)
 		{
 		
-			List<string> extra = options.Parse (Args);
+			options.Parse (Args);
 
 			if (help) {
 				WriteHelp ();
+				return false;
 			}
 
 			if (String.IsNullOrEmpty (user) || String.IsNullOrEmpty (pass)) {

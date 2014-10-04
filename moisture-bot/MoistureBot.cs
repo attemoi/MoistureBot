@@ -52,6 +52,8 @@ namespace moisturebot
 			new Callback<SteamFriends.ChatMsgCallback> ( ChatMsgCallback, manager);
 			new Callback<SteamFriends.ChatInviteCallback> ( ChatInviteCallback, manager);
 
+			new Callback<SteamFriends.FriendMsgCallback> ( FriendMsgCallback, manager);
+
 		}
 
 		public void Connect(string username, string password)
@@ -86,7 +88,7 @@ namespace moisturebot
 			isRunning = true;
 			while ( isRunning )
 			{
-				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 1 ) );
+				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 5 ) );
 			}
 		}
 
@@ -169,25 +171,65 @@ namespace moisturebot
 			steamFriends.JoinChat (new SteamID(id));
 		}
 
-		public void SendChatMessage(String message, ulong chatId) {
+		public void SendChatRoomMessage(String message, ulong chatRoomId) {
 			steamFriends.SendChatRoomMessage (
-				new SteamID (chatId), 
+				new SteamID (chatRoomId), 
 				EChatEntryType.ChatMsg,
 				message
 			);
+		}
+
+		public void SendChatMessage(String message, ulong userId) {
+			steamFriends.SendChatMessage (
+				new SteamID (userId), 
+				EChatEntryType.ChatMsg,
+				message
+			);
+		}
+
+		public string getUserName (ulong id)
+		{
+			return steamFriends.GetFriendPersonaName (new SteamID(id));
 		}
 
 		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
 		{
 
 			string message = callback.Message;
-			string chatterName = steamFriends.GetFriendPersonaName(callback.ChatterID);
 			ulong chatterId = callback.ChatterID.ConvertToUInt64();
 			ulong chatId = callback.ChatRoomID.ConvertToUInt64();
 
-			foreach (IChatAddin addin in AddinManager.GetExtensionObjects<IChatAddin> ())
-			{
-				addin.MessageReceived(new ChatMessage(message, chatterId, chatterName, chatId));
+			if (callback.ChatMsgType == EChatEntryType.ChatMsg) {
+				foreach (IChatRoomAddin addin in AddinManager.GetExtensionObjects<IChatRoomAddin> ())
+				{
+					try {
+						addin.MessageReceived(new ChatRoomMessage(message, chatterId, chatId));
+					} catch(Exception e) {
+						// TODO log exception,
+						Console.WriteLine ("[IChatRoomAddin] failure: ", e.StackTrace);
+					}
+
+				}
+			}
+
+		}
+
+		private void FriendMsgCallback( SteamFriends.FriendMsgCallback callback )
+		{
+
+			string message = callback.Message;
+			ulong chatterId = callback.Sender.ConvertToUInt64 ();
+
+			if (callback.EntryType == EChatEntryType.ChatMsg) {
+				foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
+				{
+					try {
+						addin.MessageReceived(new ChatMessage(message, chatterId));
+					} catch(Exception e) {
+						// TODO log exception,
+						Console.WriteLine ("[IChatFriendAddin] failure: ", e.StackTrace);
+					}
+				}
 			}
 
 		}

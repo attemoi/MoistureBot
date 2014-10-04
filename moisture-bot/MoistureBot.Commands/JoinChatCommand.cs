@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace moisturebot.commands
 {
-	public class JoinChatCommand : ICommandWithArgs
+	public class JoinChatCommand : ICommand
 	{
 
 		public string[] Args { get; set; }
@@ -35,7 +35,7 @@ namespace moisturebot.commands
 
 			string chatId = null;
 
-			if (extra.Count == 0) {
+			if (extra.Count == 1) {
 				chatId = extra.First ();
 			} else {
 				WriteHelp ();

@@ -41,14 +41,12 @@ namespace moisturebot
 
 			Bot = new MoistureBot ();
 
-			foreach (IChatAddin addin in AddinManager.GetExtensionObjects<IChatAddin> ())
-			{
-				addin.Bot = Bot;
-			}
+			InitAddins ();
 
 			if (options.AutoConnect) {
 				if (String.IsNullOrEmpty (options.User) || String.IsNullOrEmpty (options.Pass)) {
 					Console.WriteLine ("Autoconnect failed. Username and/or password not set.");
+					return;
 				} else {
 					Bot.Connect (options.User, options.Pass);
 				}
@@ -57,6 +55,17 @@ namespace moisturebot
 
 			HandleConsoleInput ();
 
+		}
+
+		public static void InitAddins() {
+			foreach (IChatRoomAddin addin in AddinManager.GetExtensionObjects<IChatRoomAddin> ())
+			{
+				addin.Bot = Bot;
+			}
+			foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
+			{
+				addin.Bot = Bot;
+			}
 		}
 
 		public static void HandleConsoleInput() {

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace moisturebot.commands
 {
-	public class HelpCommand : ICommandWithArgs
+	public class HelpCommand : ICommand
 	{
 		public string[] Args { get; set; }
 
@@ -54,6 +54,9 @@ namespace moisturebot.commands
 					break;
 				case "join":
 					new JoinChatCommand ().WriteHelp ();
+					break;
+				case "msg":
+					new SendMessageCommand ().WriteHelp ();
 					break;
 				default:
 					if (String.IsNullOrWhiteSpace (command));

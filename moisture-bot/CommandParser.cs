@@ -14,36 +14,39 @@ namespace moisturebot
 			var commandName = commandParts[0];
 			var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
+			ICommand command;
 			switch (commandName) {
 			case "exit":
-				return new ExitCommand ();
+				command = new ExitCommand ();
+				break;
 			case "quit":
-				return new ExitCommand ();
+				command = new ExitCommand ();
+				break;
 			case "disconnect":
-				return new DisconnectCommand ();
-			}
-
-			ICommandWithArgs command;
-			switch (commandName) {
+				command = new DisconnectCommand ();
+				break;
 			case "help":
 				command = new HelpCommand ();
-				command.Args = args;
-				return command;
+				break;
 			case "connect": 
 				command = new ConnectCommand ();
-				command.Args = args;
-				return command;
+				break;
 			case "join":
 				command = new JoinChatCommand ();
-				command.Args = args;
-				return command;
+				break;
 			case "msg":
 				command = new SendMessageCommand ();
-				command.Args = args;
-				return command;
+				break;
+			default:
+				command = null;
+				break;
 			}
 
-			return null;
+			if (command != null)
+				command.Args = args;
+
+			return command;
+
 		}
 	}
 }

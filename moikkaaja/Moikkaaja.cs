@@ -9,11 +9,25 @@ namespace moisturebot
 {
 
 	[Extension]
-	public class Moikkaaja: IChatAddin
+	public class Moikkaaja: IChatRoomAddin, IChatFriendAddin
 	{
 		public IMoistureBot Bot { get; set; }
 
+		public void MessageReceived (ChatRoomMessage message)
+		{
+			var reply = CreateReply (message);
+
+			Bot.SendChatRoomMessage (reply, message.ChatId);
+		}
+
 		public void MessageReceived (ChatMessage message)
+		{
+			var reply = CreateReply (message);
+
+			Bot.SendChatMessage (reply, message.ChatterId);
+		}
+
+		string CreateReply (ChatMessage message)
 		{
 			string[] greetings = {
 				"Moikka taas", "Moikkelis", "Moi kaikki", "Moikkamoi", 
@@ -29,11 +43,12 @@ namespace moisturebot
 			string msg = Array.Find(greetings, t => t.Equals(strippedMsg, StringComparison.InvariantCultureIgnoreCase));
 
 			if (msg != null && !msg.Equals("") ){
+				// TODO log message
 				Console.WriteLine ("moikkaaja: Greeting received, replying");
-				msg += " " + message.ChatterName + "!";
-
-				Bot.SendChatMessage (msg, message.ChatId);
+				msg += " " + Bot.getUserName(message.ChatterId) + "!";
 			}
+
+			return msg;
 		}
 	}
 }

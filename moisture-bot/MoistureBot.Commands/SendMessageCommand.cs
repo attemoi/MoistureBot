@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace moisturebot.commands
 {
-	public class SendMessageCommand : ICommandWithArgs
+	public class SendMessageCommand : ICommand
 	{
 
 		public string[] Args { get; set; }
@@ -35,6 +35,7 @@ namespace moisturebot.commands
 
 			if (help || extra.Count != 2) {
 				WriteHelp ();
+				return false;
 			}
 
 			string chatId = extra.ElementAt (0);
@@ -48,7 +49,7 @@ namespace moisturebot.commands
 				return false;
 			}
 
-			Console.WriteLine( "Sending chat message '{0}'...", chatId);
+			Console.WriteLine( "Sending chat message to '{0}'...", chatId);
 
 			bot.SendChatMessage( message, id );
 
