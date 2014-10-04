@@ -30,7 +30,8 @@ namespace moisturebot.commands
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"send message to user or room", 
-				"msg [OPTIONS]+ <chat_id> <message>",
+				"msg -user <user_id> <message>" + Environment.NewLine +
+				"  msg -room <room_id> <message>",
 				options);
 		}
 

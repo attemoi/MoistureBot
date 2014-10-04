@@ -61,6 +61,9 @@ namespace moisturebot.commands
 				case "exit":
 					new ExitCommand ().WriteHelp ();
 					break;
+				case "status":
+					new StatusCommand ().WriteHelp ();
+					break;
 				default:
 					if (String.IsNullOrWhiteSpace (command))
 						Console.WriteLine ("Unknown command: '{0}'", command);
