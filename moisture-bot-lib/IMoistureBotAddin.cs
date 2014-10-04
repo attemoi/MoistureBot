@@ -3,15 +3,9 @@ using Mono.Addins;
 
 namespace moisturebot
 {
-	public abstract class IMoistureBotAddin
+	public interface IMoistureBotAddin
 	{		
-		public IMoistureBot Bot { get; internal set; }
-
-		public void Initialize ( IMoistureBot bot )
-		{
-			this.Bot = bot;
-		}
-
+		IMoistureBot Bot { get; set; }
 	}
 
 }

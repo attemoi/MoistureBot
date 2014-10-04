@@ -3,7 +3,7 @@ using Mono.Options;
 
 namespace moisturebot
 {
-	public interface IOptions
+	public interface IOptionParser
 	{
 		void Parse(string[] args);
 		void WriteHelp();

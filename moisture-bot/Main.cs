@@ -43,7 +43,7 @@ namespace moisturebot
 
 			foreach (IGroupChatAddin addin in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
 			{
-				addin.Initialize(Bot);
+				addin.Bot = Bot;
 			}
 
 			if (options.AutoConnect) {
@@ -67,33 +67,41 @@ namespace moisturebot
 			Console.WriteLine ("Type 'help' for a list of commands.");
 
 			string line;
-			while (true)
+			var exit = false;
+			while (exit == false)
 			{
 
-				line = Console.ReadLine ();
+				Console.WriteLine();
+				Console.WriteLine("Enter command (help to display help): "); 
+				var command = CommandParser.Parse(Console.ReadLine());
+				exit = command.Execute(Bot);
 
-				if (line == null || line.Equals ("/exit") || line.Equals ("/quit")) {
-					Bot.Disconnect ();
-					break;
-				} else if (line.Equals ("/connect")) {
+				// TODO: move these to parser implementation
 
-					string user, pass;
+//				line = Console.ReadLine ();
 
-					Console.Write ("username:");
-					user = Console.ReadLine ();
-					Console.Write ("password:");
-					pass = ConsoleUtils.ReadPassword ();
-
-					Bot.Connect(user, pass);
-					BlockUntilConnected ();
-
-				} else if (line.Equals ("/join")) {
-					Console.WriteLine( "Joining chat room '{0}'...", 103582791429523393);
-					Bot.JoinChatRoom (103582791429523393);
-				} else {
-					Console.WriteLine("Invalid command!");
-					Console.WriteLine("Type 'help' for a list of commands.");
-				}
+//				if (line == null || line.Equals ("/exit") || line.Equals ("/quit")) {
+//					Bot.Disconnect ();
+//					break;
+//				} else if (line.Equals ("/connect")) {
+//
+//					string user, pass;
+//
+//					Console.Write ("username:");
+//					user = Console.ReadLine ();
+//					Console.Write ("password:");
+//					pass = ConsoleUtils.ReadPassword ();
+//
+//					Bot.Connect(user, pass);
+//					BlockUntilConnected ();
+//
+//				} else if (line.Equals ("/join")) {
+//					Console.WriteLine( "Joining chat room '{0}'...", 103582791429523393);
+//					Bot.JoinChatRoom (103582791429523393);
+//				} else {
+//					Console.WriteLine("Invalid command!");
+//					Console.WriteLine("Type 'help' for a list of commands.");
+//				}
 
 			}
 

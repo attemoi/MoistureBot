@@ -11,8 +11,9 @@ namespace moisturebot
 	[Extension]
 	public class Moikkaaja: IGroupChatAddin
 	{
+		public IMoistureBot Bot { get; set; }
 
-		public override void MessageReceived (ChatMessage message)
+		public void MessageReceived (ChatMessage message)
 		{
 			string[] greetings = {
 				"Moikka taas", "Moikkelis", "Moi kaikki", "Moikkamoi", 

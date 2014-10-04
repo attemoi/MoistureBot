@@ -49,6 +49,9 @@
     <Compile Include="ConsoleUtils.cs" />
     <Compile Include="LaunchOptions.cs" />
     <Compile Include="IOptions.cs" />
+    <Compile Include="CommandParser.cs" />
+    <Compile Include="MoistureBot.Commands\ICommand.cs" />
+    <Compile Include="MoistureBot.Commands\ExitCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -59,5 +62,8 @@
       <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
       <Name>moisture-bot-lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MoistureBot.Commands\" />
   </ItemGroup>
 </Project>

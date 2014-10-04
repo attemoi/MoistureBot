@@ -4,9 +4,9 @@ using Mono.Addins;
 namespace moisturebot
 {
 	[TypeExtensionPoint]
-	public abstract class IGroupChatAddin : IMoistureBotAddin
+	public interface IGroupChatAddin : IMoistureBotAddin
 	{
-		public abstract void MessageReceived(ChatMessage message);
+		void MessageReceived(ChatMessage message);
 	}
 		
 }

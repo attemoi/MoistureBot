@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace moisturebot
 {
-	public class LaunchOptions : IOptions
+	public class LaunchOptions : IOptionParser
 	{
 		public OptionSet LaunchOptionSet;
 
