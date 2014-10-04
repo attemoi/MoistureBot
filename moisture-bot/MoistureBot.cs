@@ -241,6 +241,10 @@ namespace moisturebot
 		}
 
 		public void SendChatRoomMessage(String message, ulong chatRoomId) {
+
+			if (string.IsNullOrEmpty (message))
+				return;
+
 			steamFriends.SendChatRoomMessage (
 				new SteamID (chatRoomId), 
 				EChatEntryType.ChatMsg,
@@ -249,6 +253,10 @@ namespace moisturebot
 		}
 
 		public void SendChatMessage(String message, ulong userId) {
+
+			if (string.IsNullOrEmpty (message))
+				return;
+
 			steamFriends.SendChatMessage (
 				new SteamID (userId), 
 				EChatEntryType.ChatMsg,

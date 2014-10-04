@@ -8,7 +8,8 @@ using System.Text.RegularExpressions;
 namespace moisturebot
 {
 
-	[Extension]
+	[Extension (typeof(IChatRoomAddin))]
+	[Extension (typeof(IChatFriendAddin))]
 	public class Moikkaaja: IChatRoomAddin, IChatFriendAddin
 	{
 		public IMoistureBot Bot { get; set; }
