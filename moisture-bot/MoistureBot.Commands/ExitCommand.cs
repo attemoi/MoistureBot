@@ -37,6 +37,7 @@ namespace moisturebot.commands
 			}
 
 			bot.Disconnect ();
+			bot.BlockUntilDisconnected ();
 
 			return true;
 		}

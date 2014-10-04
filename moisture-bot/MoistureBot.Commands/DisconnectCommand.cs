@@ -33,8 +33,14 @@ namespace moisturebot.commands
 				WriteHelp ();
 				return false;
 			}
+				
+			if (!bot.IsConnected ()) {
+				Console.WriteLine ("Bot already offline.");
+				return false;
+			}
 
 			bot.Disconnect ();
+			bot.BlockUntilDisconnected ();
 			return false;
 		}
 	}

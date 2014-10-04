@@ -51,6 +51,7 @@ namespace moisturebot.commands
 			}
 
 			bot.Connect(user, pass);
+			bot.BlockUntilConnected ();
 
 			return false;
 		}

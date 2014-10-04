@@ -42,6 +42,11 @@ namespace moisturebot.commands
 				chatId = extra.First ();
 			} 
 
+			if (!bot.IsConnected ()) {
+				Console.WriteLine ("Not connected to Steam.");
+				return false;
+			}
+
 			ulong id = 0;
 			try {
 				id = UInt64.Parse(chatId);

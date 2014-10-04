@@ -56,6 +56,19 @@ namespace moisturebot
 		/// </summary>
 		/// <returns>The active chat rooms.</returns>
 		List<ulong> GetActiveChatRooms();
+
+		/// <summary>
+		/// Blocks the current thread until the bot has connected
+		/// or failed to connect.
+		/// </summary>
+		void BlockUntilConnected ();
+
+		/// <summary>
+		/// Blocks the current thread until the bot has disconnected
+		/// or failed to connect.
+		/// </summary>
+		void BlockUntilDisconnected();
+
 	}
 }
 

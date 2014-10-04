@@ -19,14 +19,15 @@ namespace moisturebot
 		private SteamUser steamUser;
 		private SteamFriends steamFriends;
 
+		private static EventWaitHandle _connectWaitHandle = new AutoResetEvent (false);
+		private static EventWaitHandle _disconnectWaitHandle = new AutoResetEvent (false);
+
 		private bool isRunning;
 
 		// Bot properties
 		private string user;
 		private string pass;
 		private List<ulong> activeChatRooms = new List<ulong> ();
-
-		static EventWaitHandle _waitHandle = new AutoResetEvent (false);
 
 		public MoistureBot ()
 		{
@@ -77,13 +78,15 @@ namespace moisturebot
 			{
 				t.Start();
 			}
-			catch (ThreadStateException e)
+			catch (ThreadStateException)
 			{
-				Console.WriteLine(e);  // Display text of exception
+				// TODO: log
+				// Console.WriteLine(e);
 			}
-			catch (ThreadInterruptedException e)
+			catch (ThreadInterruptedException)
 			{
-				Console.WriteLine(e);  // This exception means that the thread
+				// TODO: log
+				// Console.WriteLine(e);
 			}
 		}
 
@@ -97,9 +100,9 @@ namespace moisturebot
 				} catch (InvalidOperationException)  {
 					// There is probably a bug in SteamKit2 causing this exception sometimes when connecting
 					// TODO: Log
-				} catch ( Exception e){
+				} catch ( Exception){
 					// TODO: log
-					Console.WriteLine ("Bot error: {0]", e.Message); 
+					// Console.WriteLine ("Bot error: {0]", e.Message); 
 				}
 			}
 		}
@@ -115,6 +118,7 @@ namespace moisturebot
 			if ( callback.Result != EResult.OK )
 			{
 				Console.WriteLine( "Unable to connect to Steam: {0}", callback.Result );
+				_connectWaitHandle.Set ();
 				return;
 			}
 
@@ -140,6 +144,7 @@ namespace moisturebot
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
 			Console.WriteLine( "Disconnected from Steam" );
+			_disconnectWaitHandle.Set ();
 		}
 
 		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
@@ -154,15 +159,17 @@ namespace moisturebot
 					// see sample 6 for how SteamGuard can be handled
 
 					Console.WriteLine( "Unable to logon to Steam: This account is SteamGuard protected." );
-
+					_connectWaitHandle.Set ();
 					return;
 				}
 					
 				Console.WriteLine( "Unable to logon to Steam: {0} / {1}", callback.Result, callback.ExtendedResult );
+				_connectWaitHandle.Set ();
 				return;
 			}
 		
 			Console.WriteLine( "Successfully logged on!" );
+			_connectWaitHandle.Set ();
 
 		}
 
@@ -170,11 +177,13 @@ namespace moisturebot
 		{
 			switch (callback.EnterResponse) {
 			case EChatRoomEnterResponse.Success:
-				Console.WriteLine ("Successfully joined chat!");
+				// TODO: log
+				// Console.WriteLine ("Successfully joined chat!");
 				activeChatRooms.Add (callback.ChatID.ConvertToUInt64 ());
 				break;
 			default:
-				Console.WriteLine ("Failed to join chat: {0}", callback.EnterResponse);
+				// TODO: log
+				// Console.WriteLine ("Failed to join chat: {0}", callback.EnterResponse);
 				break;
 			}
 				
@@ -195,7 +204,8 @@ namespace moisturebot
 					try {
 						addin.MessageReceived(new ChatRoomMessage(message, chatterId, chatId));
 					} catch(Exception e) {
-						// TODO log exception,
+						// TODO log
+						Console.WriteLine ();
 						Console.WriteLine ("[IChatRoomAddin] failure: ", e.StackTrace);
 					}
 
@@ -217,6 +227,7 @@ namespace moisturebot
 						addin.MessageReceived(new ChatMessage(message, chatterId));
 					} catch(Exception e) {
 						// TODO log exception,
+						Console.WriteLine ();
 						Console.WriteLine ("[IChatFriendAddin] failure: ", e.StackTrace);
 					}
 				}
@@ -276,6 +287,20 @@ namespace moisturebot
 
 		public List<ulong> GetActiveChatRooms() {
 			return activeChatRooms;
+		}
+
+		public void BlockUntilConnected() {
+			if (IsConnected())
+				return;
+
+			_connectWaitHandle.WaitOne();
+		}
+
+		public void BlockUntilDisconnected() {
+			if (!IsConnected())
+				return;
+
+			_disconnectWaitHandle.WaitOne();
 		}
 
 		#endregion

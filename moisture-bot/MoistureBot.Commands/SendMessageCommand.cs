@@ -20,9 +20,9 @@ namespace moisturebot.commands
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					h => help = h != null },
-				{ "f|friend", "send message to a friend", 
+				{ "f|friend", "send message to friend", 
 					f => friend = f != null },
-				{ "r|room", "send message to a room", 
+				{ "r|room", "send message to room", 
 					r => room = r != null }
 			};
 		}
@@ -30,17 +30,22 @@ namespace moisturebot.commands
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"send a chat message", 
-				"msg -friend/-room <chat_id> <message>",
+				"msg [OPTIONS]+ <chat_id> <message>",
 				options);
 		}
 
 		public bool Execute (IMoistureBot bot)
 		{
-
+		
 			List<string> extra = options.Parse(Args);
 
 			if (help || extra.Count < 2 || (!friend && !room)) {
 				WriteHelp ();
+				return false;
+			}
+
+			if (!bot.IsConnected ()) {
+				Console.WriteLine ("Not connected to Steam.");
 				return false;
 			}
 

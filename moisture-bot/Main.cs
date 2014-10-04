@@ -31,6 +31,9 @@ namespace moisturebot
 				return;
 			}
 
+			Console.WriteLine ();
+			Console.WriteLine ("Launching Moisturebot...");
+
 			AddinManager.AddinLoadError += OnLoadError;
 			AddinManager.AddinLoaded += OnLoad;
 
@@ -38,9 +41,6 @@ namespace moisturebot
 			AddinManager.Registry.Update ();
 
 			Bot = new MoistureBot ();
-
-			Console.WriteLine ();
-			Console.WriteLine ("Launching Moisturebot...");
 
 			InitAddins ();
 
@@ -50,6 +50,7 @@ namespace moisturebot
 					return;
 				} else {
 					Bot.Connect (options.User, options.Pass);
+					Bot.BlockUntilConnected ();
 				}
 
 			}
@@ -71,11 +72,12 @@ namespace moisturebot
 
 		public static void HandleConsoleInput() {
 
-			Console.WriteLine ("Type 'help' for a list of commands.");
-
 			var exit = false;
 			while (exit == false)
 			{
+				Console.WriteLine ();
+				Console.WriteLine ("Enter command (type 'help' for a list of commands):");
+				Console.Write (">>");
 				var input = Console.ReadLine ();
 				var command = CommandParser.Parse(input);
 				if (command == null) {
