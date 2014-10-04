@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace moisturebot
 {
 	public interface IMoistureBot
 	{
+
+		/// <summary>
+		/// Determines whether bot is connected to Steam.
+		/// </summary>
+		/// <returns><c>true</c> if this instance is connected; otherwise, <c>false</c>.</returns>
+		Boolean IsConnected();
+
 		/// <summary>
 		/// Connects and signs in to Steam.
 		/// </summary>
@@ -30,18 +38,24 @@ namespace moisturebot
 		void SendChatMessage(String message, ulong userId);
 
 		/// <summary>
-		/// Sends chat message to room
+		/// Sends chat message to room.
 		/// </summary>
 		/// <param name="message">Message</param>
 		/// <param name="chatRoomId">Chat room id.</param>
 		void SendChatRoomMessage(String message, ulong chatRoomId);
 
 		/// <summary>
-		/// Gets user name based from id
+		/// Gets user name based from id.
 		/// </summary>
 		/// <returns>User profile name</returns>
 		/// <param name="id">User id</param>
-		string getUserName(ulong id);
+		string GetUserName(ulong id);
+
+		/// <summary>
+		/// Gets the active chat rooms.
+		/// </summary>
+		/// <returns>The active chat rooms.</returns>
+		List<ulong> GetActiveChatRooms();
 	}
 }
 

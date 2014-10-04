@@ -58,21 +58,30 @@ namespace moisturebot.commands
 				case "msg":
 					new SendMessageCommand ().WriteHelp ();
 					break;
+				case "exit":
+					new ExitCommand ().WriteHelp ();
+					break;
 				default:
-					if (String.IsNullOrWhiteSpace (command));
-					Console.WriteLine ("Unknown command: '{0}'", command);
+					if (String.IsNullOrWhiteSpace (command))
+						Console.WriteLine ("Unknown command: '{0}'", command);
 					break;
 				}
+
 			} else {
+
 				Console.WriteLine ();
 				Console.WriteLine ("Available commands: ");
 				Console.WriteLine ();
-				Console.WriteLine ("  help <command>         - show help for a specific command");
-				Console.WriteLine ("  connect [OPTIONS]+     - connect to steam and log in");
-				Console.WriteLine ("  disconnect             - disconnect from steam");
-				Console.WriteLine ("  join <chatid>          - join chat");
+				Console.WriteLine ("  help <command>                      - show help for a specific command");
+				Console.WriteLine ("  status                              - show bot status");
+				Console.WriteLine ("  connect [OPTIONS]+                  - connect to steam and log in");
+				Console.WriteLine ("  disconnect                          - disconnect from steam");
+				Console.WriteLine ("  join <chatid>                       - join chat");
+				Console.WriteLine ("  msg [OPTIONS]+ <chatid> <message>   - disconnect Steam and exit program");
+				Console.WriteLine ("  exit <chatid>                       - disconnect Steam and exit program");
 				Console.WriteLine ();
-				Console.WriteLine ("Type 'help -command <command_name>' to get help for a specific command");
+				Console.WriteLine ("Type 'help <command>' to get help for a specific command.");
+
 			}
 			return false;
 		}

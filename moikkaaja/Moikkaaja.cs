@@ -43,7 +43,7 @@ namespace moisturebot
 			if (msg != null && !msg.Equals("") ){
 				// TODO log message
 				Console.WriteLine ("moikkaaja: Greeting received, replying");
-				msg += " " + Bot.getUserName(message.ChatterId) + "!";
+				msg += " " + Bot.GetUserName(message.ChatterId) + "!";
 			}
 
 			return msg;

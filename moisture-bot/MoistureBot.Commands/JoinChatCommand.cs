@@ -35,12 +35,12 @@ namespace moisturebot.commands
 
 			string chatId = null;
 
-			if (extra.Count == 1) {
-				chatId = extra.First ();
-			} else {
+			if (help || extra.Count != 1) {
 				WriteHelp ();
 				return false;
-			}
+			} else {
+				chatId = extra.First ();
+			} 
 
 			ulong id = 0;
 			try {

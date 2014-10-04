@@ -14,7 +14,7 @@ namespace moisturebot
 			var commandName = commandParts[0];
 			var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
-			ICommand command;
+			ICommand command = null;
 			switch (commandName) {
 			case "exit":
 				command = new ExitCommand ();
@@ -37,8 +37,8 @@ namespace moisturebot
 			case "msg":
 				command = new SendMessageCommand ();
 				break;
-			default:
-				command = null;
+			case "status":
+				command = new StatusCommand ();
 				break;
 			}
 

@@ -5,6 +5,7 @@ using SteamKit2;
 using System.Text.RegularExpressions;
 using Mono.Addins;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace moisturebot
 {
@@ -23,6 +24,9 @@ namespace moisturebot
 		// Bot properties
 		private string user;
 		private string pass;
+		private List<ulong> activeChatRooms = new List<ulong> ();
+
+		static EventWaitHandle _waitHandle = new AutoResetEvent (false);
 
 		public MoistureBot ()
 		{
@@ -167,6 +171,7 @@ namespace moisturebot
 			switch (callback.EnterResponse) {
 			case EChatRoomEnterResponse.Success:
 				Console.WriteLine ("Successfully joined chat!");
+				activeChatRooms.Add (callback.ChatID.ConvertToUInt64 ());
 				break;
 			default:
 				Console.WriteLine ("Failed to join chat: {0}", callback.EnterResponse);
@@ -251,9 +256,18 @@ namespace moisturebot
 			);
 		}
 
-		public string getUserName (ulong id)
+		public string GetUserName (ulong id)
 		{
 			return steamFriends.GetFriendPersonaName (new SteamID(id));
+		}
+
+		public Boolean IsConnected()
+		{
+			return steamClient.IsConnected;
+		}
+
+		public List<ulong> GetActiveChatRooms() {
+			return activeChatRooms;
 		}
 
 		#endregion

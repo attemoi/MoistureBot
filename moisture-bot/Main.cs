@@ -21,8 +21,6 @@ namespace moisturebot
 
 		public static MoistureBot Bot { get; set; }
 
-		public static EventWaitHandle _connectionWaitHandle = new AutoResetEvent (false);
-
 		static void Run(string[] args)
 		{
 			LaunchOptions options = new LaunchOptions ();
@@ -36,10 +34,13 @@ namespace moisturebot
 			AddinManager.AddinLoadError += OnLoadError;
 			AddinManager.AddinLoaded += OnLoad;
 
-			AddinManager.Initialize (".", ".", ".");
+			AddinManager.Initialize (".", ".", "./addins");
 			AddinManager.Registry.Update ();
 
 			Bot = new MoistureBot ();
+
+			Console.WriteLine ();
+			Console.WriteLine ("Launching Moisturebot...");
 
 			InitAddins ();
 
