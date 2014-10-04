@@ -4,29 +4,32 @@ using System.Collections.Generic;
 
 namespace moisturebot.commands
 {
-	public class JoinChatCommand : ICommandWithArgs
+	public class SendMessageCommand : ICommandWithArgs
 	{
 
 		public string[] Args { get; set; }
 
 		public Boolean help;
 		public string chatId;
+		public string msg;
 
 		private OptionSet options;
 
-		public JoinChatCommand() {
+		public SendMessageCommand() {
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					h => help = h != null },
 				{ "c=|chat=", "Chat id" ,
-					c => chatId = c}
+					c => chatId = c},
+				{ "m=|msg=", "Message content" ,
+					m => msg = m}
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"join a chat", 
-				"join -chat=<chat_id>",
+				"send a chat message", 
+				"msg -chat=<chat_id>",
 				options);
 		}
 
@@ -35,9 +38,8 @@ namespace moisturebot.commands
 
 			List<string> Extra = options.Parse(Args);
 
-			if (chatId == null) {
+			if (help || chatId == null || msg == null) {
 				WriteHelp ();
-				return false;
 			}
 
 			ulong id = 0;
@@ -48,8 +50,9 @@ namespace moisturebot.commands
 				return false;
 			}
 
-			Console.WriteLine( "Joining chat room '{0}'...", chatId);
-			bot.JoinChat(id);
+			Console.WriteLine( "Sending chat message '{0}'...", chatId);
+
+			bot.SendChatMessage( msg, id );
 
 			return false;
 		}

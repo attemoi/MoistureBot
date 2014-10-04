@@ -1,11 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Options;
 
 namespace moisturebot
 {
 	public class ConsoleUtils
 	{
+
+		public static void WriteHelp (string description, string usage, OptionSet o) {
+			Console.WriteLine ();
+			Console.WriteLine ("Usage: {0}", usage);
+			WriteHelp (description);
+			Console.WriteLine ();
+			Console.WriteLine ("Options:");
+			o.WriteOptionDescriptions (Console.Out);
+			Console.WriteLine ();
+		}
+
+		public static void WriteHelp (string description) {
+			Console.WriteLine ();
+			Console.WriteLine ("Description: {0}", description);
+		}
+
 		/// <summary>
 		/// Like System.Console.ReadLine(), only with a mask.
 		/// </summary>

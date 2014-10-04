@@ -50,6 +50,7 @@ namespace moisturebot
 			// Friends
 			new Callback<SteamFriends.ChatEnterCallback> ( ChatEnterCallback, manager);
 			new Callback<SteamFriends.ChatMsgCallback> ( ChatMsgCallback, manager);
+			new Callback<SteamFriends.ChatInviteCallback> ( ChatInviteCallback, manager);
 
 		}
 
@@ -180,13 +181,20 @@ namespace moisturebot
 		{
 
 			string message = callback.Message;
-			string sender = steamFriends.GetFriendPersonaName(callback.ChatterID);
+			string chatterName = steamFriends.GetFriendPersonaName(callback.ChatterID);
+			ulong chatterId = callback.ChatterID.ConvertToUInt64();
+			ulong chatId = callback.ChatRoomID.ConvertToUInt64();
 
-			foreach (IGroupChatAddin cmd in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
+			foreach (IChatAddin addin in AddinManager.GetExtensionObjects<IChatAddin> ())
 			{
-				cmd.MessageReceived(new ChatMessage(message, sender, callback.ChatRoomID.ConvertToUInt64()));
+				addin.MessageReceived(new ChatMessage(message, chatterId, chatterName, chatId));
 			}
 
+		}
+
+		private void ChatInviteCallback( SteamFriends.ChatInviteCallback callback )
+		{
+			// TODO create extension point
 		}
 
 		private void LoggedOffCallback( SteamUser.LoggedOffCallback callback )

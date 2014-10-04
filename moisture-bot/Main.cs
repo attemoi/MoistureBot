@@ -41,7 +41,7 @@ namespace moisturebot
 
 			Bot = new MoistureBot ();
 
-			foreach (IGroupChatAddin addin in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
+			foreach (IChatAddin addin in AddinManager.GetExtensionObjects<IChatAddin> ())
 			{
 				addin.Bot = Bot;
 			}
@@ -66,10 +66,11 @@ namespace moisturebot
 			var exit = false;
 			while (exit == false)
 			{
-
-				var command = CommandParser.Parse(Console.ReadLine());
+				var input = Console.ReadLine ();
+				var command = CommandParser.Parse(input);
 				if (command == null) {
-					Console.WriteLine ("Invalid command!");
+					if (!String.IsNullOrWhiteSpace(input))
+						Console.WriteLine ("Unknown command: '{0}'", input);
 				} else {
 					exit = command.Execute(Bot);
 				}

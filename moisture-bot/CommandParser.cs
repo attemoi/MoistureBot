@@ -19,16 +19,26 @@ namespace moisturebot
 				return new ExitCommand ();
 			case "quit":
 				return new ExitCommand ();
+			case "disconnect":
+				return new DisconnectCommand ();
 			}
 
 			ICommandWithArgs command;
 			switch (commandName) {
+			case "help":
+				command = new HelpCommand ();
+				command.Args = args;
+				return command;
 			case "connect": 
 				command = new ConnectCommand ();
 				command.Args = args;
 				return command;
 			case "join":
 				command = new JoinChatCommand ();
+				command.Args = args;
+				return command;
+			case "msg":
+				command = new SendMessageCommand ();
 				command.Args = args;
 				return command;
 			}

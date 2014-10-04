@@ -5,13 +5,15 @@ namespace moisturebot
 	public class ChatMessage
 	{
 		public string Message { get; internal set; }
-		public string Sender { get; internal set; }
-		public ulong ChatRoomId { get; internal set; }
-		public ChatMessage(string message, string sender, ulong chatId)
+		public ulong ChatterId { get; internal set; }
+		public string ChatterName { get; internal set; }
+		public ulong ChatId { get; internal set; }
+		public ChatMessage(string message, ulong chatterId, string chatterName, ulong chatId)
 		{
 			this.Message = message;
-			this.Sender = sender;
-			this.ChatRoomId = chatId;
+			this.ChatterId = chatterId;
+			this.ChatterName = chatterName;
+			this.ChatId = chatId;
 		}
 	}
 }

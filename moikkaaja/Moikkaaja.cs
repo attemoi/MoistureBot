@@ -9,7 +9,7 @@ namespace moisturebot
 {
 
 	[Extension]
-	public class Moikkaaja: IGroupChatAddin
+	public class Moikkaaja: IChatAddin
 	{
 		public IMoistureBot Bot { get; set; }
 
@@ -30,9 +30,9 @@ namespace moisturebot
 
 			if (msg != null && !msg.Equals("") ){
 				Console.WriteLine ("moikkaaja: Greeting received, replying");
-				msg += " " + message.Sender + "!";
+				msg += " " + message.ChatterName + "!";
 
-				Bot.SendChatMessage (msg, message.ChatRoomId);
+				Bot.SendChatMessage (msg, message.ChatId);
 			}
 		}
 	}

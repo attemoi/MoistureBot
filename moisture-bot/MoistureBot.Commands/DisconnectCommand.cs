@@ -2,16 +2,16 @@
 
 namespace moisturebot.commands
 {
-	public class ExitCommand : ICommand
+	public class DisconnectCommand : ICommand
 	{
 		public void WriteHelp() {
-			ConsoleUtils.WriteHelp("shut down bot and exit program");
+			ConsoleUtils.WriteHelp("sign out and disconnect from Steam");
 		}
 
 		public bool Execute(IMoistureBot bot)
 		{
 			bot.Disconnect ();
-			return true;
+			return false;
 		}
 	}
 }
