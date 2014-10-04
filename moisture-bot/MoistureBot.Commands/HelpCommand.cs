@@ -74,13 +74,10 @@ namespace moisturebot.commands
 				Console.WriteLine ();
 				Console.WriteLine ("  help <command>                      - show help for a specific command");
 				Console.WriteLine ("  status                              - show bot status");
-				Console.WriteLine ();
 				Console.WriteLine ("  connect [OPTIONS]+                  - connect and log on to Steam");
 				Console.WriteLine ("  disconnect                          - disconnect from steam");
-				Console.WriteLine ();
 				Console.WriteLine ("  join <chatid>                       - join chat room");
-				Console.WriteLine ("  msg [OPTIONS]+ <chatid> <message>   - disconnect Steam and exit program");
-				Console.WriteLine ();
+				Console.WriteLine ("  msg [OPTIONS]+ <chatid> <message>   - send message to user or room");
 				Console.WriteLine ("  exit <chatid>                       - disconnect Steam and exit program");
 
 			}

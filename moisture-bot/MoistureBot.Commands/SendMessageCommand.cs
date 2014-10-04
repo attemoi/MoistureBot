@@ -11,7 +11,7 @@ namespace moisturebot.commands
 		public string[] Args { get; set; }
 
 		public Boolean help;
-		public Boolean friend;
+		public Boolean user;
 		public Boolean room;
 
 		private OptionSet options;
@@ -20,8 +20,8 @@ namespace moisturebot.commands
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					h => help = h != null },
-				{ "f|friend", "send message to friend", 
-					f => friend = f != null },
+				{ "u|user", "send message to user", 
+					u => user = u != null },
 				{ "r|room", "send message to room", 
 					r => room = r != null }
 			};
@@ -29,7 +29,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"send a chat message", 
+				"send message to user or room", 
 				"msg [OPTIONS]+ <chat_id> <message>",
 				options);
 		}
@@ -39,7 +39,7 @@ namespace moisturebot.commands
 		
 			List<string> extra = options.Parse(Args);
 
-			if (help || extra.Count < 2 || (!friend && !room)) {
+			if (help || extra.Count < 2 || (!user && !room)) {
 				WriteHelp ();
 				return false;
 			}
@@ -61,7 +61,7 @@ namespace moisturebot.commands
 				return false;
 			}
 
-			if (friend) {
+			if (user) {
 				Console.WriteLine ("Sending chat message to friend '{0}'...", id);
 				bot.SendChatMessage (message, id);
 			}
