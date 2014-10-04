@@ -16,14 +16,12 @@ namespace moisturebot
 		public void MessageReceived (ChatRoomMessage message)
 		{
 			var reply = CreateReply (message);
-
 			Bot.SendChatRoomMessage (reply, message.ChatId);
 		}
 
 		public void MessageReceived (ChatMessage message)
 		{
 			var reply = CreateReply (message);
-
 			Bot.SendChatMessage (reply, message.ChatterId);
 		}
 

@@ -88,7 +88,15 @@ namespace moisturebot
 			isRunning = true;
 			while ( isRunning )
 			{
-				manager.RunWaitCallbacks( TimeSpan.FromSeconds( 5 ) );
+				try {
+					manager.RunWaitCallbacks( TimeSpan.FromSeconds( 5 ) );
+				} catch (InvalidOperationException)  {
+					// There is probably a bug in SteamKit2 causing this exception sometimes when connecting
+					// TODO: Log
+				} catch ( Exception e){
+					// TODO: log
+					Console.WriteLine ("Bot error: {0]", e.Message); 
+				}
 			}
 		}
 
@@ -167,30 +175,7 @@ namespace moisturebot
 				
 		}
 
-		public void JoinChat(ulong id) {
-			steamFriends.JoinChat (new SteamID(id));
-		}
 
-		public void SendChatRoomMessage(String message, ulong chatRoomId) {
-			steamFriends.SendChatRoomMessage (
-				new SteamID (chatRoomId), 
-				EChatEntryType.ChatMsg,
-				message
-			);
-		}
-
-		public void SendChatMessage(String message, ulong userId) {
-			steamFriends.SendChatMessage (
-				new SteamID (userId), 
-				EChatEntryType.ChatMsg,
-				message
-			);
-		}
-
-		public string getUserName (ulong id)
-		{
-			return steamFriends.GetFriendPersonaName (new SteamID(id));
-		}
 
 		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
 		{
@@ -243,6 +228,35 @@ namespace moisturebot
 		{
 			Console.WriteLine( "Logged off of Steam: {0}", callback.Result );
 		}
+
+		#region PUBLIC
+
+		public void JoinChat(ulong id) {
+			steamFriends.JoinChat (new SteamID(id));
+		}
+
+		public void SendChatRoomMessage(String message, ulong chatRoomId) {
+			steamFriends.SendChatRoomMessage (
+				new SteamID (chatRoomId), 
+				EChatEntryType.ChatMsg,
+				message
+			);
+		}
+
+		public void SendChatMessage(String message, ulong userId) {
+			steamFriends.SendChatMessage (
+				new SteamID (userId), 
+				EChatEntryType.ChatMsg,
+				message
+			);
+		}
+
+		public string getUserName (ulong id)
+		{
+			return steamFriends.GetFriendPersonaName (new SteamID(id));
+		}
+
+		#endregion
 
 	}
 }

@@ -37,8 +37,7 @@ namespace moisturebot.commands
 			}
 
 			bot.Disconnect ();
-			// TODO: remove sleep, wait for disconnect
-			Thread.Sleep (1000);
+
 			return true;
 		}
 	}
