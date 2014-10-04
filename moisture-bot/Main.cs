@@ -20,42 +20,15 @@ namespace moisturebot
 
 		public static MoistureBot Bot { get; set; }
 
-		public static EventWaitHandle _waitHandle = new AutoResetEvent (false);
+		public static EventWaitHandle _connectionWaitHandle = new AutoResetEvent (false);
 
 		static void Run(string[] args)
 		{
-		
-//			string user = null;
-//			string pass = null;
-			// TODO: remove default values
-			string user = "Moisturebot";
-			string pass = "JEApileet";
-			ulong chatId = 103582791429523393;
+			LaunchOptions options = new LaunchOptions ();
+			options.Parse (args);
 
-			bool showHelp = false;
-
-			var p = new OptionSet () {
-				{ "h|help", "show this message and exit", 
-					s => showHelp = s != null },
-				{ "u=|user=", "Steam username", 
-					s => user = s },
-				{ "p=|password=", "Steam password", 
-					s => pass = s }
-			};
-
-			List<string> extra;
-			try {
-				extra = p.Parse (args);
-			}
-			catch (OptionException e) {
-				Console.Write ("moisture-bot: ");
-				Console.WriteLine (e.Message);
-				Console.WriteLine ("Try moisture-bot --help' for more information.");
-				return;
-			}
-
-			if (showHelp) {
-				ShowHelp (p);
+			if (options.ShowHelp) {
+				options.WriteHelp ();
 				return;
 			}
 
@@ -66,79 +39,77 @@ namespace moisturebot
 			AddinManager.Registry.Update ();
 
 			Bot = new MoistureBot ();
-
-			if (user == null) 
-			{
-				Console.Write ("username: ");
-				user = Console.ReadLine ();
-			}
-			if (pass == null) 
-			{
-				Console.Write ("password: ");
-				pass = ConsoleUtils.ReadPassword ();
-			}
-
-			Bot.User = user;
-			Bot.Pass = pass;
-			Bot.ChatId = chatId;
+			Bot.ConnectionAttemptFinished += new MoistureBot.ConnectedHandler (BotConnected);
 
 			foreach (IGroupChatAddin addin in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
 			{
 				addin.Initialize(Bot);
 			}
 
-			Bot.connect();
+			if (options.AutoConnect) {
 
-			Bot.Connected += new MoistureBot.ConnectedHandler (BotConnected);
 
-			var botTask = Task.Factory.StartNew(() => { Bot.start(); });
+				if (String.IsNullOrEmpty (options.User) || String.IsNullOrEmpty (options.Pass)) {
+					Console.WriteLine ("Autoconnect failed. Username and/or password not set.");
+				} else {
+					Bot.Connect (options.User, options.Pass);
+					BlockUntilConnected ();
+				}
 
-			BlockConsoleThread ();
+			}
+
+			HandleConsoleInput ();
+
+		}
+
+		public static void HandleConsoleInput() {
 
 			Console.WriteLine ("Type 'help' for a list of commands.");
-			Console.Write ("enter command:");
+
 			string line;
-			while ((line = Console.ReadLine ()) != null)
+			while (true)
 			{
 
-				if (line.Equals ("exit") || line.Equals ("quit")) {
-					Bot.stop ();
-					Bot.disconnect ();
-					return;
-				} else if (line.Equals ("join chat")) {
+				line = Console.ReadLine ();
+
+				if (line == null || line.Equals ("/exit") || line.Equals ("/quit")) {
+					Bot.Disconnect ();
+					break;
+				} else if (line.Equals ("/connect")) {
+
+					string user, pass;
+
+					Console.Write ("username:");
+					user = Console.ReadLine ();
+					Console.Write ("password:");
+					pass = ConsoleUtils.ReadPassword ();
+
+					Bot.Connect(user, pass);
+					BlockUntilConnected ();
+
+				} else if (line.Equals ("/join")) {
 					Console.WriteLine( "Joining chat room '{0}'...", 103582791429523393);
 					Bot.JoinChatRoom (103582791429523393);
 				} else {
 					Console.WriteLine("Invalid command!");
 					Console.WriteLine("Type 'help' for a list of commands.");
-					// TODO print commands
 				}
+
 			}
 
 		}
 
-		public static void BlockConsoleThread() {
-			_waitHandle.WaitOne ();
+		static void BlockUntilConnected() {
+			_connectionWaitHandle.WaitOne ();
 		}
 
-		public static void ProceedConsoleThread() {
-			_waitHandle.Set ();
+		static void ProceedAfterConnected() {
+			_connectionWaitHandle.Set ();
 		}
 
-		public static void BotConnected(object sender)
+		static void BotConnected(object sender)
 		{
-			Console.WriteLine( "Successfully logged on!" );
-			ProceedConsoleThread ();
-		}
-
-		static void ShowHelp(OptionSet p) 
-		{
-			string executableName = Path.GetFileName(Assembly.GetExecutingAssembly().CodeBase);
-			Console.WriteLine("Usage: moisture-bot [OPTIONS]+", executableName);
-			Console.WriteLine ();
-			Console.WriteLine ("Options:");
-			p.WriteOptionDescriptions (Console.Out);
-
+			ProceedAfterConnected ();
 		}
 
 		static int Main( string[] args )
@@ -169,7 +140,7 @@ namespace moisturebot
 
 		static void OnLoad (object s, AddinEventArgs args)
 		{
-//			Console.WriteLine ("Add-in loaded: " + args.AddinId);
+			Console.WriteLine ("Add-in loaded: " + args.AddinId);
 		}
 			
 	}

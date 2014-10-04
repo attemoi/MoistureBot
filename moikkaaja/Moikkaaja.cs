@@ -28,10 +28,10 @@ namespace moisturebot
 			string msg = Array.Find(greetings, t => t.Equals(strippedMsg, StringComparison.InvariantCultureIgnoreCase));
 
 			if (msg != null && !msg.Equals("") ){
-				Console.WriteLine ("Greeting received, replying");
+				Console.WriteLine ("moikkaaja: Greeting received, replying");
 				msg += " " + message.Sender + "!";
 
-				Bot.SendChatRoomMessage (msg);
+				Bot.SendChatRoomMessage (msg, message.ChatRoomId);
 			}
 		}
 	}

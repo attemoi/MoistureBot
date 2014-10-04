@@ -4,6 +4,7 @@ using System.Text;
 using SteamKit2;
 using System.Text.RegularExpressions;
 using Mono.Addins;
+using System.Threading;
 
 namespace moisturebot
 {
@@ -20,14 +21,13 @@ namespace moisturebot
 		private bool isRunning;
 
 		// Bot properties
-		public string User { get; set; }
-		public string Pass { get; set; }
-		public ulong ChatId { get; set; }
+		private string user;
+		private string pass;
 
 		public delegate void ConnectedHandler(object sender);
 		public delegate void ChatEnterHandler(object sender);
 
-		public event ConnectedHandler Connected;
+		public event ConnectedHandler ConnectionAttemptFinished;
 		public event ChatEnterHandler ChatEnter;
 
 		public MoistureBot ()
@@ -46,26 +46,47 @@ namespace moisturebot
 			// these are registered upon creation to a callback manager, which will then route the callbacks
 			// to the functions specified
 			new Callback<SteamClient.ConnectedCallback>( ConnectedCallback, manager );
-			new Callback<SteamClient.DisconnectedCallback>( OnDisconnected, manager );
+			new Callback<SteamClient.DisconnectedCallback>( DisconnectedCallback, manager );
 
 			// User
-			new Callback<SteamUser.LoggedOnCallback>( OnLoggedOn, manager );
-			new Callback<SteamUser.LoggedOffCallback>( OnLoggedOff, manager );
-			new Callback<SteamUser.AccountInfoCallback>( OnAccountInfo, manager );
+			new Callback<SteamUser.LoggedOnCallback>( LoggedOnCallback, manager );
+			new Callback<SteamUser.LoggedOffCallback>( LoggedOffCallback, manager );
+			new Callback<SteamUser.AccountInfoCallback>( AccountInfoCallback, manager );
 
 			// Friends
 			new Callback<SteamFriends.ChatEnterCallback> ( ChatEnterCallback, manager);
-			new Callback<SteamFriends.ChatMsgCallback> ( OnChatMsg, manager);
+			new Callback<SteamFriends.ChatMsgCallback> ( ChatMsgCallback, manager);
 
 		}
 
-		public void connect()
+		public void Connect(string username, string password)
 		{
 			Console.WriteLine( "Connecting to Steam..." );
+			this.user = username;
+			this.pass = password;
 			steamClient.Connect();
+			Start ();
 		}
 
-		public void start ()
+		private void Start ()
+		{
+			Thread t = new Thread( CallbackWaitThread );
+
+			try
+			{
+				t.Start();
+			}
+			catch (ThreadStateException e)
+			{
+				Console.WriteLine(e);  // Display text of exception
+			}
+			catch (ThreadInterruptedException e)
+			{
+				Console.WriteLine(e);  // This exception means that the thread
+			}
+		}
+
+		private void CallbackWaitThread()
 		{
 			isRunning = true;
 			while ( isRunning )
@@ -74,14 +95,8 @@ namespace moisturebot
 			}
 		}
 
-		public void stop ()
+		public void Disconnect()
 		{
-			isRunning = false;
-		}
-
-		public void disconnect()
-		{
-			isRunning = false;
 			steamClient.Disconnect();
 		}
 
@@ -91,22 +106,21 @@ namespace moisturebot
 			if ( callback.Result != EResult.OK )
 			{
 				Console.WriteLine( "Unable to connect to Steam: {0}", callback.Result );
-
-				isRunning = false;
+				OnConnectionAttemptFinished (this);
 				return;
 			}
 
 			Console.WriteLine ("Connected to Steam!");
-			Console.WriteLine( "Logging in '{0}'...", User );
+			Console.WriteLine( "Logging in '{0}'...", user );
 
 			steamUser.LogOn( new SteamUser.LogOnDetails
 			{
-				Username = User,
-				Password = Pass,
+					Username = user,
+					Password = pass,
 			} );
 		}
 
-		private void OnAccountInfo( SteamUser.AccountInfoCallback callback )
+		private void AccountInfoCallback( SteamUser.AccountInfoCallback callback )
 		{
 			// before being able to interact with friends, you must wait for the account info callback
 			// this callback is posted shortly after a successful logon
@@ -115,15 +129,15 @@ namespace moisturebot
 			steamFriends.SetPersonaState( EPersonaState.Online );
 		}
 
-		private void OnDisconnected( SteamClient.DisconnectedCallback callback )
+		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
 			Console.WriteLine( "Disconnected from Steam" );
-
-			isRunning = false;
+			OnConnectionAttemptFinished (this);
 		}
 
-		private void OnLoggedOn( SteamUser.LoggedOnCallback callback )
+		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
 		{
+
 			if ( callback.Result != EResult.OK )
 			{
 				if ( callback.Result == EResult.AccountLogonDenied )
@@ -134,17 +148,15 @@ namespace moisturebot
 
 					Console.WriteLine( "Unable to logon to Steam: This account is SteamGuard protected." );
 
-					isRunning = false;
 					return;
 				}
-
+					
 				Console.WriteLine( "Unable to logon to Steam: {0} / {1}", callback.Result, callback.ExtendedResult );
-
-				isRunning = false;
 				return;
 			}
-
-			OnConnected (this);
+		
+			Console.WriteLine( "Successfully logged on!" );
+			OnConnectionAttemptFinished (this);
 
 		}
 
@@ -158,15 +170,15 @@ namespace moisturebot
 			steamFriends.JoinChat (new SteamID(chatRoomId));
 		}
 
-		public void SendChatRoomMessage(String message) {
+		public void SendChatRoomMessage(String message, ulong chatId) {
 			steamFriends.SendChatRoomMessage (
-				new SteamID (ChatId), 
+				new SteamID (chatId), 
 				EChatEntryType.ChatMsg,
 				message
 			);
 		}
 
-		private void OnChatMsg( SteamFriends.ChatMsgCallback callback )
+		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
 		{
 
 			string message = callback.Message;
@@ -174,32 +186,28 @@ namespace moisturebot
 
 			foreach (IGroupChatAddin cmd in AddinManager.GetExtensionObjects<IGroupChatAddin> ())
 			{
-				cmd.MessageReceived(new ChatMessage(message, sender));
+				cmd.MessageReceived(new ChatMessage(message, sender, callback.ChatRoomID.ConvertToUInt64()));
 			}
 
 		}
 
-		private void OnLoggedOff( SteamUser.LoggedOffCallback callback )
+		private void LoggedOffCallback( SteamUser.LoggedOffCallback callback )
 		{
 			Console.WriteLine( "Logged off of Steam: {0}", callback.Result );
 		}
 			
-		protected void OnConnected (object sender)
+		protected void OnConnectionAttemptFinished (object sender)
 		{
-			// Check if there are any Subscribers
-			if (Connected != null)
+			if (ConnectionAttemptFinished != null)
 			{
-				// Call the Event
-				Connected (this);
+				ConnectionAttemptFinished (this);
 			}
 		}
 
 		protected void OnChatEnter (object sender)
 		{
-			// Check if there are any Subscribers
 			if (ChatEnter != null)
 			{
-				// Call the Event
 				ChatEnter (this);
 			}
 		}

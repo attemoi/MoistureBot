@@ -47,6 +47,8 @@
     <Compile Include="MoistureBot.cs" />
     <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="LaunchOptions.cs" />
+    <Compile Include="IOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
