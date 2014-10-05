@@ -40,6 +40,9 @@ namespace moisturebot
 			case "status":
 				command = new StatusCommand ();
 				break;
+			case "favorites":
+				command = new FavoritesCommand ();
+				break;
 			}
 
 			if (command != null)

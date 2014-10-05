@@ -8,17 +8,20 @@ namespace moisturebot
 		void CreateConfig();
 		bool ConfigExists();
 
-		Dictionary<string, ulong> GetFavoriteFriends();
+		Dictionary<string, ulong> GetFavoriteUsers();
 		Dictionary<string, ulong> GetFavoriteChatRooms();
 
-		void AddFavoriteFriend (string key, ulong userId);
+		void AddFavoriteUser (string key, ulong userId);
 		void AddFavoriteChatRoom (string key, ulong chatRoomId);
 
-		void RemoveFavoriteFriend (string key);
+		void RemoveFavoriteUser (string key);
+		void RemoveAllFavoriteUsers ();
+
 		void RemoveFavoriteChatRoom (string key);
+		void RemoveAllFavoriteChatRooms ();
 
 		void SetValue (string section, string key, string value);
-		void GetValue (string section, string key);
+		string GetValue (string section, string key);
 
 	}
 }

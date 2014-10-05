@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Mono.Options;
 using System.Threading;
 using moisturebot.commands;
+using moisturebot.config;
 
 [assembly:AddinRoot ("moisturebot", "1.0")]
 [assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
@@ -31,6 +32,10 @@ namespace moisturebot
 			if (launchCmd.Execute (Bot)) {
 				return;
 			}
+				
+			var config = new MoistureBotConfig ();
+			if (!config.ConfigExists())
+				config.CreateConfig ();
 
 			Console.WriteLine ();
 			Console.WriteLine ("Launching Moisturebot...");

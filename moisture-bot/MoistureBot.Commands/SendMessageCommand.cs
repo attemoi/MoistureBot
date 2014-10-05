@@ -20,18 +20,14 @@ namespace moisturebot.commands
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					h => help = h != null },
-				{ "u|user", "send message to user", 
-					u => user = u != null },
-				{ "r|room", "send message to room", 
-					r => room = r != null }
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"send message to user or room", 
-				"msg -user <user_id> <message>" + Environment.NewLine +
-				"  msg -room <room_id> <message>",
+				"msg user <user_id> <message>" + Environment.NewLine +
+				"  msg room <room_id> <message>",
 				options);
 		}
 
@@ -40,7 +36,7 @@ namespace moisturebot.commands
 		
 			List<string> extra = options.Parse(Args);
 
-			if (help || extra.Count < 2 || (!user && !room)) {
+			if (help || extra.Count < 3) {
 				WriteHelp ();
 				return false;
 			}
@@ -50,9 +46,10 @@ namespace moisturebot.commands
 				return false;
 			}
 
-			string chatId = extra.ElementAt (0);
+			string target = extra.First ();
+			string chatId = extra.ElementAt (1);
 			// get rest
-			string message = string.Join (" ", extra.Skip (1)).Trim ('\"');
+			string message = string.Join (" ", extra.Skip (2)).Trim ('\"');
 
 			ulong id;
 			try {
@@ -62,17 +59,21 @@ namespace moisturebot.commands
 				return false;
 			}
 
-			if (user) {
+			switch (target) {
+			case "user":
 				Console.WriteLine ("Sending chat message to friend '{0}'...", id);
 				bot.SendChatMessage (message, id);
-			}
-
-			if (room) {
+				return false;
+			case "room":
 				Console.WriteLine ("Sending chat message to room '{0}'...", id);
 				bot.SendChatRoomMessage (message, id);
+				return false;
+			default:
+				WriteHelp ();
+				return false;
 			}
 
-			return false;
+
 		}
 
 	}

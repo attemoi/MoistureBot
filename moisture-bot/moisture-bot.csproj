@@ -51,20 +51,20 @@
     <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="ConsoleUtils.cs" />
     <Compile Include="IOptions.cs" />
-    <Compile Include="CommandParser.cs" />
     <Compile Include="MoistureBot.Commands\ExitCommand.cs" />
     <Compile Include="MoistureBot.Commands\ConnectCommand.cs" />
     <Compile Include="MoistureBot.Commands\JoinChatCommand.cs" />
     <Compile Include="MoistureBot.Commands\HelpCommand.cs" />
     <Compile Include="MoistureBot.Commands\DisconnectCommand.cs" />
     <Compile Include="MoistureBot.Commands\SendMessageCommand.cs" />
-    <Compile Include="ICommand.cs" />
     <Compile Include="MoistureBot.Commands\StatusCommand.cs" />
     <Compile Include="MoistureBot.Commands\LaunchCommand.cs" />
     <Compile Include="MoistureBot.Commands\FavoritesCommand.cs" />
     <Compile Include="MoistureBot.Config\ConfigSections.cs" />
-    <Compile Include="MoistureBot.Config\BotConfig.cs" />
     <Compile Include="MoistureBot.Config\IConfig.cs" />
+    <Compile Include="MoistureBot.Commands\ICommand.cs" />
+    <Compile Include="CommandParser.cs" />
+    <Compile Include="MoistureBot.Config\MoistureBotConfig.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
