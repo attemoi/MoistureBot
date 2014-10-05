@@ -62,12 +62,13 @@
     <Compile Include="MoistureBot.Commands\StatusCommand.cs" />
     <Compile Include="MoistureBot.Commands\LaunchCommand.cs" />
     <Compile Include="MoistureBot.Commands\FavoritesCommand.cs" />
-    <Compile Include="BotConfig.cs" />
+    <Compile Include="MoistureBot.Config\ConfigSections.cs" />
+    <Compile Include="MoistureBot.Config\BotConfig.cs" />
+    <Compile Include="MoistureBot.Config\IConfig.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\moisture-bot-lib\moisture-bot-lib.csproj">
@@ -77,5 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MoistureBot.Commands\" />
+    <Folder Include="MoistureBot.Config\" />
   </ItemGroup>
 </Project>

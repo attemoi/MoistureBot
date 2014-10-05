@@ -13,9 +13,7 @@ namespace moisturebot
 
 	public class MoistureBot : IMoistureBot
 	{
-
-		private static readonly object iniLock = new object();
-
+	
 		private SteamClient steamClient;
 		private CallbackManager manager;
 
@@ -304,17 +302,6 @@ namespace moisturebot
 				return;
 
 			_disconnectWaitHandle.WaitOne();
-		}
-			
-		public Dictionary<string, string> GetFavoriteFriends ()
-		{
-			var parser = new IniParser.Parser.IniDataParser();
-			lock(iniLock)
-			{
-				IniData config = parser.Parse("moisture-bot.ini");
-			}
-
-			return null;
 		}
 
 		#endregion
