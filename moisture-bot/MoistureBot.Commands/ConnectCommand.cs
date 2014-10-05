@@ -1,6 +1,7 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace moisturebot.commands
 {
@@ -12,40 +13,44 @@ namespace moisturebot.commands
 		private OptionSet options;
 
 		private bool help;
-		private string user;
-		private string pass;
 
 		public ConnectCommand() {
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					h => help = h != null },
-				{ "u=|username=", "login username" ,
-					u => user = u},
-				{ "p=|password=", "login password" ,
-					p => pass = p}
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"connect and sign in to Steam", 
-				"connect [OPTIONS]+",
+				"connect [<username> [<password>]]",
 				options);
 		}
 
 		public bool Execute (IMoistureBot bot)
 		{
 		
-			options.Parse (Args);
+			List<string> extra = options.Parse (Args);
 
-			if (help) {
+			if (help || extra.Count > 2) {
 				WriteHelp ();
 				return false;
 			}
 
-			if (String.IsNullOrEmpty (user) || String.IsNullOrEmpty (pass)) {
+			string user = null;
+			string pass = null;
+
+			if (extra.Count > 0)
+				user = extra.ElementAt(0);
+			if (extra.Count > 1)
+				pass = extra.ElementAt(1);
+
+			if (String.IsNullOrEmpty (user)) {
 				Console.Write ("username:");
 				user = Console.ReadLine ();
+			}
+			if (String.IsNullOrEmpty (pass)) {
 				Console.Write ("password:");
 				pass = ConsoleUtils.ReadPassword ();
 			}

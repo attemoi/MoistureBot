@@ -69,6 +69,12 @@ namespace moisturebot
 		/// </summary>
 		void BlockUntilDisconnected();
 
+		/// <summary>
+		/// Gets the favorite friends as dictionary containing name and id.
+		/// </summary>
+		/// <returns>The favorite friends.</returns>
+		Dictionary<string, string> GetFavoriteFriends ();
+
 	}
 }
 

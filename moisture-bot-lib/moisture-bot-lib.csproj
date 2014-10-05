@@ -45,6 +45,7 @@
     <Compile Include="ChatMessage.cs" />
     <Compile Include="ExtensionPoints\IChatFriendAddin.cs" />
     <Compile Include="ExtensionPoints\IChatRoomAddin.cs" />
+    <Compile Include="Favorite.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
