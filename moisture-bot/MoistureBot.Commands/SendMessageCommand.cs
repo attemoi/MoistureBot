@@ -69,7 +69,7 @@ namespace moisturebot.commands
 
 			if (room) {
 				Console.WriteLine ("Sending chat message to room '{0}'...", id);
-				bot.SendChatMessage (message, id);
+				bot.SendChatRoomMessage (message, id);
 			}
 
 			return false;
