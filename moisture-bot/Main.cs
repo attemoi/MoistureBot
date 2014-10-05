@@ -23,11 +23,12 @@ namespace moisturebot
 
 		static void Run(string[] args)
 		{
-			LaunchOptions options = new LaunchOptions ();
-			options.Parse (args);
 
-			if (options.ShowHelp) {
-				options.WriteHelp ();
+			Bot = new MoistureBot ();
+
+			var launchCmd = new LaunchCommand ();
+			launchCmd.Args = args;
+			if (launchCmd.Execute (Bot)) {
 				return;
 			}
 
@@ -40,20 +41,7 @@ namespace moisturebot
 			AddinManager.Initialize (".", ".", "./addins");
 			AddinManager.Registry.Update ();
 
-			Bot = new MoistureBot ();
-
 			InitAddins ();
-
-			if (options.AutoConnect) {
-				if (String.IsNullOrEmpty (options.User) || String.IsNullOrEmpty (options.Pass)) {
-					Console.WriteLine ("Autoconnect failed. Username and/or password not set.");
-					return;
-				} else {
-					Bot.Connect (options.User, options.Pass);
-					Bot.BlockUntilConnected ();
-				}
-
-			}
 
 			HandleConsoleInput ();
 

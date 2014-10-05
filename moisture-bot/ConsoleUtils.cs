@@ -74,7 +74,7 @@ namespace moisturebot
 		/// <returns>the string the user typed in </returns>
 		public static string ReadPassword()
 		{
-			return ReadPassword('*');
+			return ReadPassword('\0');
 		}
 	}
 }

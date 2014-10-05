@@ -40,6 +40,9 @@
     <Reference Include="SteamKit2">
       <HintPath>..\packages\SteamKit2.1.5.1\lib\net40\SteamKit2.dll</HintPath>
     </Reference>
+    <Reference Include="INIFileParser">
+      <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -47,7 +50,6 @@
     <Compile Include="MoistureBot.cs" />
     <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="ConsoleUtils.cs" />
-    <Compile Include="LaunchOptions.cs" />
     <Compile Include="IOptions.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="MoistureBot.Commands\ExitCommand.cs" />
@@ -58,10 +60,12 @@
     <Compile Include="MoistureBot.Commands\SendMessageCommand.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="MoistureBot.Commands\StatusCommand.cs" />
+    <Compile Include="MoistureBot.Commands\LaunchCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\moisture-bot-lib\moisture-bot-lib.csproj">
