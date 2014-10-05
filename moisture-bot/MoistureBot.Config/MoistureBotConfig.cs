@@ -167,6 +167,24 @@ namespace moisturebot.config
 				writeData(data, parser);
 		}
 
+		public string GetFavoriteUserId (string key)
+		{
+			try {
+				return readData (getParser ()) [ConfigSections.FAVORITE_USERS][key];
+			} catch {
+				return null;
+			}
+		}
+
+		public string GetFavoriteChatRoomId (string key)
+		{
+			try {
+				return readData (getParser ()) [ConfigSections.FAVORITE_ROOMS][key];
+			} catch {
+				return null;
+			}
+		}
+
 		#endregion
 
 	}

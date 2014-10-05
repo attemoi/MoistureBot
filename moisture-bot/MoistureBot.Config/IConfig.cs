@@ -9,7 +9,10 @@ namespace moisturebot
 		bool ConfigExists();
 
 		Dictionary<string, ulong> GetFavoriteUsers();
+		string GetFavoriteUserId(string key);
+
 		Dictionary<string, ulong> GetFavoriteChatRooms();
+		string GetFavoriteChatRoomId(string key);
 
 		void AddFavoriteUser (string key, ulong userId);
 		void AddFavoriteChatRoom (string key, ulong chatRoomId);

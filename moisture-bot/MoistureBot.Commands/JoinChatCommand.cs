@@ -2,6 +2,7 @@
 using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
+using moisturebot.config;
 
 namespace moisturebot.commands
 {
@@ -11,20 +12,24 @@ namespace moisturebot.commands
 		public string[] Args { get; set; }
 
 		public Boolean help;
+		public Boolean favorites;
 
 		private OptionSet options;
 
 		public JoinChatCommand() {
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
-					h => help = h != null }
+					h => help = h != null },
+				{ "f|favorites", "join all favorite rooms", 
+					h => favorites = h != null }
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"join a chat", 
-				"join <chat_id>",
+				"join chat rooms", 
+				"join <chat_id|favorite_key>" + Environment.NewLine +
+				"  join -favorites",
 				options);
 		}
 
@@ -35,29 +40,55 @@ namespace moisturebot.commands
 
 			string chatId = null;
 
-			if (help || extra.Count != 1) {
+			if (help) {
 				WriteHelp ();
 				return false;
-			} else {
-				chatId = extra.First ();
-			} 
+			}
 
 			if (!bot.IsConnected ()) {
 				Console.WriteLine ("Not connected to Steam.");
 				return false;
 			}
 
-			ulong id = 0;
-			try {
-				id = UInt64.Parse(chatId);
-			} catch {
-				Console.WriteLine ("Invalid chat id!");
+			if (favorites) {
+				foreach(KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms() ) {
+					Console.WriteLine ("Joining chat room '{0}' [{1}]", fav.Key, fav.Value );
+					bot.JoinChat (fav.Value);
+				}
 				return false;
 			}
 
-			Console.WriteLine( "Joining chat room '{0}'...", chatId);
-			bot.JoinChat(id);
+			if (extra.Count == 0) {
+				WriteHelp ();
+				return false;
+			} 
 
+			chatId = extra.First ();
+
+			var favId = new MoistureBotConfig ().GetFavoriteChatRoomId (chatId);
+			if (favId != null) {
+				ulong id;
+				try {
+					id = UInt64.Parse(favId);
+				} catch {
+					Console.WriteLine("Failed to join favorite room: Invalid id.");
+					return false;
+				}
+				bot.JoinChat (id);
+				Console.WriteLine ("Joining favorite chat room '{0}' [{1}]", chatId, favId );
+			} else {
+				ulong id;
+				try {
+					id = UInt64.Parse(chatId);
+				} catch {
+					Console.WriteLine ("Failed to join room: Invalid id.");
+					return false;
+				}
+
+				Console.WriteLine( "Joining chat room '{0}'...", chatId);
+				bot.JoinChat(id);
+			}
+				
 			return false;
 		}
 
