@@ -32,9 +32,9 @@ namespace moisturebot.commands
 			ConsoleUtils.WriteHelp(
 				"manage favorite rooms and users", 
 				"favorites -list" + Environment.NewLine +
-				"  favorites add <user|room> <key> <id>" + Environment.NewLine +
-				"  favorites remove <user|room> <key>" + Environment.NewLine +
-				"  favorites remove-all <users|rooms>",
+				"  favorites add user/room <key> <id>" + Environment.NewLine +
+				"  favorites remove user/room <key>" + Environment.NewLine +
+				"  favorites remove-all users/rooms",
 				options);
 		}
 
@@ -164,7 +164,7 @@ namespace moisturebot.commands
 			}
 
 			foreach(KeyValuePair<string, ulong> pair in dict){
-				Console.WriteLine ("  {0}: {1}", pair.Key, pair.Value);
+				Console.WriteLine ("  {0} [{1}]", pair.Key, pair.Value);
 			}
 		}
 
