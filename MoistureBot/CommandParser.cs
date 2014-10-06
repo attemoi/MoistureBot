@@ -6,8 +6,13 @@ namespace MoistureBot
 {
 	public static class CommandParser
 	{
+
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 	
 		public static ICommand Parse(string commandString) {
+
+			log.Debug("Parsing command '" + commandString + "'");
 
 			// Parse your string and create Command object
 			var commandParts = commandString.Split(' ').ToList();
@@ -45,8 +50,12 @@ namespace MoistureBot
 				break;
 			}
 
-			if (command != null)
+			if (command != null) {
 				command.Args = args;
+			} else {
+				log.Debug ("Failed to parse command: Command not found");
+			}
+				
 
 			return command;
 

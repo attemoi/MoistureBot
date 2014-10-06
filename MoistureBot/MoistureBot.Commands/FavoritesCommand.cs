@@ -6,10 +6,11 @@ using MoistureBot.Config;
 
 namespace MoistureBot.Commands
 {
-	// TODO: improve error handling
-
 	public class FavoritesCommand : ICommand
 	{
+
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public string[] Args { get; set; }
 
@@ -40,6 +41,8 @@ namespace MoistureBot.Commands
 
 		public bool Execute (IMoistureBot bot)
 		{
+
+			log.Debug ("Executing command: favorites");
 		
 			List<string> extra = options.Parse (Args);
 
@@ -49,6 +52,7 @@ namespace MoistureBot.Commands
 			}
 
 			if (list) {
+
 				var favUsers = new MoistureBotConfig ().GetFavoriteUsers ();
 				var favRooms = new MoistureBotConfig ().GetFavoriteChatRooms ();
 
@@ -67,7 +71,7 @@ namespace MoistureBot.Commands
 				return false;
 			}
 			if (extra.Count < 2) {
-				Console.WriteLine("Invalid number of parameters. Type 'favorites -h' for help'");
+				log.Info ("Invalid number of parameters. Type 'favorites -h' for help'");
 				return false;
 			}
 
@@ -78,28 +82,37 @@ namespace MoistureBot.Commands
 			case "add":
 				try {
 					if (extra.Count != 4) {
-						Console.WriteLine ("Invalid number of parameters. Type 'favorites -h' for help'");
+						log.Info ("Invalid number of parameters. Type 'favorites -h' for help'");
 						return false;
 					}
 					var key = extra.ElementAt (2);
 					var value = extra.ElementAt (3);
 					switch (type) {
 					case "user":
-						new MoistureBotConfig ().AddFavoriteUser (key, UInt64.Parse (value));
-						Console.WriteLine("Added user '{0}' to favorites", key);
+						try {
+							new MoistureBotConfig ().AddFavoriteUser (key, UInt64.Parse (value));
+							log.Info ("Added user '" + key + "' to favorites");
+						} catch (Exception e){
+							log.Error ("Failed to add favorite user", e);
+							Console.WriteLine ("Error while adding favorite. See log files for more details.");
+						}
 						break;
 					case "room":
-						new MoistureBotConfig ().AddFavoriteChatRoom (key, UInt64.Parse (value));
-						Console.WriteLine("Added room '{0}' to favorites", key);
+						try {
+							new MoistureBotConfig ().AddFavoriteChatRoom (key, UInt64.Parse (value));
+							log.Info("Added room '" + key + "' to favorites");
+						} catch (Exception e){
+							log.Error ("Failed to add favorite room", e);
+							Console.WriteLine ("Error while adding favorite. See log files for more details.");
+						}
 						break;
 					default:
-						Console.WriteLine ("Failed to add favorite. Check parameters and try again..");
+						log.Info ("Failed to add favorite. Check parameters and try again.");
 						break;
 					}
 				} catch (Exception e){
-					//TODO: log exception
-					Console.WriteLine (e.StackTrace);
-					Console.WriteLine ("Failed to add favorite. Check parameters and try again.");
+					log.Error ("Failed to add favorite", e);
+					Console.WriteLine ("Error while adding favorite. See log files for more details.");
 				}
 			
 				break;
@@ -112,20 +125,30 @@ namespace MoistureBot.Commands
 					var key = extra.ElementAt (2);
 					switch (type) {
 					case "user":
-						new MoistureBotConfig ().RemoveFavoriteUser (key);
-						Console.WriteLine("Removed user '{0}' from favorites", key);
+						try {
+							new MoistureBotConfig ().RemoveFavoriteUser (key);
+							log.Info("Removed user '" + key + "' from favorites");
+						} catch (Exception e){
+							log.Error ("Failed to remove favorite user", e);
+							Console.WriteLine ("Error while adding favorite. See log files for more details.");
+						}
 						break;
 					case "room":
-						new MoistureBotConfig ().RemoveFavoriteChatRoom (key);
-						Console.WriteLine("Removed room '{0}' from favorites", key);
+						try {
+							new MoistureBotConfig ().RemoveFavoriteChatRoom (key);
+							log.Info("Removed room '" + key + "' from favorites");
+						} catch (Exception e){
+							log.Error ("Failed to remove favorite room", e);
+							Console.WriteLine ("Error while adding favorite. See log files for more details.");
+						}
 						break;
 					default:
-						Console.WriteLine ("Failed to remove favorite. Check parameters and try again.");
+						log.Info ("Failed to remove favorite. Check parameters and try again.");
 						break;
 					}
-				} catch {
-					//TODO: log exception
-					Console.WriteLine ("Failed to remove favorite. Check parameters and try again.");
+				} catch (Exception e){
+					log.Error ("Failed to add favorite", e);
+					Console.WriteLine ("Error while removing favorite. See log files for more details.");
 				}
 				break;
 			case "remove-all":
@@ -136,20 +159,30 @@ namespace MoistureBot.Commands
 					}
 					switch (type) {
 					case "users":
-						new MoistureBotConfig ().RemoveAllFavoriteUsers();
-						Console.WriteLine("Favorite users succesfully removed.");
+						try {
+							new MoistureBotConfig ().RemoveAllFavoriteUsers();
+							Console.WriteLine("Favorite users succesfully removed.");
+						} catch (Exception e){
+							log.Error ("Error while removing favorite users", e);
+							Console.WriteLine ("Error while adding favorite. See log files for more details.");
+						}
 						break;
 					case "rooms":
-						new MoistureBotConfig ().RemoveAllFavoriteChatRooms();
-						Console.WriteLine("Favorite rooms succesfully removed.");
+						try {
+							new MoistureBotConfig ().RemoveAllFavoriteChatRooms();
+							Console.WriteLine("Favorite rooms succesfully removed.");
+						} catch (Exception e){
+							log.Error ("Error while removing favorite rooms", e);
+							Console.WriteLine ("Error while adding favorite. See log files for more details.");
+						}
 						break;
 					default:
-						Console.WriteLine ("Failed to remove favorites. Check parameters and try again.");
+						log.Info ("Failed to remove favorites. Check parameters and try again.");
 						break;
 					}
-				} catch {
-					//TODO: log exception
-					Console.WriteLine ("Failed to remove favorites. Check parameters and try again.");
+				} catch (Exception e){
+					log.Error ("Failed to remove all favorites", e);
+					Console.WriteLine ("Error while removing favorites. See log files for more details.");
 				}
 				break;
 			}

@@ -9,6 +9,9 @@ namespace MoistureBot.Commands
 	public class JoinChatCommand : ICommand
 	{
 
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		public Boolean help;
@@ -36,6 +39,8 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 
+			log.Debug ("Executing command: join");
+
 			List<string> extra = options.Parse(Args);
 
 			string chatId = null;
@@ -46,13 +51,13 @@ namespace MoistureBot.Commands
 			}
 
 			if (!bot.IsConnected ()) {
-				Console.WriteLine ("Not connected to Steam.");
+				log.Info ("Not connected to Steam.");
 				return false;
 			}
 
 			if (favorites) {
 				foreach(KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms() ) {
-					Console.WriteLine ("Joining chat room '{0}' [{1}]", fav.Key, fav.Value );
+					log.Info ("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
 					bot.JoinChat (fav.Value);
 				}
 				return false;
@@ -71,21 +76,21 @@ namespace MoistureBot.Commands
 				try {
 					id = UInt64.Parse(favId);
 				} catch {
-					Console.WriteLine("Failed to join favorite room: Invalid id.");
+					log.Info("Failed to join favorite room: Invalid id.");
 					return false;
 				}
 				bot.JoinChat (id);
-				Console.WriteLine ("Joining favorite chat room '{0}' [{1}]", chatId, favId );
+				log.Info("Joining favorite chat room '" + chatId + "' [" + favId + "]" );
 			} else {
 				ulong id;
 				try {
 					id = UInt64.Parse(chatId);
 				} catch {
-					Console.WriteLine ("Failed to join room: Invalid id.");
+					log.Info("Failed to join room: Invalid id.");
 					return false;
 				}
 
-				Console.WriteLine( "Joining chat room '{0}'...", chatId);
+				log.Info( "Joining chat room '" + chatId + "'...");
 				bot.JoinChat(id);
 			}
 				

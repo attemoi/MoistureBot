@@ -9,6 +9,9 @@ namespace MoistureBot.Commands
 	public class LaunchCommand : ICommand
 	{
 
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		private OptionSet options;
@@ -43,6 +46,8 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 		
+			log.Debug ("Executing launch command");
+
 			List<string> extra = options.Parse (Args);
 
 			if (help) {
@@ -74,7 +79,7 @@ namespace MoistureBot.Commands
 
 			if (joinFavs) {
 				foreach(KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms() ) {
-					Console.WriteLine ("Joining chat room '{0}' [{1}]", fav.Key, fav.Value );
+					log.Info ("Joining chat room '"+ fav.Key +"' ["+fav.Value+"]" );
 					bot.JoinChat (fav.Value);
 				}
 			}

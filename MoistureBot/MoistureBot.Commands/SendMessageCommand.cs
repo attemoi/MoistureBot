@@ -8,6 +8,9 @@ namespace MoistureBot.Commands
 	public class SendMessageCommand : ICommand
 	{
 
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		public Boolean help;
@@ -33,6 +36,8 @@ namespace MoistureBot.Commands
 
 		public bool Execute (IMoistureBot bot)
 		{
+
+			log.Debug ("Executing command: msg");
 		
 			List<string> extra = options.Parse(Args);
 
@@ -42,7 +47,7 @@ namespace MoistureBot.Commands
 			}
 
 			if (!bot.IsConnected ()) {
-				Console.WriteLine ("Not connected to Steam.");
+				log.Info ("Not connected to Steam.");
 				return false;
 			}
 
@@ -55,17 +60,17 @@ namespace MoistureBot.Commands
 			try {
 				id = UInt64.Parse(chatId);
 			} catch {
-				Console.WriteLine ("Invalid chat id!");
+				log.Info ("Invalid chat id!");
 				return false;
 			}
 
 			switch (target) {
 			case "user":
-				Console.WriteLine ("Sending chat message to friend '{0}'...", id);
+				log.Info ("Sending chat message to friend '"+id+"'...");
 				bot.SendChatMessage (message, id);
 				return false;
 			case "room":
-				Console.WriteLine ("Sending chat message to room '{0}'...", id);
+				log.Info ("Sending chat message to room '"+id+"'...");
 				bot.SendChatRoomMessage (message, id);
 				return false;
 			default:

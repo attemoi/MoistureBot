@@ -11,19 +11,25 @@ using System.Threading;
 using MoistureBot.Commands;
 using MoistureBot.Config;
 
+
+
 [assembly:AddinRoot ("MoistureBot", "1.0.0")]
 [assembly:AddinAuthor ("Atte Moisio")]
 [assembly:AddinDescription ("Extensible chat bot for Steam.")]
 [assembly:AddinName("MoistureBot")]
 [assembly:AddinUrl("") ]
-
 [assembly:ImportAddinAssembly("MoistureBotLib.dll")]
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace MoistureBot
 {
 
 	static class Program
 	{
+
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		public static ChatBot Bot { get; set; }
 
@@ -37,7 +43,8 @@ namespace MoistureBot
 			AddinManager.Registry.Update ();
 
 			Console.WriteLine ();
-			Console.WriteLine ("Moisturebot 1.0");
+			// TODO: read version dynamically
+			Console.WriteLine ("Moisturebot 1.0.0");
 
 			var config = new MoistureBotConfig ();
 			if (!config.ConfigExists())
@@ -51,6 +58,7 @@ namespace MoistureBot
 				return;
 			}
 
+			log.Debug ("Initializing addins");
 			InitAddins ();
 
 			HandleConsoleInput ();
@@ -80,7 +88,7 @@ namespace MoistureBot
 				var command = CommandParser.Parse(input);
 				if (command == null) {
 					if (!String.IsNullOrWhiteSpace(input))
-						Console.WriteLine ("Unknown command: '{0}'", input);
+						log.Info ("Unknown command: '" + input + "'");
 				} else {
 					exit = command.Execute(Bot);
 				}
@@ -108,15 +116,12 @@ namespace MoistureBot
 
 		static void OnLoadError (object s, AddinErrorEventArgs args)
 		{
-			Console.WriteLine ("Failed to load addin: " + args.Message);
-			Console.WriteLine (args.AddinId);
-			Console.WriteLine (args.Exception);
+			log.Error ("Failed to load addin", args.Exception);
 		}
 
 		static void OnLoad (object s, AddinEventArgs args)
 		{
-			// TODO: log
-			// Console.WriteLine ("Add-in loaded: " + args.AddinId);
+			log.Info ("Add-in loaded: " + args.AddinId);
 		}
 			
 	}

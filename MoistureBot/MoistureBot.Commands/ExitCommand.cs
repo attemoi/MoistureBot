@@ -7,6 +7,9 @@ namespace MoistureBot.Commands
 	public class ExitCommand : ICommand
 	{
 
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		private OptionSet options;
@@ -29,6 +32,8 @@ namespace MoistureBot.Commands
 
 		public bool Execute(IMoistureBot bot)
 		{
+			log.Debug ("Executing command: exit");
+
 			options.Parse (Args);
 
 			if (help) {

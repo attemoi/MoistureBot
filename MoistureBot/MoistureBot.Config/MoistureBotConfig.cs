@@ -10,6 +10,9 @@ namespace MoistureBot.Config
 	public class MoistureBotConfig : IConfig
 	{
 
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private const string FILENAME = "MoistureBot.ini";
 		private System.Text.Encoding ENCODING = System.Text.Encoding.UTF8;
 
@@ -28,16 +31,24 @@ namespace MoistureBot.Config
 		private void writeData(IniData data, FileIniDataParser parser) {
 			lock(iniLock)
 			{
-				// TODO try catch, log errors
-				parser.WriteFile (FILENAME, data, ENCODING);
+				try {
+					parser.WriteFile (FILENAME, data, ENCODING);
+				} catch (Exception e) {
+					log.Error ("Failed to write data", e);
+				}
 			}
 		}
 
 		private IniData readData(FileIniDataParser parser) {
 			lock(iniLock)
 			{
-				// TODO try catch, log errors
-				return parser.ReadFile (FILENAME, ENCODING);
+				try {
+					return parser.ReadFile (FILENAME, ENCODING);
+				} catch (Exception e) {
+					log.Error ("Failed to read data", e);
+				}
+
+				return null;
 			}
 		}
 
@@ -45,19 +56,29 @@ namespace MoistureBot.Config
 
 		public void CreateConfig ()
 		{
-			if (ConfigExists())
+
+			if (ConfigExists ()) {
+				log.Debug ("Config already exists");
 				return;
+			}
+
+			log.Debug ("Config file not found, creating... ");
+
 			var data = new IniData ();
 			data.Sections.AddSection (ConfigSections.BOT_SETTINGS);
 			data.Sections.AddSection (ConfigSections.FAVORITE_ROOMS);
 			data.Sections.AddSection (ConfigSections.FAVORITE_USERS);
+
 			writeData(data, getParser());
 		}
 
 		public void ResetConfig ()
 		{
+			log.Debug ("Resetting config " + FILENAME);
+
 			if (!ConfigExists())
 				CreateConfig ();
+
 
 			var parser = getParser ();
 			var data = new IniData ();
@@ -99,7 +120,7 @@ namespace MoistureBot.Config
 					ulong id = UInt64.Parse(kd.Value);
 					dict.Add( key, id);
 				} catch {
-					// TODO log
+					log.Error ("Failed to parse favorite with key " + kd.Value);
 				}
 			}
 			return dict;

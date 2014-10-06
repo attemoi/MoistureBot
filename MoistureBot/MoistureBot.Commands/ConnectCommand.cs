@@ -8,6 +8,9 @@ namespace MoistureBot.Commands
 	public class ConnectCommand : ICommand
 	{
 
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		private OptionSet options;
@@ -30,6 +33,8 @@ namespace MoistureBot.Commands
 
 		public bool Execute (IMoistureBot bot)
 		{
+
+			log.Debug ("Executing command: connect");
 		
 			List<string> extra = options.Parse (Args);
 

@@ -13,6 +13,9 @@ namespace MoistureBot
 
 	public class ChatBot : IMoistureBot
 	{
+
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 	
 		private SteamClient steamClient;
 		private CallbackManager manager;
@@ -64,7 +67,7 @@ namespace MoistureBot
 
 		public void Connect(string username, string password)
 		{
-			Console.WriteLine( "Connecting to Steam..." );
+			log.Info( "Connecting to Steam..." );
 			this.user = username;
 			this.pass = password;
 			steamClient.Connect();
@@ -79,15 +82,13 @@ namespace MoistureBot
 			{
 				t.Start();
 			}
-			catch (ThreadStateException)
+			catch (ThreadStateException e)
 			{
-				// TODO: log
-				// Console.WriteLine(e);
+				log.Error ("Error in bot callback thread", e);
 			}
-			catch (ThreadInterruptedException)
+			catch (ThreadInterruptedException e)
 			{
-				// TODO: log
-				// Console.WriteLine(e);
+				log.Error ("Bot thread interrupted", e);
 			}
 		}
 
@@ -98,12 +99,12 @@ namespace MoistureBot
 			{
 				try {
 					manager.RunWaitCallbacks( TimeSpan.FromSeconds( 5 ) );
-				} catch (InvalidOperationException)  {
+				} catch (InvalidOperationException e)  {
 					// There is probably a bug in SteamKit2 causing this exception sometimes when connecting
-					// TODO: Log
-				} catch ( Exception){
-					// TODO: log
-					// Console.WriteLine ("Bot error: {0]", e.Message); 
+					// TODO: might even want to disable logging on this one
+					log.Error ("Error in bot callback thread", e);
+				} catch (Exception e){
+					log.Error ("Error in bot callback thread", e);
 				}
 			}
 		}
@@ -120,11 +121,12 @@ namespace MoistureBot
 			{
 				Console.WriteLine( "Unable to connect to Steam: {0}", callback.Result );
 				_connectWaitHandle.Set ();
+				BlockUntilDisconnected ();
 				return;
 			}
 
-			Console.WriteLine ("Connected to Steam!");
-			Console.WriteLine( "Logging in '{0}'...", user );
+			log.Info ("Connected to Steam!");
+			log.Info( "Logging in '" + user + "'..." );
 
 			steamUser.LogOn( new SteamUser.LogOnDetails
 			{
@@ -144,7 +146,7 @@ namespace MoistureBot
 
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
-			Console.WriteLine( "Disconnected from Steam" );
+			log.Info( "Disconnected from Steam" );
 			_disconnectWaitHandle.Set ();
 		}
 
@@ -159,17 +161,19 @@ namespace MoistureBot
 					// then the account we're logging into is SteamGuard protected
 					// see sample 6 for how SteamGuard can be handled
 
-					Console.WriteLine( "Unable to logon to Steam: This account is SteamGuard protected." );
+					log.Info( "Unable to logon to Steam: This account is SteamGuard protected." );
 					_connectWaitHandle.Set ();
+					BlockUntilDisconnected ();
 					return;
 				}
 					
-				Console.WriteLine( "Unable to logon to Steam: {0} / {1}", callback.Result, callback.ExtendedResult );
+				log.Info( "Unable to logon to Steam: " + callback.ExtendedResult );
 				_connectWaitHandle.Set ();
+				BlockUntilDisconnected ();
 				return;
 			}
 		
-			Console.WriteLine( "Successfully logged on!" );
+			log.Info( "Successfully logged on!" );
 			_connectWaitHandle.Set ();
 
 		}
@@ -178,13 +182,11 @@ namespace MoistureBot
 		{
 			switch (callback.EnterResponse) {
 			case EChatRoomEnterResponse.Success:
-				// TODO: log
-				// Console.WriteLine ("Successfully joined chat!");
+				log.Info ("Successfully joined chat!");
 				activeChatRooms.Add (callback.ChatID.ConvertToUInt64 ());
 				break;
 			default:
-				// TODO: log
-				// Console.WriteLine ("Failed to join chat: {0}", callback.EnterResponse);
+				log.Info ("Failed to join chat: " + callback.EnterResponse);
 				break;
 			}
 				
@@ -205,9 +207,8 @@ namespace MoistureBot
 					try {
 						addin.MessageReceived(new ChatRoomMessage(message, chatterId, chatId));
 					} catch(Exception e) {
-						// TODO log
 						Console.WriteLine ();
-						Console.WriteLine ("[IChatRoomAddin] failure: ", e.StackTrace);
+						log.Error ("Error in addin", e);
 					}
 
 				}
@@ -227,9 +228,8 @@ namespace MoistureBot
 					try {
 						addin.MessageReceived(new ChatMessage(message, chatterId));
 					} catch(Exception e) {
-						// TODO log exception,
 						Console.WriteLine ();
-						Console.WriteLine ("[IChatFriendAddin] failure: ", e.StackTrace);
+						log.Error ("Error in addin", e);
 					}
 				}
 			}
@@ -243,7 +243,7 @@ namespace MoistureBot
 
 		private void LoggedOffCallback( SteamUser.LoggedOffCallback callback )
 		{
-			Console.WriteLine( "Logged off of Steam: {0}", callback.Result );
+			log.Info( "Logged off of Steam: " + callback.Result );
 		}
 
 		#region PUBLIC
@@ -254,26 +254,37 @@ namespace MoistureBot
 
 		public void SendChatRoomMessage(String message, ulong chatRoomId) {
 
-			if (string.IsNullOrEmpty (message))
+			if (string.IsNullOrEmpty (message)) {
+				log.Debug ("Unable to send empty message to chat room");
 				return;
-
-			steamFriends.SendChatRoomMessage (
-				new SteamID (chatRoomId), 
-				EChatEntryType.ChatMsg,
-				message
-			);
+			}
+				
+			try {
+				steamFriends.SendChatRoomMessage (
+					new SteamID (chatRoomId), 
+					EChatEntryType.ChatMsg,
+					message
+				);
+			} catch (Exception e) {
+				log.Error ("Failed to send message to chat room " + chatRoomId, e);
+			}
 		}
 
 		public void SendChatMessage(String message, ulong userId) {
 
-			if (string.IsNullOrEmpty (message))
+			if (string.IsNullOrEmpty (message)) {
+				log.Debug ("Unable to send empty message to user");
 				return;
-
-			steamFriends.SendChatMessage (
-				new SteamID (userId), 
-				EChatEntryType.ChatMsg,
-				message
-			);
+			}
+			try {
+				steamFriends.SendChatMessage (
+					new SteamID (userId), 
+					EChatEntryType.ChatMsg,
+					message
+				);
+			} catch (Exception e) {
+				log.Error ("Failed to send message to user " + userId, e);
+			}
 		}
 
 		public string GetUserName (ulong id)
@@ -291,17 +302,21 @@ namespace MoistureBot
 		}
 
 		public void BlockUntilConnected() {
+			log.Debug ("Blocking bot until connected");
 			if (IsConnected())
 				return;
 
 			_connectWaitHandle.WaitOne();
+			log.Debug ("Bot connected, releasing block");
 		}
 
 		public void BlockUntilDisconnected() {
+			log.Debug ("Blocking bot until disconnected");
 			if (!IsConnected())
 				return;
 
 			_disconnectWaitHandle.WaitOne();
+			log.Debug ("Bot disconnected, releasing block");
 		}
 
 		#endregion

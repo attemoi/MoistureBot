@@ -5,6 +5,9 @@ namespace MoistureBot.Commands
 {
 	public class DisconnectCommand : ICommand
 	{
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		private OptionSet options;
@@ -27,6 +30,8 @@ namespace MoistureBot.Commands
 
 		public bool Execute(IMoistureBot bot)
 		{
+			log.Debug ("Executing command: disconnect");
+
 			options.Parse (Args);
 
 			if (help) {
@@ -35,7 +40,7 @@ namespace MoistureBot.Commands
 			}
 				
 			if (!bot.IsConnected ()) {
-				Console.WriteLine ("Bot already offline.");
+				log.Info ("Bot already offline.");
 				return false;
 			}
 

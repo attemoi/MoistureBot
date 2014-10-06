@@ -7,6 +7,10 @@ namespace MoistureBot.Commands
 {
 	public class HelpCommand : ICommand
 	{
+
+		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		public string[] Args { get; set; }
 
 		public Boolean help;
@@ -30,6 +34,8 @@ namespace MoistureBot.Commands
 
 		public bool Execute(IMoistureBot bot)
 		{
+
+			log.Debug ("Executing command: help");
 
 			List<string> extra = options.Parse (Args);
 
