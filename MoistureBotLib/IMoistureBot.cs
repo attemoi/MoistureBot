@@ -86,15 +86,22 @@ namespace MoistureBot
 		void UnbanChatMember (ulong roomId, ulong userId);
 
 		/// <summary>
-		/// Gets the persona state of the user (Online/Offline/Away etc).
+		/// Chantes the user's online status.
 		/// </summary>
-		/// <returns>The current persona state</returns>
-		PersonaState GetPersonaState ();
+		/// <returns>online status</returns>
+		OnlineStatus GetOnlineStatus ();
 
 		/// <summary>
-		/// Sets the persona state of the user (Online/Offline/Away etc).
+		/// Changes the user's online status.
 		/// </summary>
-		void SetPersonaState(PersonaState state);
+		void SetOnlineStatus(OnlineStatus state);
+
+		/// <summary>
+		/// Sets the online status. Allowed values: "online", "offline", 
+		/// "away", "busy", "looking_to_play", "looking_to_trade", "snooze"
+		/// </summary>
+		/// <param name="state">State.</param>
+		void SetOnlineStatus(string status);
 
 	}
 }

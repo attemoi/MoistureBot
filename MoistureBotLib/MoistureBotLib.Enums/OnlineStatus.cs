@@ -2,7 +2,7 @@
 
 namespace MoistureBot
 {
-	public enum PersonaState
+	public enum OnlineStatus
 	{
 		[StringAttribute("online")]
 		ONLINE,

@@ -49,8 +49,8 @@
     <Compile Include="IAddinLogger.cs" />
     <Compile Include="MoistureBotLib.Utils\StringAttribute.cs" />
     <Compile Include="MoistureBotLib.Utils\StringEnum.cs" />
-    <Compile Include="MoistureBotLib.Enums\PersonaState.cs" />
     <Compile Include="MoistureBotLib.Enums\ConfigSetting.cs" />
+    <Compile Include="MoistureBotLib.Enums\OnlineStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
