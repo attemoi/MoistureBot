@@ -178,11 +178,15 @@ namespace MoistureBot
 		{
 			switch (callback.EnterResponse) {
 			case EChatRoomEnterResponse.Success:
-				log.Info ("Successfully joined chat!");
+				log.Debug ("Successfully joined chat!");
 				activeChatRooms.Add (callback.ChatID.ConvertToUInt64 ());
 				break;
+			case EChatRoomEnterResponse.Limited:
+				log.Debug ("Failed to join chat: " + callback.EnterResponse);
+				log.Debug ("The user account needs to have one game in it's library in order to join chat rooms");
+				break;
 			default:
-				log.Info ("Failed to join chat: " + callback.EnterResponse);
+				log.Debug ("Failed to join chat: " + callback.EnterResponse);
 				break;
 			}
 				
@@ -201,13 +205,11 @@ namespace MoistureBot
 					try {
 						addin.MessageReceived(new ChatRoomMessage(message, chatterId, chatId));
 					} catch(Exception e) {
-						Console.WriteLine ();
 						log.Error ("Error in addin", e);
 					}
 
 				}
 			}
-
 		}
 
 		private void FriendMsgCallback( SteamFriends.FriendMsgCallback callback )
@@ -222,7 +224,6 @@ namespace MoistureBot
 					try {
 						addin.MessageReceived(new ChatMessage(message, chatterId));
 					} catch(Exception e) {
-						Console.WriteLine ();
 						log.Error ("Error in addin", e);
 					}
 				}
