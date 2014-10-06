@@ -5,7 +5,7 @@ using IniParser.Model;
 using System.IO;
 using System.Linq;
 
-namespace moisturebot.config
+namespace MoistureBot.Config
 {
 	public class MoistureBotConfig : IConfig
 	{

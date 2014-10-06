@@ -1,10 +1,10 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
-using moisturebot.config;
 using System.Linq;
+using MoistureBot.Config;
 
-namespace moisturebot.commands
+namespace MoistureBot.Commands
 {
 	// TODO: improve error handling
 

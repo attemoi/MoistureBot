@@ -8,8 +8,8 @@ using Mono.Addins;
 using System.Threading.Tasks;
 using Mono.Options;
 using System.Threading;
-using moisturebot.commands;
-using moisturebot.config;
+using MoistureBot.Commands;
+using MoistureBot.Config;
 
 [assembly:AddinRoot ("MoistureBot", "1.0.0")]
 [assembly:AddinAuthor ("Atte Moisio")]
@@ -19,13 +19,13 @@ using moisturebot.config;
 
 [assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
 
-namespace moisturebot
+namespace MoistureBot
 {
 
 	static class Program
 	{
 
-		public static MoistureBot Bot { get; set; }
+		public static ChatBot Bot { get; set; }
 
 		static void Run(string[] args)
 		{
@@ -43,7 +43,7 @@ namespace moisturebot
 			if (!config.ConfigExists())
 				config.CreateConfig ();
 
-			Bot = new MoistureBot ();
+			Bot = new ChatBot ();
 
 			var launchCmd = new LaunchCommand ();
 			launchCmd.Args = args;

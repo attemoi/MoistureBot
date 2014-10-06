@@ -1,7 +1,7 @@
 using System;
 using Mono.Options;
 
-namespace moisturebot
+namespace MoistureBot
 {
 	public interface IOptionParser
 	{

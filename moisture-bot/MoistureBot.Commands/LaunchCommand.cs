@@ -1,10 +1,10 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
-using moisturebot.config;
+using MoistureBot.Config;
 using System.Linq;
 
-namespace moisturebot.commands
+namespace MoistureBot.Commands
 {
 	public class LaunchCommand : ICommand
 	{

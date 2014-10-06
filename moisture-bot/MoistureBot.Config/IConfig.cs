@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace moisturebot
+namespace MoistureBot.Config
 {
 	public interface IConfig
 	{

@@ -8,10 +8,10 @@ using System.Threading;
 using System.Collections.Generic;
 using IniParser.Model;
 
-namespace moisturebot
+namespace MoistureBot
 {
 
-	public class MoistureBot : IMoistureBot
+	public class ChatBot : IMoistureBot
 	{
 	
 		private SteamClient steamClient;
@@ -30,7 +30,7 @@ namespace moisturebot
 		private string pass;
 		private List<ulong> activeChatRooms = new List<ulong> ();
 
-		public MoistureBot ()
+		public ChatBot ()
 		{
 
 			// create our steamclient instance

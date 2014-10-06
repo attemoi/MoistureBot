@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Options;
 
-namespace moisturebot
+namespace MoistureBot
 {
 	public class ConsoleUtils
 	{

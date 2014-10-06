@@ -1,8 +1,8 @@
 ﻿using System;
-using moisturebot.commands;
+using MoistureBot.Commands;
 using System.Linq;
 
-namespace moisturebot
+namespace MoistureBot
 {
 	public static class CommandParser
 	{

@@ -3,7 +3,7 @@ using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
 
-namespace moisturebot
+namespace MoistureBot.Commands
 {
 	public class StatusCommand : ICommand
 	{

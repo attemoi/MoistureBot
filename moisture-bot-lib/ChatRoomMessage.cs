@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace moisturebot
+namespace MoistureBot
 {
 	public class ChatRoomMessage : ChatMessage
 	{

@@ -3,7 +3,7 @@ using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace moisturebot.commands
+namespace MoistureBot.Commands
 {
 	public class ConnectCommand : ICommand
 	{

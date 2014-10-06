@@ -1,7 +1,7 @@
 ﻿using System;
 using Mono.Options;
 
-namespace moisturebot.commands
+namespace MoistureBot.Commands
 {
 	public class DisconnectCommand : ICommand
 	{

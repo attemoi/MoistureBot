@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 [assembly:AddinName("Moikkaaja")]
 [assembly:AddinUrl("") ]
 
-namespace moisturebot
+namespace MoistureBot
 {
 
 	[Extension (typeof(IChatRoomAddin))]

@@ -2,9 +2,9 @@
 using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
-using moisturebot.config;
+using MoistureBot.Config;
 
-namespace moisturebot.commands
+namespace MoistureBot.Commands
 {
 	public class JoinChatCommand : ICommand
 	{

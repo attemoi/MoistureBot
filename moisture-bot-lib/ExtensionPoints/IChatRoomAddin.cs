@@ -1,7 +1,7 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace moisturebot
+namespace MoistureBot
 {
 	[TypeExtensionPoint]
 	public interface IChatRoomAddin : IMoistureBotAddin

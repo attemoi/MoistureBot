@@ -2,7 +2,7 @@
 using System.Threading;
 using Mono.Options;
 
-namespace moisturebot.commands
+namespace MoistureBot.Commands
 {
 	public class ExitCommand : ICommand
 	{
