@@ -25,28 +25,28 @@ namespace moisturebot
 		static void Run(string[] args)
 		{
 				
-			var config = new MoistureBotConfig ();
-			if (!config.ConfigExists())
-				config.CreateConfig ();
-
-			Console.WriteLine ();
-			Console.WriteLine ("Launching Moisturebot...");
-
 			AddinManager.AddinLoadError += OnLoadError;
 			AddinManager.AddinLoaded += OnLoad;
 
 			AddinManager.Initialize (".", ".", "./addins");
 			AddinManager.Registry.Update ();
 
-			Bot = new MoistureBot ();
+			Console.WriteLine ();
+			Console.WriteLine ("Moisturebot 1.0");
 
-			InitAddins ();
+			var config = new MoistureBotConfig ();
+			if (!config.ConfigExists())
+				config.CreateConfig ();
+
+			Bot = new MoistureBot ();
 
 			var launchCmd = new LaunchCommand ();
 			launchCmd.Args = args;
 			if (launchCmd.Execute (Bot)) {
 				return;
 			}
+
+			InitAddins ();
 
 			HandleConsoleInput ();
 
@@ -103,14 +103,15 @@ namespace moisturebot
 
 		static void OnLoadError (object s, AddinErrorEventArgs args)
 		{
-			Console.WriteLine ("Add-in error: " + args.Message);
+			Console.WriteLine ("Failed to load addin: " + args.Message);
 			Console.WriteLine (args.AddinId);
 			Console.WriteLine (args.Exception);
 		}
 
 		static void OnLoad (object s, AddinEventArgs args)
 		{
-			Console.WriteLine ("Add-in loaded: " + args.AddinId);
+			// TODO: log
+			// Console.WriteLine ("Add-in loaded: " + args.AddinId);
 		}
 			
 	}
