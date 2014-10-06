@@ -16,18 +16,22 @@ namespace MoistureBot
 	[Extension (typeof(IChatFriendAddin))]
 	public class Moikkaaja: IChatRoomAddin, IChatFriendAddin
 	{
+
+		public IAddinLogger Logger { get; set;}
 		public IMoistureBot Bot { get; set; }
 
 		public void MessageReceived (ChatRoomMessage message)
 		{
 			var reply = CreateReply (message);
-			Bot.SendChatRoomMessage (reply, message.ChatId);
+			if (!String.IsNullOrEmpty(reply))
+				Bot.SendChatRoomMessage (reply, message.ChatId);
 		}
 
 		public void MessageReceived (ChatMessage message)
 		{
 			var reply = CreateReply (message);
-			Bot.SendChatMessage (reply, message.ChatterId);
+			if (!String.IsNullOrEmpty(reply))
+				Bot.SendChatMessage (reply, message.ChatterId);
 		}
 
 		string CreateReply (ChatMessage message)
@@ -46,8 +50,7 @@ namespace MoistureBot
 			string msg = Array.Find(greetings, t => t.Equals(strippedMsg, StringComparison.InvariantCultureIgnoreCase));
 
 			if (msg != null && !msg.Equals("") ){
-				// TODO log message
-				// Console.WriteLine ("Moikkaaja: Greeting received, replying");
+				Logger.Info("Moikkaaja: Greeting received, replying");
 				msg += " " + Bot.GetUserName(message.ChatterId) + "!";
 			}
 

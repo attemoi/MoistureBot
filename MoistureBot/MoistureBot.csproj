@@ -61,7 +61,6 @@
     <Compile Include="MoistureBot.Commands\StatusCommand.cs" />
     <Compile Include="MoistureBot.Commands\LaunchCommand.cs" />
     <Compile Include="MoistureBot.Commands\FavoritesCommand.cs" />
-    <Compile Include="MoistureBot.Config\ConfigSections.cs" />
     <Compile Include="MoistureBot.Config\IConfig.cs" />
     <Compile Include="MoistureBot.Commands\ICommand.cs" />
     <Compile Include="CommandParser.cs" />
@@ -85,5 +84,6 @@
     <Folder Include="MoistureBot.Commands\" />
     <Folder Include="MoistureBot.Config\" />
     <Folder Include="MoistureBot.Logging\" />
+    <Folder Include="c:\Users\ammoi_000\Projects\moisture-bot\MoistureBot\MoistureBot.Config\" />
   </ItemGroup>
 </Project>

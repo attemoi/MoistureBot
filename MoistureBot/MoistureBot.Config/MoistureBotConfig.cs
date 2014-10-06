@@ -4,6 +4,7 @@ using IniParser;
 using IniParser.Model;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace MoistureBot.Config
 {
@@ -12,6 +13,9 @@ namespace MoistureBot.Config
 
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+		private static string SECTION_FAVORITE_USERS = "favorite_users";
+		private static string SECTION_FAVORITE_ROOMS = "favorite_users";
 
 		private const string FILENAME = "MoistureBot.ini";
 		private System.Text.Encoding ENCODING = System.Text.Encoding.UTF8;
@@ -52,6 +56,14 @@ namespace MoistureBot.Config
 			}
 		}
 
+		private string GetSection(ConfigSetting settings) {
+			return StringEnum.GetValue<SectionAttribute> (settings);
+		}
+
+		private string GetKey(ConfigSetting settings) {
+			return StringEnum.GetValue<KeyAttribute> (settings);
+		}
+
 		#region IConfig implementation
 
 		public void CreateConfig ()
@@ -65,11 +77,13 @@ namespace MoistureBot.Config
 			log.Debug ("Config file not found, creating... ");
 
 			var data = new IniData ();
-			data.Sections.AddSection (ConfigSections.BOT_SETTINGS);
-			data.Sections.AddSection (ConfigSections.FAVORITE_ROOMS);
-			data.Sections.AddSection (ConfigSections.FAVORITE_USERS);
-
+			data.Sections.AddSection (SECTION_FAVORITE_ROOMS);
+			data.Sections.AddSection (SECTION_FAVORITE_USERS);
 			writeData(data, getParser());
+
+			SetSetting (
+				ConfigSetting.STATUS, 
+				StringEnum.GetValue<StringAttribute> (PersonaState.ONLINE));
 		}
 
 		public void ResetConfig ()
@@ -94,7 +108,7 @@ namespace MoistureBot.Config
 		public Dictionary<string, ulong> GetFavoriteUsers ()
 		{
 			IniData data = readData (getParser ());
-			KeyDataCollection users = data [ConfigSections.FAVORITE_USERS];
+			KeyDataCollection users = data [SECTION_FAVORITE_USERS];
 
 			return IniCollectionToDictionary (users);
 		}
@@ -102,7 +116,7 @@ namespace MoistureBot.Config
 		public Dictionary<string, ulong> GetFavoriteChatRooms ()
 		{
 			IniData data = readData (getParser ());
-			KeyDataCollection rooms = data [ConfigSections.FAVORITE_ROOMS];
+			KeyDataCollection rooms = data [SECTION_FAVORITE_ROOMS];
 
 			return IniCollectionToDictionary (rooms);
 		}
@@ -130,7 +144,7 @@ namespace MoistureBot.Config
 		{
 			var parser = getParser ();
 			var data = readData (parser);
-			data[ConfigSections.FAVORITE_USERS].AddKey (key, userId.ToString ());
+			data[SECTION_FAVORITE_USERS].AddKey (key, userId.ToString ());
 			writeData( data, parser );
 		}
 
@@ -138,7 +152,7 @@ namespace MoistureBot.Config
 		{
 			var parser = getParser ();
 			var data = readData (parser) ;
-			data[ConfigSections.FAVORITE_ROOMS].AddKey (key, chatRoomId.ToString ());
+			data[SECTION_FAVORITE_USERS].AddKey (key, chatRoomId.ToString ());
 			writeData (data, parser);
 		}
 
@@ -146,7 +160,7 @@ namespace MoistureBot.Config
 		{
 			var parser = getParser ();
 			var data = readData (parser) ;
-			data[ConfigSections.FAVORITE_USERS].RemoveKey (key);
+			data[SECTION_FAVORITE_USERS].RemoveKey (key);
 			writeData(data, parser);
 		}
 
@@ -154,29 +168,46 @@ namespace MoistureBot.Config
 		{
 			var parser = getParser ();
 			var data = readData (parser);
-			data[ConfigSections.FAVORITE_ROOMS].RemoveKey (key);
+			data[SECTION_FAVORITE_ROOMS].RemoveKey (key);
 			writeData(data, parser);
 		}
 
-		public void SetValue (string section, string key, string value)
+		public void SetSetting (ConfigSetting setting, string value)
 		{
 			var parser = getParser ();
 			var data = readData (parser);
-			data[section][key] = value;
+			data[GetSection(setting)][GetKey(setting)] = value;
 			writeData(data, parser);
-
 		}
 
-		public string GetValue (string section, string key)
+		public string GetSetting (ConfigSetting setting)
 		{
-			return readData (getParser ()) [section][key];
+			return readData (getParser ()) [GetSection(setting)][GetKey(setting)];
+		}
+
+		// TODO: limit generics
+		private string GetKey(Enum value)
+		{
+			string output = null;
+			Type type = value.GetType();
+
+			FieldInfo fi = type.GetField(value.ToString());
+			KeyAttribute[] attrs =
+				fi.GetCustomAttributes(typeof(KeyAttribute),
+					false) as KeyAttribute[];
+			if (attrs.Length > 0)
+			{
+				output = attrs[0].Value;
+			}
+
+			return output;
 		}
 			
 		public void RemoveAllFavoriteUsers ()
 		{
 			var parser = getParser ();
 			var data = readData (parser);
-			data.Sections.SetSectionData (ConfigSections.FAVORITE_USERS, new SectionData (ConfigSections.FAVORITE_USERS));
+			data.Sections.SetSectionData (SECTION_FAVORITE_USERS, new SectionData (SECTION_FAVORITE_ROOMS));
 			writeData(data, parser);
 		}
 
@@ -184,14 +215,14 @@ namespace MoistureBot.Config
 		{
 			var parser = getParser ();
 			var data = readData (parser);
-			data.Sections.SetSectionData (ConfigSections.FAVORITE_ROOMS, new SectionData (ConfigSections.FAVORITE_ROOMS));
+			data.Sections.SetSectionData (SECTION_FAVORITE_ROOMS, new SectionData (SECTION_FAVORITE_ROOMS));
 				writeData(data, parser);
 		}
 
 		public string GetFavoriteUserId (string key)
 		{
 			try {
-				return readData (getParser ()) [ConfigSections.FAVORITE_USERS][key];
+				return readData (getParser ()) [SECTION_FAVORITE_USERS][key];
 			} catch {
 				return null;
 			}
@@ -200,12 +231,12 @@ namespace MoistureBot.Config
 		public string GetFavoriteChatRoomId (string key)
 		{
 			try {
-				return readData (getParser ()) [ConfigSections.FAVORITE_ROOMS][key];
+				return readData (getParser ()) [SECTION_FAVORITE_ROOMS][key];
 			} catch {
 				return null;
 			}
 		}
-
+			
 		#endregion
 
 	}

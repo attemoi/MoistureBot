@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{559877FE-43FB-46A5-897E-978078951010}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>moisturebot</RootNamespace>
+    <RootNamespace>MoistureBotLib</RootNamespace>
     <AssemblyName>MoistureBotLib</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -46,11 +46,18 @@
     <Compile Include="ExtensionPoints\IChatFriendAddin.cs" />
     <Compile Include="ExtensionPoints\IChatRoomAddin.cs" />
     <Compile Include="Favorite.cs" />
+    <Compile Include="IAddinLogger.cs" />
+    <Compile Include="MoistureBotLib.Utils\StringAttribute.cs" />
+    <Compile Include="MoistureBotLib.Utils\StringEnum.cs" />
+    <Compile Include="MoistureBotLib.Enums\PersonaState.cs" />
+    <Compile Include="MoistureBotLib.Enums\ConfigSetting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
+    <Folder Include="MoistureBotLib.Utils\" />
+    <Folder Include="MoistureBotLib.Enums\" />
   </ItemGroup>
 </Project>

@@ -7,6 +7,8 @@ using Mono.Addins;
 using System.Threading;
 using System.Collections.Generic;
 using IniParser.Model;
+using MoistureBot.Config;
+using System.Reflection;
 
 namespace MoistureBot
 {
@@ -178,14 +180,92 @@ namespace MoistureBot
 			// before being able to interact with friends, you must wait for the account info callback
 			// this callback is posted shortly after a successful logon
 
-			// at this point, we can go online on friends, so lets do that
-			steamFriends.SetPersonaState( EPersonaState.Online );
+			// at this point, we can set persona status
+			log.Debug ("Reading persona state from config file");
+
+			var config = new MoistureBotConfig ();
+
+			string configState;
+			try {
+				configState = config.GetSetting (ConfigSetting.STATUS);
+			} catch (Exception e) {
+				log.Error("Failed to read persona status from config file", e);
+				return;
+			}
+
+			SetPersonaState (configState);
+
+		}
+
+		private void SetPersonaState(String str) {
+
+			if (str == null)
+				SetPersonaState (PersonaState.OFFLINE);
+
+			foreach (PersonaState ps in Enum.GetValues(typeof(PersonaState))) {
+				var strValue = StringEnum.GetValue<StringAttribute> (ps);
+				if (str.Equals(strValue)) {
+					SetPersonaState (ps);
+					return;
+				}
+			}
+		}
+
+		public PersonaState GetPersonaState () {
+			var state = steamFriends.GetPersonaState ();
+			switch (state) {
+			case EPersonaState.Away:
+				return PersonaState.AWAY;
+			case EPersonaState.Busy:
+				return PersonaState.BUSY;
+			case EPersonaState.LookingToPlay:
+				return PersonaState.LOOKING_TO_PLAY;
+			case EPersonaState.LookingToTrade:
+				return PersonaState.LOOKING_TO_TRADE;
+			case EPersonaState.Offline:
+				return PersonaState.OFFLINE;
+			case EPersonaState.Online:
+				return PersonaState.ONLINE;
+			case EPersonaState.Snooze:
+				return PersonaState.SNOOZE;
+			default:
+				return PersonaState.OFFLINE;
+			}
+		}
+
+		public void SetPersonaState(PersonaState state) {
+
+			log.Debug ("Setting persona state to " + state);
+
+			switch (state) {
+			case PersonaState.AWAY:
+				steamFriends.SetPersonaState (EPersonaState.Away);
+				break;
+			case PersonaState.BUSY:
+				steamFriends.SetPersonaState( EPersonaState.Busy );
+				break;
+			case PersonaState.LOOKING_TO_PLAY:
+				steamFriends.SetPersonaState( EPersonaState.LookingToPlay );
+				break;
+			case PersonaState.LOOKING_TO_TRADE:
+				steamFriends.SetPersonaState( EPersonaState.LookingToTrade );
+				break;
+			case PersonaState.OFFLINE:
+				steamFriends.SetPersonaState( EPersonaState.Offline );
+				break;
+			case PersonaState.ONLINE:
+				steamFriends.SetPersonaState( EPersonaState.Online );
+				break;
+			case PersonaState.SNOOZE:
+				steamFriends.SetPersonaState( EPersonaState.Snooze );
+				break;
+			}
 		}
 
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
 			log.Debug( "Disconnected from Steam" );
-
+			SetPersonaState (PersonaState.ONLINE);
 		}
 
 		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
@@ -224,6 +304,7 @@ namespace MoistureBot
 				break;
 			default:
 				log.Debug ("Failed to join chat: " + callback.EnterResponse);
+				activeChatRooms.Remove (callback.ChatID.ConvertToUInt64());
 				break;
 			}
 				
@@ -236,7 +317,8 @@ namespace MoistureBot
 			ulong chatterId = callback.ChatterID.ConvertToUInt64();
 			ulong chatId = callback.ChatRoomID.ConvertToUInt64();
 
-			if (callback.ChatMsgType == EChatEntryType.ChatMsg) {
+			switch (callback.ChatMsgType) {
+			case EChatEntryType.ChatMsg:
 				foreach (IChatRoomAddin addin in AddinManager.GetExtensionObjects<IChatRoomAddin> ())
 				{
 					try {
@@ -246,7 +328,15 @@ namespace MoistureBot
 					}
 
 				}
+				break;
+			case EChatEntryType.LeftConversation:
+				log.Debug (GetUserName (chatterId) + " left " + chatId);
+				break;
+			case EChatEntryType.Disconnected:
+				log.Debug (GetUserName (chatterId) + " disconnected from " + chatId);
+				break;
 			}
+
 		}
 
 		private void FriendMsgCallback( SteamFriends.FriendMsgCallback callback )
@@ -255,7 +345,9 @@ namespace MoistureBot
 			string message = callback.Message;
 			ulong chatterId = callback.Sender.ConvertToUInt64 ();
 
-			if (callback.EntryType == EChatEntryType.ChatMsg) {
+			switch (callback.EntryType) {
+			case EChatEntryType.ChatMsg:
+				log.Debug("Received message from " + GetUserName(chatterId) + ": " + message);
 				foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
 				{
 					try {
@@ -264,16 +356,17 @@ namespace MoistureBot
 						log.Error ("Error in addin", e);
 					}
 				}
+				break;
+			case EChatEntryType.InviteGame:
+				log.Debug ("Game invite received from " + GetUserName (chatterId));
+				break;
 			}
 
 		}
 
 		private void ChatInviteCallback( SteamFriends.ChatInviteCallback callback )
 		{
-			log.Debug ("Received chat invite to room " + 
-				callback.ChatRoomID.ConvertToUInt64 () + 
-				" from user " + callback.FriendChatID.ConvertToUInt64 () 
-				+ " (" + GetUserName (callback.FriendChatID) + ")");
+			log.Debug ("Received invite from " + GetUserName (callback.FriendChatID) );
 
 			// TODO create extension point
 		}
@@ -292,7 +385,7 @@ namespace MoistureBot
 		public void SendChatRoomMessage(String message, ulong chatRoomId) {
 
 			if (string.IsNullOrEmpty (message)) {
-				log.Debug ("Unable to send empty message to chat room");
+				log.Debug ("Trying to send empty message to chat room " + chatRoomId);
 				return;
 			}
 				
@@ -310,7 +403,7 @@ namespace MoistureBot
 		public void SendChatMessage(String message, ulong userId) {
 
 			if (string.IsNullOrEmpty (message)) {
-				log.Debug ("Unable to send empty message to user");
+				log.Debug ("Trying to send empty message to user");
 				return;
 			}
 			try {

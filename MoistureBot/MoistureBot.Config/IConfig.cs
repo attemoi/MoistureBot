@@ -23,8 +23,8 @@ namespace MoistureBot.Config
 		void RemoveFavoriteChatRoom (string key);
 		void RemoveAllFavoriteChatRooms ();
 
-		void SetValue (string section, string key, string value);
-		string GetValue (string section, string key);
+		void SetSetting (ConfigSetting setting, string value);
+		string GetSetting (ConfigSetting setting);
 
 	}
 }
