@@ -126,7 +126,7 @@ namespace MoistureBot
 
 		static void OnLoad (object s, AddinEventArgs args)
 		{
-			log.Info ("Add-in loaded: " + args.AddinId);
+			log.Debug ("Add-in loaded: " + args.AddinId);
 		}
 			
 	}

@@ -58,7 +58,7 @@ namespace MoistureBot.Commands
 			if (favorites) {
 				foreach(KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms() ) {
 					log.Info ("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
-					bot.JoinChat (fav.Value);
+					bot.JoinChatRoom (fav.Value);
 				}
 				return false;
 			}
@@ -79,7 +79,7 @@ namespace MoistureBot.Commands
 					log.Info("Failed to join favorite room: Invalid id.");
 					return false;
 				}
-				bot.JoinChat (id);
+				bot.JoinChatRoom (id);
 				log.Info("Joining favorite chat room '" + chatId + "' [" + favId + "]" );
 			} else {
 				ulong id;
@@ -91,7 +91,7 @@ namespace MoistureBot.Commands
 				}
 
 				log.Info( "Joining chat room '" + chatId + "'...");
-				bot.JoinChat(id);
+				bot.JoinChatRoom(id);
 			}
 				
 			return false;

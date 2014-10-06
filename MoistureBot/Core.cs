@@ -62,9 +62,46 @@ namespace MoistureBot
 			new Callback<SteamFriends.ChatEnterCallback> ( ChatEnterCallback, manager);
 			new Callback<SteamFriends.ChatMsgCallback> ( ChatMsgCallback, manager);
 			new Callback<SteamFriends.ChatInviteCallback> ( ChatInviteCallback, manager);
+			new Callback<SteamFriends.ChatActionResultCallback> (ChatActionResultCallback, manager);
 
 			new Callback<SteamFriends.FriendMsgCallback> ( FriendMsgCallback, manager);
 
+		}
+
+		void ChatActionResultCallback (SteamFriends.ChatActionResultCallback obj)
+		{
+			switch (obj.Action) {
+			case EChatAction.Ban:
+				// TODO: extension point
+				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") banned from " + obj.ChatRoomID.ConvertToUInt64() );
+				break;
+			case EChatAction.Kick:
+				// TODO: extension point
+				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") kicked from " + obj.ChatRoomID.ConvertToUInt64() );
+				break;
+			case EChatAction.CloseChat:
+				// TODO: extension point
+				log.Debug("Chat room " + obj.ChatRoomID.ConvertToUInt64() + " closed.");
+				activeChatRooms.Remove( obj.ChatRoomID.ConvertToUInt64() );
+				break;
+			case EChatAction.InviteChat:
+				// TODO: extension point
+				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") invited to " + obj.ChatRoomID.ConvertToUInt64() );
+				break;
+			case EChatAction.UnBan:
+				// TODO: extension point
+				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") unbanned from " + obj.ChatRoomID.ConvertToUInt64() );
+				break;
+			} 
+		}
+
+		private string GetUserName(SteamID id) {
+			return steamFriends.GetFriendPersonaName(id);
+		}
+
+		public void KickChatMember (ulong roomId, ulong userId) {
+			log.Debug ("Kicking user " + userId + " from room " + roomId);
+			steamFriends.KickChatMember (new SteamID (roomId), new SteamID(userId));
 		}
 
 		public void Connect(string username, string password)
@@ -233,18 +270,23 @@ namespace MoistureBot
 
 		private void ChatInviteCallback( SteamFriends.ChatInviteCallback callback )
 		{
+			log.Debug ("Received chat invite to room " + 
+				callback.ChatRoomID.ConvertToUInt64 () + 
+				" from user " + callback.FriendChatID.ConvertToUInt64 () 
+				+ " (" + GetUserName (callback.FriendChatID) + ")");
+
 			// TODO create extension point
 		}
 
 		private void LoggedOffCallback( SteamUser.LoggedOffCallback callback )
 		{
-			log.Info( "Logged off of Steam: " + callback.Result );
+			log.Debug( "Logged off of Steam: " + callback.Result );
 		}
 
 		#region PUBLIC
 
-		public void JoinChat(ulong id) {
-			steamFriends.JoinChat (new SteamID(id));
+		public void JoinChatRoom(ulong roomId) {
+			steamFriends.JoinChat (new SteamID(roomId));
 		}
 
 		public void SendChatRoomMessage(String message, ulong chatRoomId) {
@@ -299,6 +341,18 @@ namespace MoistureBot
 		public void Terminate ()
 		{
 			terminated = true;
+		}
+
+		public void BanChatMember (ulong roomId, ulong userId)
+		{
+			log.Debug ("Banning chat member " + userId + " in room " + roomId);
+			steamFriends.BanChatMember (new SteamID (roomId), new SteamID (userId));
+		}
+
+		public void UnbanChatMember (ulong roomId, ulong userId)
+		{
+			log.Debug ("Unbanning chat member " + userId + " in room " + roomId);
+			steamFriends.UnbanChatMember (new SteamID (roomId), new SteamID (userId));
 		}
 
 		#endregion

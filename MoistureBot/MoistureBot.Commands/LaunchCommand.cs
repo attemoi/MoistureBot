@@ -81,7 +81,7 @@ namespace MoistureBot.Commands
 			if (joinFavs) {
 				foreach(KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms() ) {
 					log.Info ("Joining chat room '"+ fav.Key +"' ["+fav.Value+"]" );
-					bot.JoinChat (fav.Value);
+					bot.JoinChatRoom (fav.Value);
 				}
 			}
 

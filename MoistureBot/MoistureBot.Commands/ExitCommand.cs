@@ -40,9 +40,8 @@ namespace MoistureBot.Commands
 				WriteHelp ();
 				return false;
 			}
-			log.Info ("Disconnecting from Steam");
+			log.Info ("Disconnecting from Steam...");
 			bot.Disconnect ();
-			Thread.Sleep (500);
 			bot.Terminate ();
 			log.Info ("Exiting program...");
 			return true;
