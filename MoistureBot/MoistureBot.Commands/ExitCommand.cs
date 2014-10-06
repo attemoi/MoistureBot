@@ -32,7 +32,7 @@ namespace MoistureBot.Commands
 
 		public bool Execute(IMoistureBot bot)
 		{
-			log.Debug ("Executing command: exit");
+			log.Debug ("Executing command...");
 
 			options.Parse (Args);
 
@@ -40,10 +40,11 @@ namespace MoistureBot.Commands
 				WriteHelp ();
 				return false;
 			}
-
+			log.Info ("Disconnecting from Steam");
 			bot.Disconnect ();
-			bot.BlockUntilDisconnected ();
-
+			Thread.Sleep (500);
+			bot.Terminate ();
+			log.Info ("Exiting program...");
 			return true;
 		}
 	}

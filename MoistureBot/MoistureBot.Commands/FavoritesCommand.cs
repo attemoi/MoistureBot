@@ -20,7 +20,6 @@ namespace MoistureBot.Commands
 		private bool list;
 
 		public FavoritesCommand() {
-
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
 					v => help = v != null },
@@ -42,7 +41,7 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 
-			log.Debug ("Executing command: favorites");
+			log.Debug ("Executing command...");
 		
 			List<string> extra = options.Parse (Args);
 
@@ -51,7 +50,7 @@ namespace MoistureBot.Commands
 				return false;
 			}
 
-			if (list) {
+			if (list || extra.Count == 0) {
 
 				var favUsers = new MoistureBotConfig ().GetFavoriteUsers ();
 				var favRooms = new MoistureBotConfig ().GetFavoriteChatRooms ();
@@ -66,10 +65,7 @@ namespace MoistureBot.Commands
 				WriteDict (favUsers);
 				return false;
 			}
-			if (extra.Count == 0) {
-				WriteHelp ();
-				return false;
-			}
+
 			if (extra.Count < 2) {
 				log.Info ("Invalid number of parameters. Type 'favorites -h' for help'");
 				return false;

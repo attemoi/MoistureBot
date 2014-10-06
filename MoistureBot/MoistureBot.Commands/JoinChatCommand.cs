@@ -39,7 +39,7 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 
-			log.Debug ("Executing command: join");
+			log.Debug ("Executing command...");
 
 			List<string> extra = options.Parse(Args);
 

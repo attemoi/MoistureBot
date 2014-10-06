@@ -33,7 +33,7 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 
-			log.Debug ("Executing command: status");
+			log.Debug ("Executing command...");
 
 			options.Parse(Args);
 
@@ -45,7 +45,7 @@ namespace MoistureBot.Commands
 			Console.WriteLine ();
 			Console.WriteLine ("Connection status:");
 			Console.WriteLine ();
-			Console.WriteLine(bot.IsConnected () ? "  ONLINE" : "  OFFLINE");
+			Console.WriteLine(bot.IsConnected () ? "  Logged in as " + bot.User : "  Offline");
 			Console.WriteLine ();
 			Console.WriteLine ("Active chatrooms: ");
 			Console.WriteLine ();

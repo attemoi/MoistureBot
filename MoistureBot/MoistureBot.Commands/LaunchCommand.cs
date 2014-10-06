@@ -46,7 +46,7 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 		
-			log.Debug ("Executing launch command");
+			log.Debug ("Executing command...");
 
 			List<string> extra = options.Parse (Args);
 
@@ -72,8 +72,9 @@ namespace MoistureBot.Commands
 					pass = Console.ReadLine ();
 				}
 
+				log.Info("Logging in as " + user + "...");
+				log.Info("Type 'status' to see bot status.");
 				bot.Connect (user, pass);
-				bot.BlockUntilConnected ();
 
 			}
 

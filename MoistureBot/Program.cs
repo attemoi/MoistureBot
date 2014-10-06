@@ -10,6 +10,7 @@ using Mono.Options;
 using System.Threading;
 using MoistureBot.Commands;
 using MoistureBot.Config;
+using MoistureBot.Logging;
 
 
 
@@ -31,7 +32,9 @@ namespace MoistureBot
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		public static ChatBot Bot { get; set; }
+		private static readonly IAddinLogger addinLogger = new AddinLogger();
+
+		public static Core Bot { get; set; }
 
 		static void Run(string[] args)
 		{
@@ -50,7 +53,7 @@ namespace MoistureBot
 			if (!config.ConfigExists())
 				config.CreateConfig ();
 
-			Bot = new ChatBot ();
+			Bot = new Core ();
 
 			var launchCmd = new LaunchCommand ();
 			launchCmd.Args = args;
@@ -69,10 +72,12 @@ namespace MoistureBot
 			foreach (IChatRoomAddin addin in AddinManager.GetExtensionObjects<IChatRoomAddin> ())
 			{
 				addin.Bot = Bot;
+				addin.Logger = addinLogger;
 			}
 			foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
 			{
 				addin.Bot = Bot;
+				addin.Logger = addinLogger;
 			}
 		}
 

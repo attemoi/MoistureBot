@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{89473D51-D556-4742-A560-8FEA79AAB641}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>moisturebot</RootNamespace>
+    <RootNamespace>MoistureBot</RootNamespace>
     <AssemblyName>MoistureBot</AssemblyName>
     <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
@@ -66,8 +66,9 @@
     <Compile Include="MoistureBot.Commands\ICommand.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="MoistureBot.Config\MoistureBotConfig.cs" />
-    <Compile Include="ChatBot.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="MoistureBot.Logging\AddinLogger.cs" />
+    <Compile Include="Core.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -83,5 +84,6 @@
   <ItemGroup>
     <Folder Include="MoistureBot.Commands\" />
     <Folder Include="MoistureBot.Config\" />
+    <Folder Include="MoistureBot.Logging\" />
   </ItemGroup>
 </Project>

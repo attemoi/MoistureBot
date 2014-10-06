@@ -37,7 +37,7 @@ namespace MoistureBot.Commands
 		public bool Execute (IMoistureBot bot)
 		{
 
-			log.Debug ("Executing command: msg");
+			log.Debug ("Executing command...");
 		
 			List<string> extra = options.Parse(Args);
 

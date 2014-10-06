@@ -11,29 +11,31 @@ using IniParser.Model;
 namespace MoistureBot
 {
 
-	public class ChatBot : IMoistureBot
+	public class Core : IMoistureBot
 	{
 
 		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 	
+		private volatile bool terminated;
+
 		private SteamClient steamClient;
 		private CallbackManager manager;
 
 		private SteamUser steamUser;
 		private SteamFriends steamFriends;
 
-		private static EventWaitHandle _connectWaitHandle = new AutoResetEvent (false);
-		private static EventWaitHandle _disconnectWaitHandle = new AutoResetEvent (false);
-
 		private bool isRunning;
 
 		// Bot properties
 		private string user;
+
+		public string User { get { return user; } }
+
 		private string pass;
 		private List<ulong> activeChatRooms = new List<ulong> ();
 
-		public ChatBot ()
+		public Core ()
 		{
 
 			// create our steamclient instance
@@ -67,7 +69,7 @@ namespace MoistureBot
 
 		public void Connect(string username, string password)
 		{
-			log.Info( "Connecting to Steam..." );
+			log.Debug ("Connecting user " + username + " to steam");
 			this.user = username;
 			this.pass = password;
 			steamClient.Connect();
@@ -76,6 +78,7 @@ namespace MoistureBot
 
 		private void Start ()
 		{
+
 			Thread t = new Thread( CallbackWaitThread );
 
 			try
@@ -94,11 +97,10 @@ namespace MoistureBot
 
 		private void CallbackWaitThread()
 		{
-			isRunning = true;
-			while ( isRunning )
+			while ( !terminated )
 			{
 				try {
-					manager.RunWaitCallbacks( TimeSpan.FromSeconds( 5 ) );
+					manager.RunWaitCallbacks();
 				} catch (InvalidOperationException e)  {
 					// There is probably a bug in SteamKit2 causing this exception sometimes when connecting
 					// TODO: might even want to disable logging on this one
@@ -111,6 +113,7 @@ namespace MoistureBot
 
 		public void Disconnect()
 		{
+			log.Debug ("Disconnecting client...");
 			steamClient.Disconnect();
 		}
 
@@ -119,14 +122,12 @@ namespace MoistureBot
 		{
 			if ( callback.Result != EResult.OK )
 			{
-				Console.WriteLine( "Unable to connect to Steam: {0}", callback.Result );
-				_connectWaitHandle.Set ();
-				BlockUntilDisconnected ();
+				log.Debug( "Unable to connect to Steam: " + callback.Result.ToString() );
 				return;
 			}
 
-			log.Info ("Connected to Steam!");
-			log.Info( "Logging in '" + user + "'..." );
+			log.Debug ("Connected to Steam!");
+			log.Debug( "Logging in '" + user + "'..." );
 
 			steamUser.LogOn( new SteamUser.LogOnDetails
 			{
@@ -146,8 +147,8 @@ namespace MoistureBot
 
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
-			log.Info( "Disconnected from Steam" );
-			_disconnectWaitHandle.Set ();
+			log.Debug( "Disconnected from Steam" );
+
 		}
 
 		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
@@ -161,20 +162,15 @@ namespace MoistureBot
 					// then the account we're logging into is SteamGuard protected
 					// see sample 6 for how SteamGuard can be handled
 
-					log.Info( "Unable to logon to Steam: This account is SteamGuard protected." );
-					_connectWaitHandle.Set ();
-					BlockUntilDisconnected ();
+					log.Debug( "Unable to logon to Steam: This account is SteamGuard protected." );
 					return;
 				}
 					
-				log.Info( "Unable to logon to Steam: " + callback.ExtendedResult );
-				_connectWaitHandle.Set ();
-				BlockUntilDisconnected ();
+				log.Debug( "Unable to logon to Steam: " + callback.ExtendedResult );
 				return;
 			}
 		
-			log.Info( "Successfully logged on!" );
-			_connectWaitHandle.Set ();
+			log.Debug( "Successfully logged on!" );
 
 		}
 
@@ -191,8 +187,6 @@ namespace MoistureBot
 			}
 				
 		}
-
-
 
 		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
 		{
@@ -301,22 +295,9 @@ namespace MoistureBot
 			return activeChatRooms;
 		}
 
-		public void BlockUntilConnected() {
-			log.Debug ("Blocking bot until connected");
-			if (IsConnected())
-				return;
-
-			_connectWaitHandle.WaitOne();
-			log.Debug ("Bot connected, releasing block");
-		}
-
-		public void BlockUntilDisconnected() {
-			log.Debug ("Blocking bot until disconnected");
-			if (!IsConnected())
-				return;
-
-			_disconnectWaitHandle.WaitOne();
-			log.Debug ("Bot disconnected, releasing block");
+		public void Terminate ()
+		{
+			terminated = true;
 		}
 
 		#endregion
