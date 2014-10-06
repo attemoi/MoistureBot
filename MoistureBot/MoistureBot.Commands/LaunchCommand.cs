@@ -35,8 +35,8 @@ namespace MoistureBot.Commands
 				"Extensible chat bot for Steam." + Environment.NewLine +
 				"  Please note that in order to send messages, a steam user needs to have" + Environment.NewLine +
 				"  at least one game in their library (Steam requirement).", 
-				"moisture-bot [OPTIONS]+" + Environment.NewLine +
-				"  moisture-bot [OPTIONS]+ [<username> [<password>]]", 
+				"MoistureBot [OPTIONS]+" + Environment.NewLine +
+				"  MoistureBot [OPTIONS]+ [<username> [<password>]]", 
 				options);
 		}
 

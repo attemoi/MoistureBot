@@ -47,7 +47,7 @@ namespace MoistureBot
 
 			if (msg != null && !msg.Equals("") ){
 				// TODO log message
-				// Console.WriteLine ("moikkaaja: Greeting received, replying");
+				// Console.WriteLine ("Moikkaaja: Greeting received, replying");
 				msg += " " + Bot.GetUserName(message.ChatterId) + "!";
 			}
 

@@ -6,7 +6,7 @@
     <ProjectGuid>{89473D51-D556-4742-A560-8FEA79AAB641}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>moisturebot</RootNamespace>
-    <AssemblyName>moisture-bot</AssemblyName>
+    <AssemblyName>MoistureBot</AssemblyName>
     <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -71,7 +71,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\moisture-bot-lib\MoistureBotLib.csproj">
+    <ProjectReference Include="..\MoistureBotLib\MoistureBotLib.csproj">
       <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
       <Name>MoistureBotLib</Name>
     </ProjectReference>

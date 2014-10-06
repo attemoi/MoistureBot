@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle ("moisture-bot-lib")]
+[assembly: AssemblyTitle ("MoistureBot")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("Atte")]
+[assembly: AssemblyCopyright ("ammoi_000")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 

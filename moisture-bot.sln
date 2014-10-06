@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBot", "moisture-bot\MoistureBot.csproj", "{89473D51-D556-4742-A560-8FEA79AAB641}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBot", "MoistureBot\MoistureBot.csproj", "{89473D51-D556-4742-A560-8FEA79AAB641}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "addons", "addons", "{23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "moikkaaja", "moikkaaja\moikkaaja.csproj", "{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moikkaaja", "Moikkaaja\Moikkaaja.csproj", "{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBotLib", "moisture-bot-lib\MoistureBotLib.csproj", "{559877FE-43FB-46A5-897E-978078951010}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBotLib", "MoistureBotLib\MoistureBotLib.csproj", "{559877FE-43FB-46A5-897E-978078951010}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +32,7 @@ Global
 		{9ADEFAF8-ECAF-417B-A489-A47BF5C65653} = {23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = moisture-bot\MoistureBot.csproj
+		StartupItem = MoistureBot\MoistureBot.csproj
+		outputpath = ..\MoistureBot\build\bin
 	EndGlobalSection
 EndGlobal

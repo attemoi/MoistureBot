@@ -61,9 +61,7 @@ namespace MoistureBot.Commands
 					Console.WriteLine ("  {0} {1}", addin.Name, addin.Version);
 				}
 			}
-
-
-			Console.WriteLine ();
+				
 			return false;
 		}
 	}

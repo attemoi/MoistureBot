@@ -10,7 +10,7 @@ namespace MoistureBot.Config
 	public class MoistureBotConfig : IConfig
 	{
 
-		private const string FILENAME = "moisture-bot.ini";
+		private const string FILENAME = "MoistureBot.ini";
 		private System.Text.Encoding ENCODING = System.Text.Encoding.UTF8;
 
 		private static readonly object iniLock = new object();

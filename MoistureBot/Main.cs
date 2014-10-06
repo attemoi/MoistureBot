@@ -17,7 +17,7 @@ using MoistureBot.Config;
 [assembly:AddinName("MoistureBot")]
 [assembly:AddinUrl("") ]
 
-[assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
+[assembly:ImportAddinAssembly("MoistureBotLib.dll")]
 
 namespace MoistureBot
 {
