@@ -23,7 +23,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"print help for a command.", 
+				"Print help for a command.", 
 				"help <command_name>",
 				options);
 		}

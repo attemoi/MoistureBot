@@ -30,7 +30,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"manage favorite rooms and users", 
+				"Manage favorite rooms and users.", 
 				"favorites -list" + Environment.NewLine +
 				"  favorites add user/room <key> <id>" + Environment.NewLine +
 				"  favorites remove user/room <key>" + Environment.NewLine +
@@ -159,7 +159,7 @@ namespace moisturebot.commands
 
 		private void WriteDict(Dictionary<string, ulong> dict) {
 			if (dict.Count == 0) {
-				Console.WriteLine ("  -- No favorites added --");
+				Console.WriteLine ("  -- no favorites added --");
 				return;
 			}
 

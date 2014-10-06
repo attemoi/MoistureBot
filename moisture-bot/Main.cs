@@ -24,14 +24,6 @@ namespace moisturebot
 
 		static void Run(string[] args)
 		{
-
-			Bot = new MoistureBot ();
-
-			var launchCmd = new LaunchCommand ();
-			launchCmd.Args = args;
-			if (launchCmd.Execute (Bot)) {
-				return;
-			}
 				
 			var config = new MoistureBotConfig ();
 			if (!config.ConfigExists())
@@ -46,7 +38,15 @@ namespace moisturebot
 			AddinManager.Initialize (".", ".", "./addins");
 			AddinManager.Registry.Update ();
 
+			Bot = new MoistureBot ();
+
 			InitAddins ();
+
+			var launchCmd = new LaunchCommand ();
+			launchCmd.Args = args;
+			if (launchCmd.Execute (Bot)) {
+				return;
+			}
 
 			HandleConsoleInput ();
 

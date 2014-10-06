@@ -27,7 +27,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"join chat rooms", 
+				"Join chat rooms.", 
 				"join <chat_id|favorite_key>" + Environment.NewLine +
 				"  join -favorites",
 				options);

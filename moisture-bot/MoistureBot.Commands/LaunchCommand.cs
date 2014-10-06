@@ -1,6 +1,8 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
+using moisturebot.config;
+using System.Linq;
 
 namespace moisturebot.commands
 {
@@ -13,48 +15,67 @@ namespace moisturebot.commands
 
 		private bool help;
 		private bool connect;
+		private bool joinFavs;
 		private string user;
 		private string pass;
 
 		public LaunchCommand() {
 			options = new OptionSet () {
 				{ "h|help", "show this message", 
-					h => help = h != null },
-				{ "c|connect", "Connect on start and join favourite rooms" ,
-					c => connect = c != null},
-				{ "u=|username=", "login username" ,
-					u => user = u},
-				{ "p=|password=", "login password" ,
-					p => pass = p}
+					v => help = v != null },
+				{ "c|connect", "Connect to Steam on launch." ,
+					v => connect = v != null},
+				{ "j|join-favorites", "Join favourite rooms on launch" ,
+					v => joinFavs = v != null},
 			};
 		}
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp (
-				"Spectacular Steam chat bot", 
+				"Extensible chat bot for Steam." + Environment.NewLine +
+				"  Please note that in order to send messages, a steam user needs to have" + Environment.NewLine +
+				"  at least one game in their library (Steam requirement).", 
 				"moisture-bot [OPTIONS]+" + Environment.NewLine +
-				"  moisture-bot -connect -u <username> -p <password>", 
+				"  moisture-bot [OPTIONS]+ [<username> [<password>]]", 
 				options);
 		}
 
 		public bool Execute (IMoistureBot bot)
 		{
 		
-			options.Parse (Args);
+			List<string> extra = options.Parse (Args);
 
 			if (help) {
 				WriteHelp ();
 				return true;
 			}
 				
-			if (connect) {
-				if (!String.IsNullOrEmpty (user) && !String.IsNullOrEmpty(pass)) {
-					bot.Connect (user, pass);
-					bot.BlockUntilConnected ();
-					return false;
-				} else {
-					Console.Write ("Missing user information for autoconnect.");
-					return true;
+			if (connect || joinFavs) {
+
+				if (extra.Count > 0)
+					user = extra.First ();
+				if (extra.Count > 1)
+					pass = extra.ElementAt (1);
+					
+				if (user == null) {
+					Console.WriteLine();
+					Console.Write ("username:");
+					user = Console.ReadLine ();
+				}
+				if (pass == null) {
+					Console.Write ("password:");
+					pass = Console.ReadLine ();
+				}
+
+				bot.Connect (user, pass);
+				bot.BlockUntilConnected ();
+
+			}
+
+			if (joinFavs) {
+				foreach(KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms() ) {
+					Console.WriteLine ("Joining chat room '{0}' [{1}]", fav.Key, fav.Value );
+					bot.JoinChat (fav.Value);
 				}
 			}
 

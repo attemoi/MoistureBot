@@ -37,11 +37,19 @@ namespace moisturebot
 			}
 				
 			Console.WriteLine ();
-			Console.WriteLine ("Connection status: {0}", bot.IsConnected () ? "online" : "offline");
+			Console.WriteLine ("Connection status:");
 			Console.WriteLine ();
+			Console.WriteLine(bot.IsConnected () ? "  ONLINE" : "  OFFLINE");
+			Console.WriteLine ();
+			Console.WriteLine ("Active chatrooms: ");
+			Console.WriteLine ();
+			var activeRooms = bot.GetActiveChatRooms ();
+			if (activeRooms.Count == 0) {
+				Console.WriteLine ("  -- no active chatrooms --");
+			} else {
+				activeRooms.ForEach( id => Console.WriteLine("  " + id));
+			}
 
-			Console.Write ("Active chatrooms: ");
-			bot.GetActiveChatRooms().ForEach( id => Console.WriteLine("                  " + id));
 			Console.WriteLine ();
 			return false;
 		}

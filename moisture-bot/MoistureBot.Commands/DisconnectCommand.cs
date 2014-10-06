@@ -20,7 +20,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"sign out and disconnect from Steam", 
+				"Sign out and disconnect from Steam.", 
 				"disconnect",
 				options);
 		}

@@ -23,7 +23,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"connect and sign in to Steam", 
+				"Connect and sign in to Steam.", 
 				"connect [<username> [<password>]]",
 				options);
 		}

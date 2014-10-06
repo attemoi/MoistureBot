@@ -22,7 +22,7 @@ namespace moisturebot.commands
 
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
-				"shut down bot and exit program", 
+				"Disconnect bot from Steam and exit program.", 
 				"exit",
 				options);
 		}
