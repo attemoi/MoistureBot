@@ -11,7 +11,12 @@ using System.Threading;
 using moisturebot.commands;
 using moisturebot.config;
 
-[assembly:AddinRoot ("moisturebot", "1.0")]
+[assembly:AddinRoot ("MoistureBot", "1.0.0")]
+[assembly:AddinAuthor ("Atte Moisio")]
+[assembly:AddinDescription ("Extensible chat bot for Steam.")]
+[assembly:AddinName("MoistureBot")]
+[assembly:AddinUrl("") ]
+
 [assembly:ImportAddinAssembly("moisture-bot-lib.dll")]
 
 namespace moisturebot
