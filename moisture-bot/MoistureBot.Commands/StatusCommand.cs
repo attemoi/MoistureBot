@@ -1,6 +1,7 @@
 ﻿using System;
 using Mono.Options;
 using System.Collections.Generic;
+using Mono.Addins;
 
 namespace moisturebot
 {
@@ -49,6 +50,18 @@ namespace moisturebot
 			} else {
 				activeRooms.ForEach( id => Console.WriteLine("  " + id));
 			}
+			Console.WriteLine ();
+			Console.WriteLine ("Registered addins:");
+			Console.WriteLine ();
+			var addins = AddinManager.Registry.GetAddins ();
+			if (addins.Length == 0) {
+				Console.WriteLine ("  -- no addins registered --");
+			} else {
+				foreach (Addin addin in addins) {
+					Console.WriteLine ("  {0} {1}", addin.Name, addin.Version);
+				}
+			}
+
 
 			Console.WriteLine ();
 			return false;
