@@ -2,6 +2,7 @@
 using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
+using MoistureBot;
 
 namespace MoistureBot.Commands
 {
@@ -45,7 +46,15 @@ namespace MoistureBot.Commands
 			Console.WriteLine ();
 			Console.WriteLine ("Connection status:");
 			Console.WriteLine ();
-			Console.WriteLine(bot.IsConnected () ? "  Logged in as " + bot.User : "  Offline");
+			string status = StringEnum.GetValue<StringAttribute> (bot.GetOnlineStatus());
+			if (bot.IsConnected ()) {
+				Console.WriteLine ("  logged on as {0}", bot.User);
+				Console.WriteLine ("  online status: {0}", status);
+			} else {
+				Console.WriteLine ("  not connected");
+				Console.WriteLine ("  online status set to {0}", status);
+			}
+
 			Console.WriteLine ();
 			Console.WriteLine ("Active chatrooms: ");
 			Console.WriteLine ();

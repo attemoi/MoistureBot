@@ -15,7 +15,7 @@ namespace MoistureBot.Config
 			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private static string SECTION_FAVORITE_USERS = "favorite_users";
-		private static string SECTION_FAVORITE_ROOMS = "favorite_users";
+		private static string SECTION_FAVORITE_ROOMS = "favorite_rooms";
 
 		private const string FILENAME = "MoistureBot.ini";
 		private System.Text.Encoding ENCODING = System.Text.Encoding.UTF8;
@@ -83,7 +83,7 @@ namespace MoistureBot.Config
 
 			SetSetting (
 				ConfigSetting.STATUS, 
-				StringEnum.GetValue<StringAttribute> (PersonaState.ONLINE));
+				StringEnum.GetValue<StringAttribute> (OnlineStatus.ONLINE));
 		}
 
 		public void ResetConfig ()

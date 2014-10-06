@@ -73,6 +73,9 @@ namespace MoistureBot.Commands
 				case "favorites":
 					new FavoritesCommand ().WriteHelp ();
 					break;
+				case "set":
+					new SetCommand ().WriteHelp ();
+					break;
 				default:
 					if (String.IsNullOrWhiteSpace (command))
 						Console.WriteLine ("Unknown command: '{0}'", command);
@@ -87,6 +90,7 @@ namespace MoistureBot.Commands
 				Console.WriteLine ("  help <command>                      - show help for a specific command");
 				Console.WriteLine ("  status                              - show bot status");
 				Console.WriteLine ("  favorites [OPTIONS]+                - manage favorite rooms and users");
+				Console.WriteLine ("  set [OPTIONS]+                      - manage bot variables");
 				Console.WriteLine ("  connect [<username> [<password>]]   - connect and log on to Steam");
 				Console.WriteLine ("  disconnect                          - disconnect from steam");
 				Console.WriteLine ("  join <chatid>                       - join chat room");

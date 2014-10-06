@@ -72,27 +72,39 @@ namespace MoistureBot
 
 		void ChatActionResultCallback (SteamFriends.ChatActionResultCallback obj)
 		{
+
 			switch (obj.Action) {
 			case EChatAction.Ban:
-				// TODO: extension point
-				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") banned from " + obj.ChatRoomID.ConvertToUInt64() );
+				if (obj.Result != EChatActionResult.Success)
+					log.Debug ("User " + obj.ChatterID.ConvertToUInt64 () + " banned from " + obj.ChatRoomID.ConvertToUInt64 ());
+				else
+					log.Debug ("Failed to ban user: " + obj.Result);
 				break;
 			case EChatAction.Kick:
-				// TODO: extension point
-				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") kicked from " + obj.ChatRoomID.ConvertToUInt64() );
+				if (obj.Result != EChatActionResult.Success)
+					log.Debug ("User " + obj.ChatterID.ConvertToUInt64 () + " kicked from " + obj.ChatRoomID.ConvertToUInt64 ());
+				else
+					log.Debug ("Failed to kick user: " + obj.Result);
 				break;
 			case EChatAction.CloseChat:
-				// TODO: extension point
-				log.Debug("Chat room " + obj.ChatRoomID.ConvertToUInt64() + " closed.");
-				activeChatRooms.Remove( obj.ChatRoomID.ConvertToUInt64() );
+				if (obj.Result != EChatActionResult.Success) {
+					log.Debug ("Chat room " + obj.ChatRoomID.ConvertToUInt64 () + " closed.");
+					activeChatRooms.Remove (obj.ChatRoomID.ConvertToUInt64 ());
+				} else {
+					log.Debug ("Failed to close chat room: " + obj.Result);
+				}
 				break;
 			case EChatAction.InviteChat:
-				// TODO: extension point
-				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") invited to " + obj.ChatRoomID.ConvertToUInt64() );
+				if (obj.Result != EChatActionResult.Success)
+					log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " invited to " + obj.ChatRoomID.ConvertToUInt64() );
+				else
+					log.Debug ("Failed to close invite user: " + obj.Result);
 				break;
 			case EChatAction.UnBan:
-				// TODO: extension point
-				log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " (" + GetUserName(obj.ChatterID) +") unbanned from " + obj.ChatRoomID.ConvertToUInt64() );
+				if (obj.Result != EChatActionResult.Success)
+					log.Debug("User " + obj.ChatterID.ConvertToUInt64() + " unbanned from " + obj.ChatRoomID.ConvertToUInt64() );
+				else
+					log.Debug ("Failed to unban user: " + obj.Result);
 				break;
 			} 
 		}
@@ -180,8 +192,8 @@ namespace MoistureBot
 			// before being able to interact with friends, you must wait for the account info callback
 			// this callback is posted shortly after a successful logon
 
-			// at this point, we can set persona status
-			log.Debug ("Reading persona state from config file");
+			// at this point, we can set online status
+			log.Debug ("Reading online status from config file");
 
 			var config = new MoistureBotConfig ();
 
@@ -189,83 +201,93 @@ namespace MoistureBot
 			try {
 				configState = config.GetSetting (ConfigSetting.STATUS);
 			} catch (Exception e) {
-				log.Error("Failed to read persona status from config file", e);
+				log.Error("Failed to read online status from config file", e);
 				return;
 			}
 
-			SetPersonaState (configState);
+			try {
+				SetOnlineStatus (configState);
+			} catch (ArgumentException e) {
+				log.Debug ("Invalid value for online status in config, setting to default value");
+				// TODO: invalid value in config, fix to default
+			}
 
 		}
 
-		private void SetPersonaState(String str) {
+		public void SetOnlineStatus(string status) {
 
-			if (str == null)
-				SetPersonaState (PersonaState.OFFLINE);
+			if (status == null)
+				throw new ArgumentException ("Invalid status");
 
-			foreach (PersonaState ps in Enum.GetValues(typeof(PersonaState))) {
-				var strValue = StringEnum.GetValue<StringAttribute> (ps);
-				if (str.Equals(strValue)) {
-					SetPersonaState (ps);
+			foreach (OnlineStatus ps in Enum.GetValues(typeof(OnlineStatus))) {
+				var str = StringEnum.GetValue<StringAttribute> (ps);
+				if (status.Equals(str)) {
+					SetOnlineStatus (ps);
 					return;
 				}
 			}
+
+			throw new ArgumentException ("Invalid status");
 		}
 
-		public PersonaState GetPersonaState () {
+		public OnlineStatus GetOnlineStatus () {
 			var state = steamFriends.GetPersonaState ();
 			switch (state) {
 			case EPersonaState.Away:
-				return PersonaState.AWAY;
+				return OnlineStatus.AWAY;
 			case EPersonaState.Busy:
-				return PersonaState.BUSY;
+				return OnlineStatus.BUSY;
 			case EPersonaState.LookingToPlay:
-				return PersonaState.LOOKING_TO_PLAY;
+				return OnlineStatus.LOOKING_TO_PLAY;
 			case EPersonaState.LookingToTrade:
-				return PersonaState.LOOKING_TO_TRADE;
+				return OnlineStatus.LOOKING_TO_TRADE;
 			case EPersonaState.Offline:
-				return PersonaState.OFFLINE;
+				return OnlineStatus.OFFLINE;
 			case EPersonaState.Online:
-				return PersonaState.ONLINE;
+				return OnlineStatus.ONLINE;
 			case EPersonaState.Snooze:
-				return PersonaState.SNOOZE;
+				return OnlineStatus.SNOOZE;
 			default:
-				return PersonaState.OFFLINE;
+				return OnlineStatus.OFFLINE;
 			}
 		}
 
-		public void SetPersonaState(PersonaState state) {
+		public void SetOnlineStatus(OnlineStatus status) {
 
-			log.Debug ("Setting persona state to " + state);
+			log.Debug ("Setting online status to " + status);
 
-			switch (state) {
-			case PersonaState.AWAY:
+			switch (status) {
+			case OnlineStatus.AWAY:
 				steamFriends.SetPersonaState (EPersonaState.Away);
 				break;
-			case PersonaState.BUSY:
+			case OnlineStatus.BUSY:
 				steamFriends.SetPersonaState( EPersonaState.Busy );
 				break;
-			case PersonaState.LOOKING_TO_PLAY:
+			case OnlineStatus.LOOKING_TO_PLAY:
 				steamFriends.SetPersonaState( EPersonaState.LookingToPlay );
 				break;
-			case PersonaState.LOOKING_TO_TRADE:
+			case OnlineStatus.LOOKING_TO_TRADE:
 				steamFriends.SetPersonaState( EPersonaState.LookingToTrade );
 				break;
-			case PersonaState.OFFLINE:
+			case OnlineStatus.OFFLINE:
 				steamFriends.SetPersonaState( EPersonaState.Offline );
 				break;
-			case PersonaState.ONLINE:
+			case OnlineStatus.ONLINE:
 				steamFriends.SetPersonaState( EPersonaState.Online );
 				break;
-			case PersonaState.SNOOZE:
+			case OnlineStatus.SNOOZE:
 				steamFriends.SetPersonaState( EPersonaState.Snooze );
 				break;
 			}
+
+			new MoistureBotConfig().SetSetting(
+				ConfigSetting.STATUS,
+				StringEnum.GetValue<StringAttribute>(status));
 		}
 
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
 			log.Debug( "Disconnected from Steam" );
-			SetPersonaState (PersonaState.ONLINE);
 		}
 
 		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
@@ -312,7 +334,6 @@ namespace MoistureBot
 
 		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
 		{
-
 			string message = callback.Message;
 			ulong chatterId = callback.ChatterID.ConvertToUInt64();
 			ulong chatId = callback.ChatRoomID.ConvertToUInt64();
@@ -330,10 +351,22 @@ namespace MoistureBot
 				}
 				break;
 			case EChatEntryType.LeftConversation:
-				log.Debug (GetUserName (chatterId) + " left " + chatId);
+				log.Debug (chatterId + " left " + chatId);
 				break;
 			case EChatEntryType.Disconnected:
-				log.Debug (GetUserName (chatterId) + " disconnected from " + chatId);
+				log.Debug (chatterId + " disconnected from " + chatId);
+				break;
+			case EChatEntryType.WasBanned:
+				log.Debug (chatterId + " was banned from " + chatId);
+				break;
+			case EChatEntryType.WasKicked:
+				log.Debug (chatterId + " was kicked from " + chatId);
+				break;
+			case EChatEntryType.LobbyGameStart:
+				log.Debug (chatterId + " started game " + chatId);
+				break;
+			case EChatEntryType.Entered:
+				log.Debug (chatterId + " entered room " + chatId);
 				break;
 			}
 
@@ -347,7 +380,7 @@ namespace MoistureBot
 
 			switch (callback.EntryType) {
 			case EChatEntryType.ChatMsg:
-				log.Debug("Received message from " + GetUserName(chatterId) + ": " + message);
+				log.Debug("Received message from " + chatterId + ": " + message);
 				foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
 				{
 					try {
@@ -358,7 +391,7 @@ namespace MoistureBot
 				}
 				break;
 			case EChatEntryType.InviteGame:
-				log.Debug ("Game invite received from " + GetUserName (chatterId));
+				log.Debug ("Game invite received from " + chatterId);
 				break;
 			}
 
@@ -366,8 +399,7 @@ namespace MoistureBot
 
 		private void ChatInviteCallback( SteamFriends.ChatInviteCallback callback )
 		{
-			log.Debug ("Received invite from " + GetUserName (callback.FriendChatID) );
-
+			log.Debug ("Received invite from " + callback.FriendChatID );
 			// TODO create extension point
 		}
 

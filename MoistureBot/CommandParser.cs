@@ -48,6 +48,9 @@ namespace MoistureBot
 			case "favorites":
 				command = new FavoritesCommand ();
 				break;
+			case "set":
+				command = new SetCommand ();
+				break;
 			}
 
 			if (command != null) {

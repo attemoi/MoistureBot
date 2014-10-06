@@ -68,6 +68,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="MoistureBot.Logging\AddinLogger.cs" />
     <Compile Include="Core.cs" />
+    <Compile Include="MoistureBot.Commands\SetCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
