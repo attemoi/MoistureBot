@@ -2,6 +2,7 @@
 using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
+using MoistureBot.Config;
 
 namespace MoistureBot.Commands
 {
@@ -29,8 +30,8 @@ namespace MoistureBot.Commands
 		public void WriteHelp() {
 			ConsoleUtils.WriteHelp(
 				"send message to user or room", 
-				"msg user <user_id> <message>" + Environment.NewLine +
-				"  msg room <room_id> <message>",
+				"msg user <user_id|favorite_key> <message>" + Environment.NewLine +
+				"  msg room <room_id|favorite_key> <message>",
 				options);
 		}
 
@@ -52,26 +53,64 @@ namespace MoistureBot.Commands
 			}
 
 			string target = extra.First ();
-			string chatId = extra.ElementAt (1);
+			string inputId = extra.ElementAt (1);
 			// get rest
 			string message = string.Join (" ", extra.Skip (2)).Trim ('\"');
 
-			ulong id;
-			try {
-				id = UInt64.Parse(chatId);
-			} catch {
-				log.Info ("Invalid chat id!");
-				return false;
-			}
-
 			switch (target) {
 			case "user":
-				log.Info ("Sending chat message to friend '"+id+"'...");
-				bot.SendChatMessage (message, id);
+				var favUserId = new MoistureBotConfig ().GetFavoriteUserId (inputId);
+				if (favUserId != null) {
+					ulong favId;
+					try {
+						favId = UInt64.Parse(favUserId);
+					} catch {
+						log.Info("Failed to send message: Invalid favorite id.");
+						return false;
+					}
+					log.Info ("Sending chat message to '" + favId + "'...");
+					bot.SendChatMessage (message, favId);
+					return false;
+				} 
+
+				ulong userId;
+				try {
+					userId = UInt64.Parse(inputId);
+				} catch {
+					log.Info ("Failed to send message to user: Invalid id!");
+					return false;
+				}
+
+				log.Info ("Sending chat message to user '" + inputId + "'...");
+				bot.SendChatMessage (message, userId);
+
 				return false;
 			case "room":
-				log.Info ("Sending chat message to room '"+id+"'...");
-				bot.SendChatRoomMessage (message, id);
+
+				var favRoomId = new MoistureBotConfig ().GetFavoriteChatRoomId (inputId);
+				if (favRoomId != null) {
+					ulong favId;
+					try {
+						favId = UInt64.Parse(favRoomId);
+					} catch {
+						log.Info("Failed to send message to favorite room: Invalid id!");
+						return false;
+					}
+					log.Info ("Sending chat message to room '" + favId + "'...");
+					bot.SendChatRoomMessage (message, favId);
+					return false;
+				} 
+
+				ulong roomId;
+				try {
+					roomId = UInt64.Parse(inputId);
+				} catch {
+					log.Info ("Failed to send message to room: Invalid id!");
+					return false;
+				}
+
+				log.Info ("Sending chat message to room '" + roomId + "'...");
+				bot.SendChatRoomMessage (message, roomId);
 				return false;
 			default:
 				WriteHelp ();

@@ -96,7 +96,6 @@ namespace MoistureBot.Commands
 				
 			return false;
 		}
-
 	}
 }
 
