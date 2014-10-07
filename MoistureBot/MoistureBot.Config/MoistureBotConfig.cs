@@ -57,11 +57,11 @@ namespace MoistureBot.Config
 		}
 
 		private string GetSection(ConfigSetting settings) {
-			return StringEnum.GetValue<SectionAttribute> (settings);
+			return EnumUtils.GetValue<SectionAttribute> (settings);
 		}
 
 		private string GetKey(ConfigSetting settings) {
-			return StringEnum.GetValue<KeyAttribute> (settings);
+			return EnumUtils.GetValue<KeyAttribute> (settings);
 		}
 
 		#region IConfig implementation
@@ -83,7 +83,7 @@ namespace MoistureBot.Config
 
 			SetSetting (
 				ConfigSetting.STATUS, 
-				StringEnum.GetValue<StringAttribute> (OnlineStatus.ONLINE));
+				EnumUtils.GetValue<StringAttribute> (OnlineStatus.ONLINE));
 		}
 
 		public void ResetConfig ()
@@ -139,84 +139,138 @@ namespace MoistureBot.Config
 			}
 			return dict;
 		}
-
-		public void AddFavoriteUser (string key, ulong userId)
+			
+		public bool AddFavoriteUser (string key, ulong userId)
 		{
+			log.Debug ("Adding favorite user: key '" + key + "' + id: '" + userId + "'");
+
 			var parser = getParser ();
 			var data = readData (parser);
+
+			CreateSectionIfNotExists (data, SECTION_FAVORITE_USERS);
+
+			if (data [SECTION_FAVORITE_USERS].ContainsKey (key))
+				return false;
+
 			data[SECTION_FAVORITE_USERS].AddKey (key, userId.ToString ());
-			writeData( data, parser );
-		}
-
-		public void AddFavoriteChatRoom (string key, ulong chatRoomId)
-		{
-			var parser = getParser ();
-			var data = readData (parser) ;
-			data[SECTION_FAVORITE_USERS].AddKey (key, chatRoomId.ToString ());
 			writeData (data, parser);
+			return true;
+
 		}
 
-		public void RemoveFavoriteUser (string key)
+		public bool AddFavoriteChatRoom (string key, ulong chatRoomId)
 		{
+			log.Debug ("Adding favorite room: key '" + key + "' + id: '" + chatRoomId + "'");
+
+			var parser = getParser ();
+			var data = readData (parser);
+
+			CreateSectionIfNotExists (data, SECTION_FAVORITE_ROOMS);
+
+			if (data [SECTION_FAVORITE_ROOMS].ContainsKey (key))
+				return false;
+
+			data[SECTION_FAVORITE_ROOMS].AddKey (key, chatRoomId.ToString ());
+			writeData (data, parser);
+			return true;
+		}
+
+		public bool RemoveFavoriteUser (string key)
+		{
+			log.Debug ("Removing favorite user with key '" + key + "'");
+
 			var parser = getParser ();
 			var data = readData (parser) ;
+
+			CreateSectionIfNotExists (data, SECTION_FAVORITE_USERS);
+
+			if (!data [SECTION_FAVORITE_USERS].ContainsKey (key))
+				return false;
+
 			data[SECTION_FAVORITE_USERS].RemoveKey (key);
-			writeData(data, parser);
+			writeData (data, parser);
+			return true;
 		}
 
-		public void RemoveFavoriteChatRoom (string key)
+		public bool RemoveFavoriteChatRoom (string key)
 		{
 			var parser = getParser ();
 			var data = readData (parser);
+
+			CreateSectionIfNotExists (data, SECTION_FAVORITE_ROOMS);
+
+			if (!data [SECTION_FAVORITE_ROOMS].ContainsKey (key))
+				return false;
+
 			data[SECTION_FAVORITE_ROOMS].RemoveKey (key);
-			writeData(data, parser);
+			writeData (data, parser);
+			return true;
 		}
 
 		public void SetSetting (ConfigSetting setting, string value)
 		{
+
+			var key = GetKey (setting);
+			var section = GetSection (setting);
+			log.Debug("Changing ini setting '" + key + "' in section '" + section + "'");
+
 			var parser = getParser ();
 			var data = readData (parser);
-			data[GetSection(setting)][GetKey(setting)] = value;
+
+			CreateSectionAndKeyIfNotExists (data, section, key);
+
+			log.Debug ("Setting ini setting value to '" + value + "'");
+			data[section][key] = value;
 			writeData(data, parser);
 		}
 
-		public string GetSetting (ConfigSetting setting)
-		{
-			return readData (getParser ()) [GetSection(setting)][GetKey(setting)];
+		private void CreateSectionIfNotExists(IniData data, string section) {
+			if (!data.Sections.ContainsSection (section)) {
+				log.Debug ("Section '" + section + "' doesn't exist, creating new...");
+				data.Sections.AddSection(section);
+			}
 		}
 
-		// TODO: limit generics
-		private string GetKey(Enum value)
-		{
-			string output = null;
-			Type type = value.GetType();
+		private void CreateSectionAndKeyIfNotExists(IniData data, string section, string key) {
 
-			FieldInfo fi = type.GetField(value.ToString());
-			KeyAttribute[] attrs =
-				fi.GetCustomAttributes(typeof(KeyAttribute),
-					false) as KeyAttribute[];
-			if (attrs.Length > 0)
-			{
-				output = attrs[0].Value;
+			CreateSectionIfNotExists (data, section);
+
+			if (!data [section].ContainsKey (key)) {
+				log.Debug ("Key '" + key + "' doesn't exist, creating new...");
+				data [section].AddKey (key);
 			}
-
-			return output;
+		}
+			
+		public string GetSetting (ConfigSetting setting)
+		{
+			var key = GetKey (setting);
+			var section = GetSection (setting);
+			log.Debug ("Reading ini setting '" + key + "' in section '" + section + "'");
+			var value = readData (getParser ()) [GetSection(setting)][GetKey(setting)];
+			log.Debug ("Found value '" + value + "'");
+			return value;
 		}
 			
 		public void RemoveAllFavoriteUsers ()
 		{
+			log.Debug ("Removing all favorite users...");
+
 			var parser = getParser ();
 			var data = readData (parser);
-			data.Sections.SetSectionData (SECTION_FAVORITE_USERS, new SectionData (SECTION_FAVORITE_ROOMS));
+			data.Sections.RemoveSection (SECTION_FAVORITE_USERS);
+			data.Sections.AddSection (SECTION_FAVORITE_USERS);
 			writeData(data, parser);
 		}
 
 		public void RemoveAllFavoriteChatRooms ()
 		{
+			log.Debug ("Removing all favorite chatrooms...");
+
 			var parser = getParser ();
 			var data = readData (parser);
-			data.Sections.SetSectionData (SECTION_FAVORITE_ROOMS, new SectionData (SECTION_FAVORITE_ROOMS));
-				writeData(data, parser);
+			data.Sections.RemoveSection (SECTION_FAVORITE_ROOMS);
+			data.Sections.AddSection (SECTION_FAVORITE_ROOMS);
+			writeData(data, parser);
 		}
 
 		public string GetFavoriteUserId (string key)

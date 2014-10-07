@@ -14,13 +14,13 @@ namespace MoistureBot.Config
 		Dictionary<string, ulong> GetFavoriteChatRooms();
 		string GetFavoriteChatRoomId(string key);
 
-		void AddFavoriteUser (string key, ulong userId);
-		void AddFavoriteChatRoom (string key, ulong chatRoomId);
+		bool AddFavoriteUser (string key, ulong userId);
+		bool AddFavoriteChatRoom (string key, ulong chatRoomId);
 
-		void RemoveFavoriteUser (string key);
+		bool RemoveFavoriteUser (string key);
 		void RemoveAllFavoriteUsers ();
 
-		void RemoveFavoriteChatRoom (string key);
+		bool RemoveFavoriteChatRoom (string key);
 		void RemoveAllFavoriteChatRooms ();
 
 		void SetSetting (ConfigSetting setting, string value);

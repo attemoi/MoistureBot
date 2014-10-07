@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace MoistureBot
 {
-	public static class StringEnum
+	public static class EnumUtils
 	{
 		public static string GetValue<T> (Enum value) where T : StringAttribute
 		{
@@ -21,6 +21,7 @@ namespace MoistureBot
 
 			return output;
 		}
+
 	}
 }
 

@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MoistureBotLib</RootNamespace>
     <AssemblyName>MoistureBotLib</AssemblyName>
+    <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,17 +48,19 @@
     <Compile Include="ExtensionPoints\IChatRoomAddin.cs" />
     <Compile Include="Favorite.cs" />
     <Compile Include="IAddinLogger.cs" />
-    <Compile Include="MoistureBotLib.Utils\StringAttribute.cs" />
-    <Compile Include="MoistureBotLib.Utils\StringEnum.cs" />
-    <Compile Include="MoistureBotLib.Enums\ConfigSetting.cs" />
-    <Compile Include="MoistureBotLib.Enums\OnlineStatus.cs" />
+    <Compile Include="MoistureBotLib.Enum\StringAttribute.cs" />
+    <Compile Include="MoistureBotLib.Enum\EnumUtils.cs" />
+    <Compile Include="MoistureBotLib.Enum\SectionAttribute.cs" />
+    <Compile Include="MoistureBotLib.Enum\KeyAttribute.cs" />
+    <Compile Include="MoistureBotLib.Enum\NameAttribute.cs" />
+    <Compile Include="ConfigSetting.cs" />
+    <Compile Include="OnlineStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
-    <Folder Include="MoistureBotLib.Utils\" />
-    <Folder Include="MoistureBotLib.Enums\" />
+    <Folder Include="MoistureBotLib.Enum\" />
   </ItemGroup>
 </Project>

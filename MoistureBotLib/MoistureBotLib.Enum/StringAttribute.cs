@@ -17,16 +17,6 @@ namespace MoistureBot
 			get { return _value; }
 		}
 	}
-
-	public class SectionAttribute : StringAttribute
-	{
-		public SectionAttribute (string name) : base (name) {}
-	}
-
-	public class KeyAttribute : StringAttribute
-	{
-		public KeyAttribute (string name) : base (name) {}
-	}
 		
 }
 

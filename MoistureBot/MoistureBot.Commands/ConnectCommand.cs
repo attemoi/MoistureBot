@@ -61,7 +61,7 @@ namespace MoistureBot.Commands
 			}
 
 			log.Info("Logging in as " + user + "...");
-			log.Info("Type 'status' to see bot status.");
+			Console.WriteLine("Type 'status' to see bot status.");
 			bot.Connect(user, pass);
 
 			return false;

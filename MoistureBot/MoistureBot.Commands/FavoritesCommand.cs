@@ -86,8 +86,11 @@ namespace MoistureBot.Commands
 					switch (type) {
 					case "user":
 						try {
-							new MoistureBotConfig ().AddFavoriteUser (key, UInt64.Parse (value));
-							log.Info ("Added user '" + key + "' to favorites");
+							if (new MoistureBotConfig ().AddFavoriteUser (key, UInt64.Parse (value))) {
+								log.Info ("Added user '" + key + "' to favorites.");
+							} else {
+								log.Info ("Failed to add favorite: Key '" + key + "' already exists.");
+							}
 						} catch (Exception e){
 							log.Error ("Failed to add favorite user", e);
 							Console.WriteLine ("Error while adding favorite. See log files for more details.");
@@ -95,8 +98,11 @@ namespace MoistureBot.Commands
 						break;
 					case "room":
 						try {
-							new MoistureBotConfig ().AddFavoriteChatRoom (key, UInt64.Parse (value));
-							log.Info("Added room '" + key + "' to favorites");
+							if (new MoistureBotConfig ().AddFavoriteChatRoom (key, UInt64.Parse (value))) {
+								log.Info("Added room '" + key + "' to favorites");
+							} else {
+								log.Info ("Failed to add favorite: Key '" + key + "' already exists.");
+							}
 						} catch (Exception e){
 							log.Error ("Failed to add favorite room", e);
 							Console.WriteLine ("Error while adding favorite. See log files for more details.");
@@ -122,8 +128,11 @@ namespace MoistureBot.Commands
 					switch (type) {
 					case "user":
 						try {
-							new MoistureBotConfig ().RemoveFavoriteUser (key);
-							log.Info("Removed user '" + key + "' from favorites");
+							if (new MoistureBotConfig ().RemoveFavoriteUser (key)) {
+								log.Info("Removed user '" + key + "' from favorites");
+							} else {
+								log.Info ("Favorite user with key '" + key + "' doesn't exist.");
+							}
 						} catch (Exception e){
 							log.Error ("Failed to remove favorite user", e);
 							Console.WriteLine ("Error while adding favorite. See log files for more details.");
@@ -131,8 +140,11 @@ namespace MoistureBot.Commands
 						break;
 					case "room":
 						try {
-							new MoistureBotConfig ().RemoveFavoriteChatRoom (key);
-							log.Info("Removed room '" + key + "' from favorites");
+							if (new MoistureBotConfig ().RemoveFavoriteChatRoom (key)) {
+								log.Info("Removed room '" + key + "' from favorites");
+							} else {
+								log.Info ("Favorite room with key '" + key + "' doesn't exist.");
+							}
 						} catch (Exception e){
 							log.Error ("Failed to remove favorite room", e);
 							Console.WriteLine ("Error while adding favorite. See log files for more details.");

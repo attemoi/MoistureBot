@@ -46,7 +46,7 @@ namespace MoistureBot.Commands
 			Console.WriteLine ();
 			Console.WriteLine ("Connection status:");
 			Console.WriteLine ();
-			string status = StringEnum.GetValue<StringAttribute> (bot.GetOnlineStatus());
+			string status = EnumUtils.GetValue<NameAttribute> (bot.GetOnlineStatus());
 			if (bot.IsConnected ()) {
 				Console.WriteLine ("  logged on as {0}", bot.User);
 				Console.WriteLine ("  online status: {0}", status);

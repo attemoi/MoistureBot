@@ -220,7 +220,7 @@ namespace MoistureBot
 				throw new ArgumentException ("Invalid status");
 
 			foreach (OnlineStatus ps in Enum.GetValues(typeof(OnlineStatus))) {
-				var str = StringEnum.GetValue<StringAttribute> (ps);
+				var str = EnumUtils.GetValue<StringAttribute> (ps);
 				if (status.Equals(str)) {
 					SetOnlineStatus (ps);
 					return;
@@ -282,7 +282,7 @@ namespace MoistureBot
 
 			new MoistureBotConfig().SetSetting(
 				ConfigSetting.STATUS,
-				StringEnum.GetValue<StringAttribute>(status));
+				EnumUtils.GetValue<StringAttribute>(status));
 		}
 
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )

@@ -58,7 +58,6 @@ namespace MoistureBot
 			} else {
 				log.Debug ("Failed to parse command: Command not found");
 			}
-				
 
 			return command;
 
