@@ -95,7 +95,6 @@ namespace MoistureBot
 					if (!String.IsNullOrWhiteSpace(input))
 						log.Info ("Unknown command: '" + input + "'");
 				} else {
-					Console.Clear();
 					exit = command.Execute(Bot);
 				}
 			}
