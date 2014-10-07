@@ -51,7 +51,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="ConsoleUtils.cs" />
-    <Compile Include="IOptions.cs" />
     <Compile Include="MoistureBot.Commands\ExitCommand.cs" />
     <Compile Include="MoistureBot.Commands\ConnectCommand.cs" />
     <Compile Include="MoistureBot.Commands\JoinChatCommand.cs" />

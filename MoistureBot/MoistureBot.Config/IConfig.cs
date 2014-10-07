@@ -5,7 +5,15 @@ namespace MoistureBot.Config
 {
 	public interface IConfig
 	{
+		/// <summary>
+		/// Creates a new configuration file.
+		/// </summary>
 		void CreateConfig();
+
+		/// <summary>
+		/// Determines wheter the configuration file exists.
+		/// </summary>
+		/// <returns><c>true</c>, if file exists, <c>false</c> otherwise.</returns>
 		bool ConfigExists();
 
 		/// <summary>
