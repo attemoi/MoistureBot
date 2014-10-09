@@ -40,9 +40,7 @@ namespace MoistureBot
 			Logger.Info("Executing command...");
 
 			Options.Parse(args);
-			
-			Console.WriteLine();
-			Console.WriteLine("Bot status:");
+
 			Console.WriteLine();
 			string status = EnumUtils.GetValue<NameAttribute>(Bot.GetOnlineStatus());
 			if (Bot.IsConnected()) {
