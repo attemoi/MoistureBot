@@ -12,6 +12,7 @@ The project has so far been built only under Windows using Mono 3.2.3.
 In order to compile and use MoistureBot, the following dependencies are required:
 
   - .NET 4.0 or [Mono ≥ 2.8](http://mono-project.com)
+  - [Steamkit2](https://github.com/SteamRE/SteamKit) (published to NuGet)
   - [Mono.Addins](http://monoaddins.codeplex.com/) (published to NuGet)
   - [INI File Parser](https://github.com/rickyah/ini-parser) by [rickyah](https://github.com/rickyah) (published to NuGet)
   - [Log4Net](http://logging.apache.org/log4net/) (published to NuGet)
