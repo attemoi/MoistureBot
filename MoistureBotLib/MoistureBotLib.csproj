@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{559877FE-43FB-46A5-897E-978078951010}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>MoistureBotLib</RootNamespace>
+    <RootNamespace>MoistureBot</RootNamespace>
     <AssemblyName>MoistureBotLib</AssemblyName>
     <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
@@ -40,27 +40,37 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IMoistureBot.cs" />
-    <Compile Include="IMoistureBotAddin.cs" />
     <Compile Include="ChatRoomMessage.cs" />
     <Compile Include="ChatMessage.cs" />
     <Compile Include="ExtensionPoints\IChatFriendAddin.cs" />
     <Compile Include="ExtensionPoints\IChatRoomAddin.cs" />
     <Compile Include="Favorite.cs" />
-    <Compile Include="IAddinLogger.cs" />
-    <Compile Include="MoistureBotLib.Enum\StringAttribute.cs" />
-    <Compile Include="MoistureBotLib.Enum\EnumUtils.cs" />
-    <Compile Include="MoistureBotLib.Enum\SectionAttribute.cs" />
-    <Compile Include="MoistureBotLib.Enum\KeyAttribute.cs" />
-    <Compile Include="MoistureBotLib.Enum\NameAttribute.cs" />
     <Compile Include="ConfigSetting.cs" />
     <Compile Include="OnlineStatus.cs" />
+    <Compile Include="Mono.Options\Options.cs" />
+    <Compile Include="MoistureBotLib.Attributes\StringAttribute.cs" />
+    <Compile Include="MoistureBotLib.Attributes\KeyAttribute.cs" />
+    <Compile Include="MoistureBotLib.Attributes\NameAttribute.cs" />
+    <Compile Include="MoistureBotLib.Attributes\SectionAttribute.cs" />
+    <Compile Include="EnumUtils.cs" />
+    <Compile Include="ExtensionPoints\IMoistureBotAddin.cs" />
+    <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="MoistureBotLib.Attributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="ExtensionPoints\IMoistureBot.cs" />
+    <Compile Include="MoistureBotLib.Attributes\MoistureBotAttribute.cs" />
+    <Compile Include="ExtensionPoints\ICommand.cs" />
+    <Compile Include="ExtensionPoints\ICommandHelper.cs" />
+    <Compile Include="ExtensionPoints\IConfig.cs" />
+    <Compile Include="ExtensionPoints\ILogger.cs" />
+    <Compile Include="ConsoleMessage.cs" />
+    <Compile Include="MoistureBotContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
-    <Folder Include="MoistureBotLib.Enum\" />
+    <Folder Include="MoistureBotLib.Attributes\" />
+    <Folder Include="ExtensionNodes\" />
   </ItemGroup>
 </Project>

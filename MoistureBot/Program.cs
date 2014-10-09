@@ -8,9 +8,9 @@ using Mono.Addins;
 using System.Threading.Tasks;
 using Mono.Options;
 using System.Threading;
-using MoistureBot.Commands;
 using MoistureBot.Config;
 using MoistureBot.Logging;
+using System.Linq;
 
 
 
@@ -29,21 +29,18 @@ namespace MoistureBot
 	static class Program
 	{
 
-		private static readonly log4net.ILog log = log4net.LogManager.GetLogger
-			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-		private static readonly IAddinLogger addinLogger = new AddinLogger();
-
-		public static Core Bot { get; set; }
+		public static ILogger Logger;
 
 		static void Run(string[] args)
 		{
-				
+
 			AddinManager.AddinLoadError += OnLoadError;
 			AddinManager.AddinLoaded += OnLoad;
 
 			AddinManager.Initialize (".", ".", "./addins");
 			AddinManager.Registry.Update ();
+
+			Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
 
 			Console.WriteLine ();
 			// TODO: read version dynamically
@@ -52,33 +49,11 @@ namespace MoistureBot
 			var config = new MoistureBotConfig ();
 			if (!config.ConfigExists())
 				config.CreateConfig ();
-
-			Bot = new Core ();
-
-			var launchCmd = new LaunchCommand ();
-			launchCmd.Args = args;
-			if (launchCmd.Execute (Bot)) {
-				return;
-			}
-
-			log.Debug ("Initializing addins");
-			InitAddins ();
+				
+			if (new LaunchCommand ().Execute(new string[] {})) return; 
 
 			HandleConsoleInput ();
 
-		}
-
-		public static void InitAddins() {
-			foreach (IChatRoomAddin addin in AddinManager.GetExtensionObjects<IChatRoomAddin> ())
-			{
-				addin.Bot = Bot;
-				addin.Logger = addinLogger;
-			}
-			foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
-			{
-				addin.Bot = Bot;
-				addin.Logger = addinLogger;
-			}
 		}
 
 		public static void HandleConsoleInput() {
@@ -89,14 +64,38 @@ namespace MoistureBot
 				Console.WriteLine ();
 				Console.WriteLine ("Enter command (type 'help' for a list of commands):");
 				Console.Write (">>");
+
 				var input = Console.ReadLine ();
-				var command = CommandParser.Parse(input);
-				if (command == null) {
-					if (!String.IsNullOrWhiteSpace(input))
-						log.Info ("Unknown command: '" + input + "'");
-				} else {
-					exit = command.Execute(Bot);
+				if (!String.IsNullOrWhiteSpace(input)) {
+
+					Logger.Info("Parsing command '" + input + "'");
+
+					// Parse your string and create Command object
+					var commandParts = input.Split(' ').ToList();
+					var commandName = commandParts[0];
+					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
+
+					ICommand command = null;
+
+					ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(ICommand));
+
+					foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands) {
+						var name = node.Data.Name;
+						if (commandName.Equals (name)) {
+							command = (ICommand) node.CreateInstance();
+							break;
+						}
+					}
+
+					if (command != null) {
+						command.Execute (args);
+					} else {
+						Console.WriteLine("Unknown command: '" + input + "'");
+					}
+
 				}
+
+
 			}
 		}
 
@@ -110,8 +109,7 @@ namespace MoistureBot
 			}
 			catch (Exception e)
 			{
-				Console.Error.WriteLine(e.Message);
-				Trace.TraceError(e.ToString());
+				Logger.Error ("Program failure", e);
 
 				return Environment.ExitCode != 0
 					? Environment.ExitCode : 100;
@@ -121,12 +119,12 @@ namespace MoistureBot
 
 		static void OnLoadError (object s, AddinErrorEventArgs args)
 		{
-			log.Error ("Failed to load addin", args.Exception);
+			Logger.Error ("Failed to load addin", args.Exception);
 		}
 
 		static void OnLoad (object s, AddinEventArgs args)
 		{
-			log.Debug ("Add-in loaded: " + args.AddinId);
+			Logger.Debug ("Add-in loaded: " + args.AddinId);
 		}
 			
 	}
