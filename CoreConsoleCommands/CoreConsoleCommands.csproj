@@ -41,7 +41,6 @@
     <Compile Include="SendMessageCommand.cs" />
     <Compile Include="SetCommand.cs" />
     <Compile Include="StatusCommand.cs" />
-    <Compile Include="Assembly.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
