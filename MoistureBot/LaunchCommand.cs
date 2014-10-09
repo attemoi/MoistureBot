@@ -43,9 +43,8 @@ namespace MoistureBot
 				
 			if (help) {
 				Console.WriteLine();
-				Console.WriteLine("  MoistureBot 1.0.0");
-				Console.WriteLine("  Extensible chat bot for Steam.");
-				Console.WriteLine("  A steam user with at least one game is required to join chats or send messages (Steam requirement).");
+				Console.WriteLine("  Extensible chat bot for Steam. A steam user with at least one game");
+				Console.WriteLine("  is required to join chats or send messages (Steam requirement).");
 				Console.WriteLine();
 				Console.WriteLine("Usage: ");
 				Console.WriteLine();
@@ -73,7 +72,7 @@ namespace MoistureBot
 					pass = Console.ReadLine();
 				}
 
-				Logger.Info("Logging in as " + user + "...");
+				Console.WriteLine("Logging in as " + user + "...");
 				Console.WriteLine("Type 'status' to see bot status.");
 				Bot.Connect(user,pass);
 
@@ -81,7 +80,7 @@ namespace MoistureBot
 
 			if (joinFavs) {
 				foreach (KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms()) {
-					Logger.Info("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
+					Console.WriteLine("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
 					Bot.JoinChatRoom(fav.Value);
 				}
 			}
