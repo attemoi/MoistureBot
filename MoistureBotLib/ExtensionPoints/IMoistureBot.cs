@@ -10,10 +10,6 @@ namespace MoistureBot
 	public interface IMoistureBot
 	{
 
-//		IConfig Config { get; }
-//		ICommandHelper CommandHelper { get; }
-//		ILogger Logger { get; }
-
 		string User { get; }
 
 		/// <summary>
@@ -60,12 +56,6 @@ namespace MoistureBot
 		/// <returns>User profile name</returns>
 		/// <param name="id">User id (steamID64)</param>
 		string GetUserName(ulong id);
-
-		/// <summary>
-		/// Gets the active chat rooms.
-		/// </summary>
-		/// <returns>The active chat rooms.</returns>
-		List<ulong> GetActiveChatRooms();
 
 		/// <summary>
 		/// Disconnect and terminate the bot.

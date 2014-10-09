@@ -40,7 +40,7 @@ namespace MoistureBot
 			AddinManager.Initialize (".", ".", "./addins");
 			AddinManager.Registry.Update ();
 
-			Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
+			Logger = MoistureBotComponentProvider.GetLogger();
 
 			Console.WriteLine ();
 			// TODO: read version dynamically

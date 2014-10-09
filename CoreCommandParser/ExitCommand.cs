@@ -19,8 +19,8 @@ namespace MoistureBot
 	public class ExitCommand : ICommand
 	{
 	
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
-		private IMoistureBot Bot = AddinManager.GetExtensionObjects<IMoistureBot> ().First ();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
 		public OptionSet Options {
 			get { return new OptionSet (); }

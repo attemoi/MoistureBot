@@ -18,8 +18,8 @@ namespace MoistureBot
 	public class HelpCommand : ICommand
 	{
 
-		private IMoistureBot Bot = AddinManager.GetExtensionObjects<IMoistureBot> ().First ();
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot ();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
 		public string command;
 

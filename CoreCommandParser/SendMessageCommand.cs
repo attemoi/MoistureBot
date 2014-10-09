@@ -19,9 +19,9 @@ namespace MoistureBot
 	public class SendMessageCommand : ICommand
 	{
 
-		private IConfig Config = AddinManager.GetExtensionObjects<IConfig> ().First ();
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
-		private IMoistureBot Bot = AddinManager.GetExtensionObjects<IMoistureBot> ().First ();
+		private IConfig Config = MoistureBotComponentProvider.GetConfig();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
 		public Boolean user;
 		public Boolean room;

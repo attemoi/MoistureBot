@@ -19,9 +19,9 @@ namespace MoistureBot
 	public class StatusCommand : ICommand
 	{
 
-		private IConfig Config = AddinManager.GetExtensionObjects<IConfig> ().First ();
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
-		private IMoistureBot Bot = AddinManager.GetExtensionObjects<IMoistureBot> ().First ();
+		private IConfig Config = MoistureBotComponentProvider.GetConfig();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
 		public OptionSet Options {
 			get {
@@ -49,14 +49,16 @@ namespace MoistureBot
 			}
 
 			Console.WriteLine ();
-			Console.WriteLine ("Active chatrooms: ");
-			Console.WriteLine ();
-			var activeRooms = Bot.GetActiveChatRooms ();
-			if (activeRooms.Count == 0) {
-				Console.WriteLine ("  -- no active chatrooms --");
-			} else {
-				activeRooms.ForEach( id => Console.WriteLine("  " + id));
-			}
+
+//			Console.WriteLine ("Active chatrooms: ");
+//			Console.WriteLine ();
+//			var activeRooms = Bot.GetActiveChatRooms ();
+//			if (activeRooms.Count == 0) {
+//				Console.WriteLine ("  -- no active chatrooms --");
+//			} else {
+//				activeRooms.ForEach( id => Console.WriteLine("  " + id));
+//			}
+
 			Console.WriteLine ();
 			Console.WriteLine ("Registered addins:");
 			Console.WriteLine ();

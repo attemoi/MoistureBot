@@ -63,7 +63,7 @@
     <Compile Include="ExtensionPoints\IConfig.cs" />
     <Compile Include="ExtensionPoints\ILogger.cs" />
     <Compile Include="ConsoleMessage.cs" />
-    <Compile Include="MoistureBotContext.cs" />
+    <Compile Include="MoistureBotComponentProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

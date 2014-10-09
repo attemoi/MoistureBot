@@ -14,7 +14,7 @@ namespace MoistureBot.Config
 	public class MoistureBotConfig : IConfig
 	{
 
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
 		private static string SECTION_FAVORITE_USERS = "favorite_users";
 		private static string SECTION_FAVORITE_ROOMS = "favorite_rooms";

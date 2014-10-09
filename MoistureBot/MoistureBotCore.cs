@@ -33,7 +33,7 @@ namespace MoistureBot
 		public string User { get { return user; } }
 
 		private string pass;
-		private List<ulong> activeChatRooms = new List<ulong> ();
+		// private List<ulong> activeChatRooms = new List<ulong> ();
 
 		public MoistureBotCore ()
 		{
@@ -87,7 +87,6 @@ namespace MoistureBot
 			case EChatAction.CloseChat:
 				if (obj.Result != EChatActionResult.Success) {
 					Logger.Debug ("Chat room " + obj.ChatRoomID.ConvertToUInt64 () + " closed.");
-					activeChatRooms.Remove (obj.ChatRoomID.ConvertToUInt64 ());
 				} else {
 					Logger.Debug ("Failed to close chat room: " + obj.Result);
 				}
@@ -319,7 +318,6 @@ namespace MoistureBot
 			switch (callback.EnterResponse) {
 			case EChatRoomEnterResponse.Success:
 				Logger.Debug ("Successfully joined chat!");
-				activeChatRooms.Add (callback.ChatID.ConvertToUInt64 ());
 				break;
 			case EChatRoomEnterResponse.Limited:
 				Logger.Debug ("Failed to join chat: " + callback.EnterResponse);
@@ -327,7 +325,6 @@ namespace MoistureBot
 				break;
 			default:
 				Logger.Debug ("Failed to join chat: " + callback.EnterResponse);
-				activeChatRooms.Remove (callback.ChatID.ConvertToUInt64());
 				break;
 			}
 				
@@ -458,10 +455,6 @@ namespace MoistureBot
 		public Boolean IsConnected()
 		{
 			return steamClient.IsConnected;
-		}
-
-		public List<ulong> GetActiveChatRooms() {
-			return activeChatRooms;
 		}
 
 		public void Terminate ()

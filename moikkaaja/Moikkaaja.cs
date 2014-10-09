@@ -17,8 +17,8 @@ namespace MoistureBot
 	public class Moikkaaja: IChatRoomAddin, IChatFriendAddin
 	{
 	
-		private IMoistureBot Bot = MoistureBotContext.GetBot();
-		private ILogger Logger = MoistureBotContext.GetLogger();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
 		public void MessageReceived (ChatRoomMessage message)
 		{

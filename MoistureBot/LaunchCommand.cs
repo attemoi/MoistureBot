@@ -11,8 +11,8 @@ namespace MoistureBot
 	public class LaunchCommand : ICommand
 	{
 
-		private IMoistureBot Bot = AddinManager.GetExtensionObjects<IMoistureBot> ().First ();
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
 		private bool connect;
 		private bool help;

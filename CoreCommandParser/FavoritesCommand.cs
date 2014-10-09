@@ -10,16 +10,19 @@ namespace MoistureBot
 
 	[ConsoleCommand(
 		Name ="favorites",
-		ShortUsage = "favorites", 
-		ShortDescription = "Manage favorite rooms and users.", 
+		ShortUsage = "favorites", ShortDescription = "Manage favorite rooms and users.", 
 		Description = "Manage favorite rooms and users.",
-		Usage = "favorites -list\n  favorites add user/room <key> <id>\n  favorites remove user/room <key>\n  favorites remove-all users/rooms"
+		Usage = 
+			"favorites -list\n" +
+			"  favorites add user/room <key> <id>\n" +
+			"  favorites remove user/room <key>\n" +
+			"  favorites remove-all users/rooms"
 	)]
 	public class FavoritesCommand : ICommand
 	{
 
-		private IConfig Config = AddinManager.GetExtensionObjects<IConfig> ().First ();
-		private ILogger Logger = AddinManager.GetExtensionObjects<ILogger> ().First ();
+		private IConfig Config = MoistureBotComponentProvider.GetConfig();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
 		private bool list;
 
