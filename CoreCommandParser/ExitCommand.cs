@@ -11,8 +11,8 @@ namespace MoistureBot
 
 	[ConsoleCommand(
 		Name = "exit",
-		Description = "Disconnect bot from Steam and exit program.",
-		ShortDescription = "Disconnect bot from Steam and exit program.",
+		Description = "Disconnect from Steam and exit program.",
+		ShortDescription = "Disconnect from Steam and exit program.",
 		ShortUsage = "exit",
 		Usage = "exit"
 	)]
