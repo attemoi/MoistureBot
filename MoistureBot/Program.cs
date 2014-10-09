@@ -8,8 +8,6 @@ using Mono.Addins;
 using System.Threading.Tasks;
 using Mono.Options;
 using System.Threading;
-using MoistureBot.Config;
-using MoistureBot.Logging;
 using System.Linq;
 
 [assembly:AddinRoot("MoistureBot", "1.0")]

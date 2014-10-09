@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using Mono.Addins;
 
-namespace MoistureBot.Config
+namespace MoistureBot
 {
 
 	[Extension(typeof(IConfig))]

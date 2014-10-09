@@ -1,7 +1,7 @@
 using System;
 using Mono.Options;
 using System.Collections.Generic;
-using MoistureBot.Config;
+using MoistureBot;
 using System.Linq;
 using Mono.Addins;
 

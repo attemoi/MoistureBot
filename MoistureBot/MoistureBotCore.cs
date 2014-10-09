@@ -7,7 +7,6 @@ using Mono.Addins;
 using System.Threading;
 using System.Collections.Generic;
 using IniParser.Model;
-using MoistureBot.Config;
 using System.Reflection;
 
 namespace MoistureBot

@@ -47,29 +47,28 @@
     <Compile Include="Favorite.cs" />
     <Compile Include="ConfigSetting.cs" />
     <Compile Include="OnlineStatus.cs" />
-    <Compile Include="Mono.Options\Options.cs" />
-    <Compile Include="MoistureBotLib.Attributes\StringAttribute.cs" />
-    <Compile Include="MoistureBotLib.Attributes\KeyAttribute.cs" />
-    <Compile Include="MoistureBotLib.Attributes\NameAttribute.cs" />
-    <Compile Include="MoistureBotLib.Attributes\SectionAttribute.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="ConsoleUtils.cs" />
-    <Compile Include="MoistureBotLib.Attributes\ConsoleCommandAttribute.cs" />
     <Compile Include="ExtensionPoints\IMoistureBot.cs" />
-    <Compile Include="MoistureBotLib.Attributes\MoistureBotAttribute.cs" />
     <Compile Include="ExtensionPoints\ICommandHelper.cs" />
     <Compile Include="ExtensionPoints\IConfig.cs" />
     <Compile Include="ExtensionPoints\ILogger.cs" />
     <Compile Include="ConsoleMessage.cs" />
     <Compile Include="MoistureBotComponentProvider.cs" />
     <Compile Include="ExtensionPoints\IConsoleCommand.cs" />
+    <Compile Include="Attributes\StringAttribute.cs" />
+    <Compile Include="Attributes\KeyAttribute.cs" />
+    <Compile Include="Attributes\NameAttribute.cs" />
+    <Compile Include="Attributes\SectionAttribute.cs" />
+    <Compile Include="Attributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="Attributes\MoistureBotAttribute.cs" />
+    <Compile Include="Mono.Options\Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
-    <Folder Include="MoistureBotLib.Attributes\" />
-    <Folder Include="ExtensionNodes\" />
+    <Folder Include="Attributes\" />
   </ItemGroup>
 </Project>

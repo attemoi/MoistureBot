@@ -1,5 +1,5 @@
 ﻿using System;
-using MoistureBot.Config;
+using MoistureBot;
 using Mono.Addins;
 using System.Linq;
 

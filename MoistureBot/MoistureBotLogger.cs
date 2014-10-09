@@ -1,5 +1,4 @@
 ﻿using System;
-using MoistureBot;
 using Mono.Addins;
 
 namespace MoistureBot.Logging

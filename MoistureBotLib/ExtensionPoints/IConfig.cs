@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Mono.Addins;
 
-namespace MoistureBot.Config
+namespace MoistureBot
 {
 
 	[TypeExtensionPoint]

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MoistureBot.Config;
+using MoistureBot;
 using Mono.Addins;
 
 namespace MoistureBot
