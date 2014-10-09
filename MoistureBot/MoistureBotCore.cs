@@ -27,13 +27,9 @@ namespace MoistureBot
 		private SteamUser steamUser;
 		private SteamFriends steamFriends;
 
-		// Bot properties
+		// Bot steam user properties
 		private string user;
-
-		public string User { get { return user; } }
-
 		private string pass;
-		// private List<ulong> activeChatRooms = new List<ulong> ();
 
 		public MoistureBotCore ()
 		{
@@ -70,7 +66,7 @@ namespace MoistureBot
 
 		void ChatActionResultCallback (SteamFriends.ChatActionResultCallback obj)
 		{
-
+			// TODO: This one never gets called. SteamKit2 problem?
 			Logger.Info ("Chat action callback fired.");
 
 			switch (obj.Action) {
@@ -111,21 +107,7 @@ namespace MoistureBot
 		private string GetUserName(SteamID id) {
 			return steamFriends.GetFriendPersonaName(id);
 		}
-
-		public void KickChatMember (ulong roomId, ulong userId) {
-			Logger.Info ("Kicking user " + userId + " from room " + roomId);
-			steamFriends.KickChatMember (new SteamID (roomId), new SteamID(userId));
-		}
-
-		public void Connect(string username, string password)
-		{
-			Logger.Info ("Connecting user " + username + " to steam");
-			this.user = username;
-			this.pass = password;
-			steamClient.Connect();
-			Start ();
-		}
-
+			
 		private void Start ()
 		{
 
@@ -161,14 +143,7 @@ namespace MoistureBot
 				}
 			}
 		}
-
-		public void Disconnect()
-		{
-			Logger.Info ("Disconnecting client...");
-			steamClient.Disconnect();
-		}
-
-
+			
 		private void ConnectedCallback( SteamClient.ConnectedCallback callback )
 		{
 
@@ -217,77 +192,6 @@ namespace MoistureBot
 
 		}
 
-		public void SetOnlineStatus(string status) {
-
-			if (status == null)
-				throw new ArgumentException ("Invalid status");
-
-			foreach (OnlineStatus ps in Enum.GetValues(typeof(OnlineStatus))) {
-				var str = EnumUtils.GetValue<StringAttribute> (ps);
-				if (status.Equals(str)) {
-					SetOnlineStatus (ps);
-					return;
-				}
-			}
-
-			throw new ArgumentException ("Invalid status");
-		}
-
-		public OnlineStatus GetOnlineStatus () {
-			var state = steamFriends.GetPersonaState ();
-			switch (state) {
-			case EPersonaState.Away:
-				return OnlineStatus.AWAY;
-			case EPersonaState.Busy:
-				return OnlineStatus.BUSY;
-			case EPersonaState.LookingToPlay:
-				return OnlineStatus.LOOKING_TO_PLAY;
-			case EPersonaState.LookingToTrade:
-				return OnlineStatus.LOOKING_TO_TRADE;
-			case EPersonaState.Offline:
-				return OnlineStatus.OFFLINE;
-			case EPersonaState.Online:
-				return OnlineStatus.ONLINE;
-			case EPersonaState.Snooze:
-				return OnlineStatus.SNOOZE;
-			default:
-				return OnlineStatus.OFFLINE;
-			}
-		}
-
-		public void SetOnlineStatus(OnlineStatus status) {
-
-			Logger.Info ("Setting online status to " + status);
-
-			switch (status) {
-			case OnlineStatus.AWAY:
-				steamFriends.SetPersonaState (EPersonaState.Away);
-				break;
-			case OnlineStatus.BUSY:
-				steamFriends.SetPersonaState( EPersonaState.Busy );
-				break;
-			case OnlineStatus.LOOKING_TO_PLAY:
-				steamFriends.SetPersonaState( EPersonaState.LookingToPlay );
-				break;
-			case OnlineStatus.LOOKING_TO_TRADE:
-				steamFriends.SetPersonaState( EPersonaState.LookingToTrade );
-				break;
-			case OnlineStatus.OFFLINE:
-				steamFriends.SetPersonaState( EPersonaState.Offline );
-				break;
-			case OnlineStatus.ONLINE:
-				steamFriends.SetPersonaState( EPersonaState.Online );
-				break;
-			case OnlineStatus.SNOOZE:
-				steamFriends.SetPersonaState( EPersonaState.Snooze );
-				break;
-			}
-
-			new MoistureBotConfig().SetSetting(
-				ConfigSetting.STATUS,
-				EnumUtils.GetValue<StringAttribute>(status));
-		}
-
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
 			Logger.Info( "Disconnected from Steam" );
@@ -310,11 +214,11 @@ namespace MoistureBot
 					Logger.Warn( "Unable to logon to Steam: This account is SteamGuard protected." );
 					return;
 				}
-					
+
 				Logger.Info( "Unable to logon to Steam: " + callback.ExtendedResult );
 				return;
 			}
-		
+
 			Logger.Info( "Successfully logged on!" );
 
 		}
@@ -335,7 +239,7 @@ namespace MoistureBot
 				Logger.Info("Failed to join chat: " + callback.EnterResponse);
 				break;
 			}
-				
+
 		}
 
 		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
@@ -410,7 +314,7 @@ namespace MoistureBot
 
 		private void ChatInviteCallback( SteamFriends.ChatInviteCallback callback )
 		{
-			Logger.Info("Received invite from " + callback.FriendChatID );
+			Logger.Info("Received invite");
 			// TODO create extension point
 		}
 
@@ -421,6 +325,110 @@ namespace MoistureBot
 
 		#region PUBLIC
 
+		public string UserName { get { return user; } }
+
+		public string PersonaName {
+			get {
+				Logger.Info ("Getting bot persona name");
+				return steamFriends.GetPersonaName ();
+			}
+			set {
+				Logger.Info ("Setting bot persona name to " + value);
+				steamFriends.SetPersonaName(value);
+			}
+		}
+
+		public void KickChatMember (ulong roomId, ulong userId) {
+			Logger.Info ("Kicking user " + userId + " from room " + roomId);
+			steamFriends.KickChatMember (new SteamID (roomId), new SteamID(userId));
+		}
+
+		public void Connect(string username, string password)
+		{
+			Logger.Info ("Connecting user " + username + " to steam");
+			this.user = username;
+			this.pass = password;
+			steamClient.Connect();
+			Start ();
+		}
+
+		public void Disconnect()
+		{
+			Logger.Info ("Disconnecting client...");
+			steamClient.Disconnect();
+		}
+
+		public OnlineStatus GetOnlineStatus () {
+			var state = steamFriends.GetPersonaState ();
+			switch (state) {
+			case EPersonaState.Away:
+				return OnlineStatus.AWAY;
+			case EPersonaState.Busy:
+				return OnlineStatus.BUSY;
+			case EPersonaState.LookingToPlay:
+				return OnlineStatus.LOOKING_TO_PLAY;
+			case EPersonaState.LookingToTrade:
+				return OnlineStatus.LOOKING_TO_TRADE;
+			case EPersonaState.Offline:
+				return OnlineStatus.OFFLINE;
+			case EPersonaState.Online:
+				return OnlineStatus.ONLINE;
+			case EPersonaState.Snooze:
+				return OnlineStatus.SNOOZE;
+			default:
+				return OnlineStatus.OFFLINE;
+			}
+		}
+
+		public void SetOnlineStatus(string status) {
+
+			if (status == null)
+				throw new ArgumentException ("Invalid status");
+
+			foreach (OnlineStatus ps in Enum.GetValues(typeof(OnlineStatus))) {
+				var str = EnumUtils.GetValue<StringAttribute> (ps);
+				if (status.Equals(str)) {
+					SetOnlineStatus (ps);
+					return;
+				}
+			}
+
+			throw new ArgumentException ("Invalid status");
+		}
+
+		public void SetOnlineStatus(OnlineStatus status) {
+
+			Logger.Info ("Setting online status to " + status);
+
+			switch (status) {
+			case OnlineStatus.AWAY:
+				steamFriends.SetPersonaState (EPersonaState.Away);
+				break;
+			case OnlineStatus.BUSY:
+				steamFriends.SetPersonaState( EPersonaState.Busy );
+				break;
+			case OnlineStatus.LOOKING_TO_PLAY:
+				steamFriends.SetPersonaState( EPersonaState.LookingToPlay );
+				break;
+			case OnlineStatus.LOOKING_TO_TRADE:
+				steamFriends.SetPersonaState( EPersonaState.LookingToTrade );
+				break;
+			case OnlineStatus.OFFLINE:
+				steamFriends.SetPersonaState( EPersonaState.Offline );
+				break;
+			case OnlineStatus.ONLINE:
+				steamFriends.SetPersonaState( EPersonaState.Online );
+				break;
+			case OnlineStatus.SNOOZE:
+				steamFriends.SetPersonaState( EPersonaState.Snooze );
+				break;
+			}
+
+			new MoistureBotConfig().SetSetting(
+				ConfigSetting.STATUS,
+				EnumUtils.GetValue<StringAttribute>(status));
+		}
+	
 		public void JoinChatRoom(ulong roomId) {
 			steamFriends.JoinChat (new SteamID(roomId));
 		}

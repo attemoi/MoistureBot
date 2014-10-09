@@ -10,7 +10,8 @@ namespace MoistureBot
 	public interface IMoistureBot
 	{
 
-		string User { get; }
+		string UserName { get; }
+		string PersonaName { get; set; }
 
 		/// <summary>
 		/// Determines whether bot is connected to Steam.
@@ -55,7 +56,7 @@ namespace MoistureBot
 		/// </summary>
 		/// <returns>User profile name</returns>
 		/// <param name="id">User id (steamID64)</param>
-		string GetUserName(ulong id);
+		string GetUserName(ulong id);/// 
 
 		/// <summary>
 		/// Disconnect and terminate the bot.

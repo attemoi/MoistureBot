@@ -37,9 +37,7 @@ namespace MoistureBot
 			if (extra.Count > 0) {
 				command = extra.First ();
 
-				ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(IConsoleCommand));
-
-				foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands) {
+				foreach (TypeExtensionNode<ConsoleCommandAttribute> node in AddinManager.GetExtensionNodes (typeof(IConsoleCommand))) {
 					if (command.Equals (node.Data.Name)) {
 						Console.WriteLine ();
 						Console.WriteLine ("Description:");
@@ -50,6 +48,13 @@ namespace MoistureBot
 						Console.WriteLine ("Usage:");
 						Console.WriteLine ();
 						Console.WriteLine ("  {0}", node.Data.Usage);
+						Console.WriteLine ();
+						var cmd = (IConsoleCommand)node.CreateInstance ();
+						if (cmd.Options.Count > 0) {
+							Console.WriteLine ("Options:");
+							Console.WriteLine ();
+							cmd.Options.WriteOptionDescriptions (Console.Out);
+						}
 
 						return false;
 

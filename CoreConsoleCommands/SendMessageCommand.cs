@@ -15,7 +15,6 @@ namespace MoistureBot
 		ShortUsage = "msg",
 		Usage = "msg user <user_id|favorite_key> <message>\n  msg room <user_id|favorite_key> <message>"
 	)]
-
 	public class SendMessageCommand : IConsoleCommand
 	{
 
@@ -27,7 +26,7 @@ namespace MoistureBot
 		public Boolean room;
 
 		public OptionSet Options {
-			get { return new OptionSet (); }
+			get { return new OptionSet () {}; }
 		}
 
 		public bool Execute (string[] args)

@@ -3,8 +3,8 @@ using Mono.Addins;
 using System.Text.RegularExpressions;
 using System.Linq;
 
-[assembly:Addin("Moikkaaja", "1.0.0")]
-[assembly:AddinDependency ("MoistureBot", "1.0.0")]
+[assembly:Addin("Moikkaaja", "1.0")]
+[assembly:AddinDependency ("MoistureBot", "1.0")]
 [assembly:AddinAuthor ("Atte Moisio")]
 [assembly:AddinDescription ("Responds to a number of finnish greetings.")]
 [assembly:AddinName("Moikkaaja")]

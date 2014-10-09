@@ -13,8 +13,8 @@ namespace MoistureBot
 		Name = "status",
 		Description = "Show bot status.",
 		ShortDescription = "Show bot status.",
-		ShortUsage = "status",
-		Usage = "status"
+		ShortUsage = "status [OPTIONS]+",
+		Usage = "status [OPTIONS]+"
 	)]
 	public class StatusCommand : IConsoleCommand
 	{
@@ -23,9 +23,14 @@ namespace MoistureBot
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
+		private bool showAddins;
+
 		public OptionSet Options {
 			get {
-				return new OptionSet ();
+				return new OptionSet () {
+					{ "a|addins", "Show activated addins.", 
+						v => showAddins = v != null }
+				};
 			}
 		}
 
@@ -37,36 +42,29 @@ namespace MoistureBot
 			Options.Parse(args);
 			
 			Console.WriteLine();
-			Console.WriteLine("Connection status:");
+			Console.WriteLine("Bot status:");
 			Console.WriteLine();
 			string status = EnumUtils.GetValue<NameAttribute> (Bot.GetOnlineStatus());
 			if (Bot.IsConnected ()) {
-				Console.WriteLine ("  logged on as {0}", Bot.User);
+				Console.WriteLine ("  logged on as {0}", Bot.UserName);
+				Console.WriteLine ("  persona name: '{0}'", Bot.PersonaName);
 				Console.WriteLine ("  online status: {0}", status);
 			} else {
 				Console.WriteLine ("  not connected");
 				Console.WriteLine ("  online status set to {0}", status);
 			}
 
-//			Console.WriteLine ();
-//			Console.WriteLine ("Active chatrooms: ");
-//			Console.WriteLine ();
-//			var activeRooms = Bot.GetActiveChatRooms ();
-//			if (activeRooms.Count == 0) {
-//				Console.WriteLine ("  -- no active chatrooms --");
-//			} else {
-//				activeRooms.ForEach( id => Console.WriteLine("  " + id));
-//			}
-
-			Console.WriteLine ();
-			Console.WriteLine ("Registered addins:");
-			Console.WriteLine ();
-			var addins = AddinManager.Registry.GetAddins ();
-			if (addins.Length == 0) {
-				Console.WriteLine ("  -- no addins registered --");
-			} else {
-				foreach (Addin addin in addins) {
-					Console.WriteLine ("  {0} {1}", addin.Name, addin.Version);
+			if (showAddins) {
+				Console.WriteLine ();
+				Console.WriteLine ("Registered addins:");
+				Console.WriteLine ();
+				var addins = AddinManager.Registry.GetAddins ();
+				if (addins.Length == 0) {
+					Console.WriteLine ("  -- no addins registered --");
+				} else {
+					foreach (Addin addin in addins) {
+						Console.WriteLine ("  {0} {1}", addin.Name, addin.Version);
+					}
 				}
 			}
 				
