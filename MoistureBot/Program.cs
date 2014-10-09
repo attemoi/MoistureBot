@@ -14,7 +14,7 @@ using System.Linq;
 
 
 
-[assembly:AddinRoot ("MoistureBot", "1.0.0")]
+[assembly:AddinRoot ("MoistureBot", "1.0")]
 [assembly:AddinAuthor ("Atte Moisio")]
 [assembly:AddinDescription ("Extensible chat bot for Steam.")]
 [assembly:AddinName("MoistureBot")]
@@ -50,7 +50,7 @@ namespace MoistureBot
 			if (!config.ConfigExists())
 				config.CreateConfig ();
 				
-			if (new LaunchCommand ().Execute(new string[] {})) return; 
+			if (new LaunchCommand ().Execute(args)) return; 
 
 			HandleConsoleInput ();
 
@@ -75,14 +75,14 @@ namespace MoistureBot
 					var commandName = commandParts[0];
 					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
-					ICommand command = null;
+					IConsoleCommand command = null;
 
-					ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(ICommand));
+					ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(IConsoleCommand));
 
 					foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands) {
 						var name = node.Data.Name;
 						if (commandName.Equals (name)) {
-							command = (ICommand) node.CreateInstance();
+							command = (IConsoleCommand) node.CreateInstance();
 							break;
 						}
 					}

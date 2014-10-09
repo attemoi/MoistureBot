@@ -14,7 +14,7 @@ namespace MoistureBot
 		Description = "Connect and sign in to Steam.",
 		Usage = "connect [<username> [<password>]]"
 	)]
-	public class ConnectCommand : ICommand
+	public class ConnectCommand : IConsoleCommand
 	{
 	
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();

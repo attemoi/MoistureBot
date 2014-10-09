@@ -16,7 +16,7 @@ namespace MoistureBot
 		ShortUsage = "status",
 		Usage = "status"
 	)]
-	public class StatusCommand : ICommand
+	public class StatusCommand : IConsoleCommand
 	{
 
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();
@@ -48,8 +48,7 @@ namespace MoistureBot
 				Console.WriteLine ("  online status set to {0}", status);
 			}
 
-			Console.WriteLine ();
-
+//			Console.WriteLine ();
 //			Console.WriteLine ("Active chatrooms: ");
 //			Console.WriteLine ();
 //			var activeRooms = Bot.GetActiveChatRooms ();

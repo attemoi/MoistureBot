@@ -8,7 +8,7 @@ namespace MoistureBot
 	public static class MoistureBotComponentProvider
 	{
 		public static ILogger GetLogger() {
-			return AddinManager.GetExtensionObjects<ILogger> (false).First();
+			return AddinManager.GetExtensionObjects<ILogger> (true).First();
 		}
 
 		public static IMoistureBot GetBot() {

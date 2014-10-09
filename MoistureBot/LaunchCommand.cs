@@ -8,7 +8,10 @@ using Mono.Addins;
 namespace MoistureBot
 {
 
-	public class LaunchCommand : ICommand
+	/// <summary>
+	/// The command used when first launching the program.
+	/// </summary>
+	public class LaunchCommand
 	{
 
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();

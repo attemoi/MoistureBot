@@ -15,7 +15,7 @@ namespace MoistureBot
 		ShortUsage = "join <chat_id|favorite_key>",
 		Usage = "join <chat_id|favorite_key>\n  join -favorites"
 	)]
-	public class JoinChatCommand : ICommand
+	public class JoinChatCommand : IConsoleCommand
 	{
 
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();

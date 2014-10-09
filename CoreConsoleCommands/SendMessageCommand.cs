@@ -16,7 +16,7 @@ namespace MoistureBot
 		Usage = "msg user <user_id|favorite_key> <message>\n  msg room <user_id|favorite_key> <message>"
 	)]
 
-	public class SendMessageCommand : ICommand
+	public class SendMessageCommand : IConsoleCommand
 	{
 
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();

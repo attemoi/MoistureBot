@@ -15,7 +15,7 @@ namespace MoistureBot
 		Description = "Print help for a command.",
 		Usage = "help <command>"
 	)]
-	public class HelpCommand : ICommand
+	public class HelpCommand : IConsoleCommand
 	{
 
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot ();
@@ -37,7 +37,7 @@ namespace MoistureBot
 			if (extra.Count > 0) {
 				command = extra.First ();
 
-				ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(ICommand));
+				ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(IConsoleCommand));
 
 				foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands) {
 					if (command.Equals (node.Data.Name)) {
@@ -64,7 +64,7 @@ namespace MoistureBot
 				Console.WriteLine ("Available commands: ");
 				Console.WriteLine ();
 
-				ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(ICommand));
+				ExtensionNodeList commands = AddinManager.GetExtensionNodes (typeof(IConsoleCommand));
 
 				foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands) {
 					Console.WriteLine ("  {0} - {1}", node.Data.ShortUsage.PadRight(35), node.Data.ShortDescription.PadRight(35));

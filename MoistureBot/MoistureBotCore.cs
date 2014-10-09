@@ -71,37 +71,39 @@ namespace MoistureBot
 		void ChatActionResultCallback (SteamFriends.ChatActionResultCallback obj)
 		{
 
+			Logger.Info ("Chat action callback fired.");
+
 			switch (obj.Action) {
 			case EChatAction.Ban:
 				if (obj.Result != EChatActionResult.Success)
-					Logger.Debug ("User " + obj.ChatterID.ConvertToUInt64 () + " banned from " + obj.ChatRoomID.ConvertToUInt64 ());
+					Logger.Info ("User " + obj.ChatterID.ConvertToUInt64 () + " banned from " + obj.ChatRoomID.ConvertToUInt64 ());
 				else
-					Logger.Debug ("Failed to ban user: " + obj.Result);
+					Logger.Info ("Failed to ban user: " + obj.Result);
 				break;
 			case EChatAction.Kick:
 				if (obj.Result != EChatActionResult.Success)
-					Logger.Debug ("User " + obj.ChatterID.ConvertToUInt64 () + " kicked from " + obj.ChatRoomID.ConvertToUInt64 ());
+					Logger.Info ("User " + obj.ChatterID.ConvertToUInt64 () + " kicked from " + obj.ChatRoomID.ConvertToUInt64 ());
 				else
-					Logger.Debug ("Failed to kick user: " + obj.Result);
+					Logger.Info ("Failed to kick user: " + obj.Result);
 				break;
 			case EChatAction.CloseChat:
 				if (obj.Result != EChatActionResult.Success) {
-					Logger.Debug ("Chat room " + obj.ChatRoomID.ConvertToUInt64 () + " closed.");
+					Logger.Info ("Chat room " + obj.ChatRoomID.ConvertToUInt64 () + " closed.");
 				} else {
-					Logger.Debug ("Failed to close chat room: " + obj.Result);
+					Logger.Info ("Failed to close chat room: " + obj.Result);
 				}
 				break;
 			case EChatAction.InviteChat:
 				if (obj.Result != EChatActionResult.Success)
-					Logger.Debug("User " + obj.ChatterID.ConvertToUInt64() + " invited to " + obj.ChatRoomID.ConvertToUInt64() );
+					Logger.Info("User " + obj.ChatterID.ConvertToUInt64() + " invited to " + obj.ChatRoomID.ConvertToUInt64() );
 				else
-					Logger.Debug ("Failed to close invite user: " + obj.Result);
+					Logger.Info ("Failed to close invite user: " + obj.Result);
 				break;
 			case EChatAction.UnBan:
 				if (obj.Result != EChatActionResult.Success)
-					Logger.Debug("User " + obj.ChatterID.ConvertToUInt64() + " unbanned from " + obj.ChatRoomID.ConvertToUInt64() );
+					Logger.Info("User " + obj.ChatterID.ConvertToUInt64() + " unbanned from " + obj.ChatRoomID.ConvertToUInt64() );
 				else
-					Logger.Debug ("Failed to unban user: " + obj.Result);
+					Logger.Info("Failed to unban user: " + obj.Result);
 				break;
 			} 
 		}
@@ -111,13 +113,13 @@ namespace MoistureBot
 		}
 
 		public void KickChatMember (ulong roomId, ulong userId) {
-			Logger.Debug ("Kicking user " + userId + " from room " + roomId);
+			Logger.Info ("Kicking user " + userId + " from room " + roomId);
 			steamFriends.KickChatMember (new SteamID (roomId), new SteamID(userId));
 		}
 
 		public void Connect(string username, string password)
 		{
-			Logger.Debug ("Connecting user " + username + " to steam");
+			Logger.Info ("Connecting user " + username + " to steam");
 			this.user = username;
 			this.pass = password;
 			steamClient.Connect();
@@ -126,6 +128,8 @@ namespace MoistureBot
 
 		private void Start ()
 		{
+
+			Logger.Info ("Bot started.");
 
 			Thread t = new Thread( CallbackWaitThread );
 
@@ -151,7 +155,6 @@ namespace MoistureBot
 					manager.RunWaitCallbacks();
 				} catch (InvalidOperationException e)  {
 					// There is probably a bug in SteamKit2 causing this exception sometimes when connecting
-					// TODO: might even want to disable logging on this one
 					Logger.Error ("Error in bot callback thread", e);
 				} catch (Exception e){
 					Logger.Error ("Error in bot callback thread", e);
@@ -161,21 +164,24 @@ namespace MoistureBot
 
 		public void Disconnect()
 		{
-			Logger.Debug ("Disconnecting client...");
+			Logger.Info ("Disconnecting client...");
 			steamClient.Disconnect();
 		}
 
 
 		private void ConnectedCallback( SteamClient.ConnectedCallback callback )
 		{
+
+			Logger.Info ("Connected callback fired.");
+
 			if ( callback.Result != EResult.OK )
 			{
-				Logger.Debug( "Unable to connect to Steam: " + callback.Result.ToString() );
+				Logger.Info( "Unable to connect to Steam: " + callback.Result.ToString() );
 				return;
 			}
 
-			Logger.Debug ("Connected to Steam!");
-			Logger.Debug( "Logging in '" + user + "'..." );
+			Logger.Info ("Connected to Steam!");
+			Logger.Info ("Logging in '" + user + "'..." );
 
 			steamUser.LogOn( new SteamUser.LogOnDetails
 			{
@@ -190,7 +196,7 @@ namespace MoistureBot
 			// this callback is posted shortly after a successful logon
 
 			// at this point, we can set online status
-			Logger.Debug ("Reading online status from config file");
+			Logger.Info ("Reading online status from config file");
 
 			var config = new MoistureBotConfig ();
 
@@ -205,7 +211,7 @@ namespace MoistureBot
 			try {
 				SetOnlineStatus (configState);
 			} catch (ArgumentException e) {
-				Logger.Debug ("Invalid value for online status in config, setting to default value");
+				Logger.Info ("Invalid value for online status in config, setting to default value");
 				// TODO: invalid value in config, fix to default
 			}
 
@@ -251,7 +257,7 @@ namespace MoistureBot
 
 		public void SetOnlineStatus(OnlineStatus status) {
 
-			Logger.Debug ("Setting online status to " + status);
+			Logger.Info ("Setting online status to " + status);
 
 			switch (status) {
 			case OnlineStatus.AWAY:
@@ -284,13 +290,13 @@ namespace MoistureBot
 
 		private void DisconnectedCallback( SteamClient.DisconnectedCallback callback )
 		{
-			Logger.Debug( "Disconnected from Steam" );
+			Logger.Info( "Disconnected from Steam" );
 		}
 
 		private void LoggedOnCallback( SteamUser.LoggedOnCallback callback )
 		{
 
-			Logger.Info ("Logged on event received");
+			Logger.Info("Logged on event received");
 
 			if ( callback.Result != EResult.OK )
 			{
@@ -301,30 +307,32 @@ namespace MoistureBot
 					// then the account we're logging into is SteamGuard protected
 					// see sample 6 for how SteamGuard can be handled
 
-					Logger.Debug( "Unable to logon to Steam: This account is SteamGuard protected." );
+					Logger.Warn( "Unable to logon to Steam: This account is SteamGuard protected." );
 					return;
 				}
 					
-				Logger.Debug( "Unable to logon to Steam: " + callback.ExtendedResult );
+				Logger.Info( "Unable to logon to Steam: " + callback.ExtendedResult );
 				return;
 			}
 		
-			Logger.Debug( "Successfully logged on!" );
+			Logger.Info( "Successfully logged on!" );
 
 		}
 
 		private void ChatEnterCallback( SteamFriends.ChatEnterCallback callback )
 		{
+			Logger.Info ("Chat enter callback fired");
+
 			switch (callback.EnterResponse) {
 			case EChatRoomEnterResponse.Success:
-				Logger.Debug ("Successfully joined chat!");
+				Logger.Info("Successfully joined chat!");
 				break;
 			case EChatRoomEnterResponse.Limited:
-				Logger.Debug ("Failed to join chat: " + callback.EnterResponse);
-				Logger.Debug ("The user account needs to have one game in it's library in order to join chat rooms");
+				Logger.Info("Failed to join chat: " + callback.EnterResponse);
+				Logger.Info("The user account needs to have one game in it's library in order to join chat rooms");
 				break;
 			default:
-				Logger.Debug ("Failed to join chat: " + callback.EnterResponse);
+				Logger.Info("Failed to join chat: " + callback.EnterResponse);
 				break;
 			}
 				
@@ -332,6 +340,9 @@ namespace MoistureBot
 
 		private void ChatMsgCallback( SteamFriends.ChatMsgCallback callback )
 		{
+
+			Logger.Info("Chat room message callback fired");
+
 			string message = callback.Message;
 			ulong chatterId = callback.ChatterID.ConvertToUInt64();
 			ulong chatId = callback.ChatRoomID.ConvertToUInt64();
@@ -349,22 +360,22 @@ namespace MoistureBot
 				}
 				break;
 			case EChatEntryType.LeftConversation:
-				Logger.Debug (chatterId + " left " + chatId);
+				Logger.Info(chatterId + " left " + chatId);
 				break;
 			case EChatEntryType.Disconnected:
-				Logger.Debug (chatterId + " disconnected from " + chatId);
+				Logger.Info(chatterId + " disconnected from " + chatId);
 				break;
 			case EChatEntryType.WasBanned:
-				Logger.Debug (chatterId + " was banned from " + chatId);
+				Logger.Info(chatterId + " was banned from " + chatId);
 				break;
 			case EChatEntryType.WasKicked:
-				Logger.Debug (chatterId + " was kicked from " + chatId);
+				Logger.Info(chatterId + " was kicked from " + chatId);
 				break;
 			case EChatEntryType.LobbyGameStart:
-				Logger.Debug (chatterId + " started game " + chatId);
+				Logger.Info(chatterId + " started game " + chatId);
 				break;
 			case EChatEntryType.Entered:
-				Logger.Debug (chatterId + " entered room " + chatId);
+				Logger.Info(chatterId + " entered room " + chatId);
 				break;
 			}
 
@@ -373,12 +384,14 @@ namespace MoistureBot
 		private void FriendMsgCallback( SteamFriends.FriendMsgCallback callback )
 		{
 
+			Logger.Info("Friend chat message callback fired");
+
 			string message = callback.Message;
 			ulong chatterId = callback.Sender.ConvertToUInt64 ();
 
 			switch (callback.EntryType) {
 			case EChatEntryType.ChatMsg:
-				Logger.Debug("Received message from " + chatterId + ": " + message);
+				Logger.Info("Received message from " + chatterId + ": " + message);
 				foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
 				{
 					try {
@@ -389,7 +402,7 @@ namespace MoistureBot
 				}
 				break;
 			case EChatEntryType.InviteGame:
-				Logger.Debug ("Game invite received from " + chatterId);
+				Logger.Info("Game invite received from " + chatterId);
 				break;
 			}
 
@@ -397,13 +410,13 @@ namespace MoistureBot
 
 		private void ChatInviteCallback( SteamFriends.ChatInviteCallback callback )
 		{
-			Logger.Debug ("Received invite from " + callback.FriendChatID );
+			Logger.Info("Received invite from " + callback.FriendChatID );
 			// TODO create extension point
 		}
 
 		private void LoggedOffCallback( SteamUser.LoggedOffCallback callback )
 		{
-			Logger.Debug( "Logged off of Steam: " + callback.Result );
+			Logger.Info( "Logged off of Steam: " + callback.Result );
 		}
 
 		#region PUBLIC
@@ -415,10 +428,11 @@ namespace MoistureBot
 		public void SendChatRoomMessage(String message, ulong chatRoomId) {
 
 			if (string.IsNullOrEmpty (message)) {
-				Logger.Debug ("Trying to send empty message to chat room " + chatRoomId);
+				Logger.Info("Trying to send empty message to chat room " + chatRoomId);
 				return;
 			}
 				
+			// TODO: remove try catch, leave to user
 			try {
 				steamFriends.SendChatRoomMessage (
 					new SteamID (chatRoomId), 
@@ -433,9 +447,10 @@ namespace MoistureBot
 		public void SendChatMessage(String message, ulong userId) {
 
 			if (string.IsNullOrEmpty (message)) {
-				Logger.Debug ("Trying to send empty message to user");
+				Logger.Info("Trying to send empty message to user");
 				return;
 			}
+			// TODO: remove try catch?
 			try {
 				steamFriends.SendChatMessage (
 					new SteamID (userId), 
@@ -443,7 +458,7 @@ namespace MoistureBot
 					message
 				);
 			} catch (Exception e) {
-				Logger.Error ("Failed to send message to user " + userId, e);
+				Logger.Error("Failed to send message to user " + userId, e);
 			}
 		}
 
@@ -464,13 +479,13 @@ namespace MoistureBot
 
 		public void BanChatMember (ulong roomId, ulong userId)
 		{
-			Logger.Debug ("Banning chat member " + userId + " in room " + roomId);
+			Logger.Info ("Banning chat member " + userId + " in room " + roomId);
 			steamFriends.BanChatMember (new SteamID (roomId), new SteamID (userId));
 		}
 
 		public void UnbanChatMember (ulong roomId, ulong userId)
 		{
-			Logger.Debug ("Unbanning chat member " + userId + " in room " + roomId);
+			Logger.Info ("Unbanning chat member " + userId + " in room " + roomId);
 			steamFriends.UnbanChatMember (new SteamID (roomId), new SteamID (userId));
 		}
 

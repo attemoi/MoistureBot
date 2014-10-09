@@ -1,24 +1,23 @@
 ﻿using System;
-using System.Threading;
 using Mono.Options;
 using MoistureBot.Config;
+using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace MoistureBot
 {
 
-	[ConsoleCommand(
-		Name = "exit",
-		Description = "Disconnect from Steam and exit program.",
-		ShortDescription = "Disconnect from Steam and exit program.",
-		ShortUsage = "exit",
-		Usage = "exit"
+	[ConsoleCommand( 
+		Name = "disconnect",
+		Description = "Sign out and disconnect from Steam.",
+		ShortDescription = "Sign out and disconnect from Steam.",
+		ShortUsage = "disconnect",
+		Usage = "disconnect"
 	)]
-	public class ExitCommand : ICommand
+	public class DisconnectCommand : IConsoleCommand
 	{
-	
+
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
@@ -33,13 +32,16 @@ namespace MoistureBot
 			List<string> extra = Options.Parse (args);
 
 			if (extra.Count > 0)
-				Console.Write(ConsoleMessage.ExtraParametersNotAllowed("exit"));
+				Console.WriteLine(ConsoleMessage.ExtraParametersNotAllowed("disconnect"));
+				
+			if (!Bot.IsConnected ()) {
+				Logger.Info ("Bot already offline.");
+				return false;
+			}
 
-			Console.WriteLine("Disconnecting from Steam...");
+			Console.WriteLine("Disconnecting bot...");
 			Bot.Disconnect ();
-			Bot.Terminate ();
-			Console.WriteLine("Exiting program...");
-			return true;
+			return false;
 		}
 	}
 }

@@ -58,12 +58,12 @@
     <Compile Include="MoistureBotLib.Attributes\ConsoleCommandAttribute.cs" />
     <Compile Include="ExtensionPoints\IMoistureBot.cs" />
     <Compile Include="MoistureBotLib.Attributes\MoistureBotAttribute.cs" />
-    <Compile Include="ExtensionPoints\ICommand.cs" />
     <Compile Include="ExtensionPoints\ICommandHelper.cs" />
     <Compile Include="ExtensionPoints\IConfig.cs" />
     <Compile Include="ExtensionPoints\ILogger.cs" />
     <Compile Include="ConsoleMessage.cs" />
     <Compile Include="MoistureBotComponentProvider.cs" />
+    <Compile Include="ExtensionPoints\IConsoleCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

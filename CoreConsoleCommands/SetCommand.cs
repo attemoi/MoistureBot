@@ -15,7 +15,7 @@ namespace MoistureBot
 		ShortUsage = "set [OPTIONS]+",
 		Usage = "set [OPTIONS]+"
 	)]
-	public class SetCommand : ICommand
+	public class SetCommand : IConsoleCommand
 	{
 
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();

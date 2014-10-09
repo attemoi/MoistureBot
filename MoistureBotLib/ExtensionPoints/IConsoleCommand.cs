@@ -8,12 +8,13 @@ namespace MoistureBot
 {
 
 	[TypeExtensionPoint (ExtensionAttributeType=typeof(ConsoleCommandAttribute))]
-	public interface ICommand
+	public interface IConsoleCommand
 	{
 
 		OptionSet Options { get; }
 
 		bool Execute(string[] args);
+
 	}
 }
 

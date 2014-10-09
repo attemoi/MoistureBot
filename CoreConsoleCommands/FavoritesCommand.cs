@@ -18,7 +18,7 @@ namespace MoistureBot
 			"  favorites remove user/room <key>\n" +
 			"  favorites remove-all users/rooms"
 	)]
-	public class FavoritesCommand : ICommand
+	public class FavoritesCommand : IConsoleCommand
 	{
 
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();
