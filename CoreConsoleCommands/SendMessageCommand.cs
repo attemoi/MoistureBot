@@ -8,7 +8,7 @@ using Mono.Addins;
 namespace MoistureBot
 {
 
-	[ConsoleCommand( 
+	[ConsoleCommand(
 		Name = "msg",
 		Description = "Send message to user or room.",
 		ShortDescription = "Send message to user or room.",
@@ -26,29 +26,29 @@ namespace MoistureBot
 		public Boolean room;
 
 		public OptionSet Options {
-			get { return new OptionSet () {}; }
+			get { return new OptionSet() { }; }
 		}
 
 		public bool Execute (string[] args)
 		{
 
-			Logger.Info ("Executing command...");
+			Logger.Info("Executing command...");
 		
 			List<string> extra = Options.Parse(args);
 
-			if (!Bot.IsConnected ()) {
+			if (!Bot.IsConnected()) {
 				Console.WriteLine("Not connected to Steam.");
 				return false;
 			}
 
-			string target = extra.First ();
-			string inputId = extra.ElementAt (1);
+			string target = extra.First();
+			string inputId = extra.ElementAt(1);
 			// get rest
-			string message = string.Join (" ", extra.Skip (2)).Trim ('\"');
+			string message = string.Join(" ",extra.Skip(2)).Trim('\"');
 
-			switch (target) {
+			switch(target) {
 			case "user":
-				var favUserId = Config.GetFavoriteUserId (inputId);
+				var favUserId = Config.GetFavoriteUserId(inputId);
 				if (favUserId != null) {
 					ulong favId;
 					try {
@@ -58,7 +58,7 @@ namespace MoistureBot
 						return false;
 					}
 					Console.WriteLine("Sending chat message to '" + favId + "'...");
-					Bot.SendChatMessage (message, favId);
+					Bot.SendChatMessage(message,favId);
 					return false;
 				} 
 
@@ -71,12 +71,12 @@ namespace MoistureBot
 				}
 
 				Console.WriteLine("Sending chat message to user '" + inputId + "'...");
-				Bot.SendChatMessage (message, userId);
+				Bot.SendChatMessage(message,userId);
 
 				return false;
 			case "room":
 
-				var favRoomId = Config.GetFavoriteChatRoomId (inputId);
+				var favRoomId = Config.GetFavoriteChatRoomId(inputId);
 				if (favRoomId != null) {
 					ulong favId;
 					try {
@@ -86,7 +86,7 @@ namespace MoistureBot
 						return false;
 					}
 					Console.WriteLine("Sending chat message to room '" + favId + "'...");
-					Bot.SendChatRoomMessage (message, favId);
+					Bot.SendChatRoomMessage(message,favId);
 					return false;
 				} 
 
@@ -99,7 +99,7 @@ namespace MoistureBot
 				}
 
 				Console.WriteLine("Sending chat message to room '" + roomId + "'...");
-				Bot.SendChatRoomMessage (message, roomId);
+				Bot.SendChatRoomMessage(message,roomId);
 				return false;
 			default:
 				Console.WriteLine(ConsoleMessage.InvalidParameters("msg"));

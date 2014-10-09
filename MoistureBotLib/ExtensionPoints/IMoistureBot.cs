@@ -11,6 +11,7 @@ namespace MoistureBot
 	{
 
 		string UserName { get; }
+
 		string PersonaName { get; set; }
 
 		/// <summary>
@@ -56,39 +57,41 @@ namespace MoistureBot
 		/// </summary>
 		/// <returns>User profile name</returns>
 		/// <param name="id">User id (steamID64)</param>
-		string GetUserName(ulong id);/// 
+		string GetUserName(ulong id);
+
+/// 
 
 		/// <summary>
 		/// Disconnect and terminate the bot.
 		/// </summary>
-		void Terminate ();
+		void Terminate();
 
 		/// <summary>
 		/// Kicks a user from a chat room.
 		/// </summary>
 		/// <param name="roomId">Room id (steamID64)</param>
 		/// <param name="userId">User id (steamID64)</param></param>
-		void KickChatMember (ulong roomId, ulong userId);
+		void KickChatMember(ulong roomId, ulong userId);
 
 		/// <summary>
 		/// Bans a user from a chat room.
 		/// </summary>
 		/// <param name="roomId">Room id (steamID64)</param>
 		/// <param name="userId">User id (steamID64)</param></param>
-		void BanChatMember (ulong roomId, ulong userId);
+		void BanChatMember(ulong roomId, ulong userId);
 
 		/// <summary>
 		/// Unbans a user from a chat room.
 		/// </summary>
 		/// <param name="roomId">Room id (steamID64)</param>
 		/// <param name="userId">User id (steamID64)</param></param>
-		void UnbanChatMember (ulong roomId, ulong userId);
+		void UnbanChatMember(ulong roomId, ulong userId);
 
 		/// <summary>
 		/// Chantes the user's online status.
 		/// </summary>
 		/// <returns>online status</returns>
-		OnlineStatus GetOnlineStatus ();
+		OnlineStatus GetOnlineStatus();
 
 		/// <summary>
 		/// Changes the user's online status.

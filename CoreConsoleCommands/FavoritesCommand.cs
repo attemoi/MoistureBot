@@ -9,14 +9,14 @@ namespace MoistureBot
 {
 
 	[ConsoleCommand(
-		Name ="favorites",
+		Name = "favorites",
 		ShortUsage = "favorites", ShortDescription = "Manage favorite rooms and users.", 
 		Description = "Manage favorite rooms and users.",
 		Usage = 
 			"favorites -list\n" +
-			"  favorites add user/room <key> <id>\n" +
-			"  favorites remove user/room <key>\n" +
-			"  favorites remove-all users/rooms"
+		"  favorites add user/room <key> <id>\n" +
+		"  favorites remove user/room <key>\n" +
+		"  favorites remove-all users/rooms"
 	)]
 	public class FavoritesCommand : IConsoleCommand
 	{

@@ -4,7 +4,7 @@ using Mono.Addins;
 namespace MoistureBot
 {
 	[TypeExtensionPoint]
-	public interface IChatFriendAddin : IMoistureBotAddin
+	public interface IChatFriendAddin
 	{
 		/// <summary>
 		/// Called when a message has been received from a friend.

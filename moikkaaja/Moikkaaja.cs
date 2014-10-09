@@ -12,29 +12,29 @@ using System.Linq;
 namespace MoistureBot
 {
 
-	[Extension (typeof(IChatRoomAddin))]
-	[Extension (typeof(IChatFriendAddin))]
+	[Extension(typeof(IChatRoomAddin))]
+	[Extension(typeof(IChatFriendAddin))]
 	public class Moikkaaja: IChatRoomAddin, IChatFriendAddin
 	{
 	
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
-		public void MessageReceived (ChatRoomMessage message)
+		public void MessageReceived(ChatRoomMessage message)
 		{
-			var reply = CreateReply (message);
+			var reply = CreateReply(message);
 			if (!String.IsNullOrEmpty(reply))
-				Bot.SendChatRoomMessage (reply, message.ChatId);
+				Bot.SendChatRoomMessage(reply,message.ChatId);
 		}
 
-		public void MessageReceived (ChatMessage message)
+		public void MessageReceived(ChatMessage message)
 		{
-			var reply = CreateReply (message);
+			var reply = CreateReply(message);
 			if (!String.IsNullOrEmpty(reply))
-				Bot.SendChatMessage (reply, message.ChatterId);
+				Bot.SendChatMessage(reply,message.ChatterId);
 		}
 
-		string CreateReply (ChatMessage message)
+		string CreateReply(ChatMessage message)
 		{
 			string[] greetings = {
 				"Moikka taas", "Moikkelis", "Moi kaikki", "Moikkamoi", 
@@ -46,10 +46,10 @@ namespace MoistureBot
 			};
 
 			Regex rgx = new Regex("[^a-zA-Z0-9 -]");
-			string strippedMsg = rgx.Replace(message.Message, "").ToLower();
-			string msg = Array.Find(greetings, t => t.Equals(strippedMsg, StringComparison.InvariantCultureIgnoreCase));
+			string strippedMsg = rgx.Replace(message.Message,"").ToLower();
+			string msg = Array.Find(greetings,t => t.Equals(strippedMsg,StringComparison.InvariantCultureIgnoreCase));
 
-			if (msg != null && !msg.Equals("") ){
+			if (msg != null && !msg.Equals("")){
 				Logger.Info("Moikkaaja: Greeting received, replying");
 				msg += " " + Bot.GetUserName(message.ChatterId) + "!";
 			}

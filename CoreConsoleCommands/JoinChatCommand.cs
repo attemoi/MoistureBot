@@ -33,24 +33,24 @@ namespace MoistureBot
 			}
 		}
 
-		public bool Execute (string[] args)
+		public bool Execute(string[] args)
 		{
 
-			Logger.Debug ("Executing command...");
+			Logger.Debug("Executing command...");
 
 			List<string> extra = Options.Parse(args);
 
 			string chatId = null;
 
-			if (!Bot.IsConnected ()) {
+			if (!Bot.IsConnected()) {
 				Console.WriteLine("Not connected to Steam.");
 				return false;
 			}
 
 			if (favorites) {
-				foreach(KeyValuePair<string, ulong> fav in Config.GetFavoriteChatRooms() ) {
+				foreach (KeyValuePair<string, ulong> fav in Config.GetFavoriteChatRooms()) {
 					Console.WriteLine("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
-					Bot.JoinChatRoom (fav.Value);
+					Bot.JoinChatRoom(fav.Value);
 				}
 				return false;
 			}
@@ -58,11 +58,11 @@ namespace MoistureBot
 			if (extra.Count == 0) {
 				Console.WriteLine(ConsoleMessage.InvalidNumberOfParameters("join"));
 				return false;
-			} 
+			}
 
-			chatId = extra.First ();
+			chatId = extra.First();
 
-			var favId = Config.GetFavoriteChatRoomId (chatId);
+			var favId = Config.GetFavoriteChatRoomId(chatId);
 			if (favId != null) {
 				ulong id;
 				try {
@@ -71,8 +71,8 @@ namespace MoistureBot
 					Console.WriteLine("Failed to join favorite room: Invalid id.");
 					return false;
 				}
-				Bot.JoinChatRoom (id);
-				Console.WriteLine("Joining favorite chat room '" + chatId + "' [" + favId + "]" );
+				Bot.JoinChatRoom(id);
+				Console.WriteLine("Joining favorite chat room '" + chatId + "' [" + favId + "]");
 			} else {
 				ulong id;
 				try {
@@ -82,7 +82,7 @@ namespace MoistureBot
 					return false;
 				}
 
-				Console.WriteLine( "Joining chat room '" + chatId + "'...");
+				Console.WriteLine("Joining chat room '" + chatId + "'...");
 				Bot.JoinChatRoom(id);
 			}
 				

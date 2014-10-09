@@ -10,7 +10,7 @@ namespace MoistureBot
 	[TypeExtensionPoint(Path = "MoistureBot/Core/CommandHelper")]
 	public interface ICommandHelper
 	{
-		void WriteHelp (IConsoleCommand command);
+		void WriteHelp(IConsoleCommand command);
 	}
 
 }

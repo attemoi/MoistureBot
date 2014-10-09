@@ -51,7 +51,7 @@ namespace MoistureBot.Config
 		/// <returns><c>true</c>, if favorite user was added, <c>false</c> otherwise (user already added).</returns>
 		/// <param name="key">Favorite key</param>
 		/// <param name="userId">Favorite steam64ID</param>
-		bool AddFavoriteUser (string key, ulong userId);
+		bool AddFavoriteUser(string key, ulong userId);
 
 		/// <summary>
 		/// Adds a new chat room to favorites.
@@ -59,45 +59,45 @@ namespace MoistureBot.Config
 		/// <returns><c>true</c>, if favorite chat room was added, <c>false</c> otherwise (room already added).</returns>
 		/// <param name="key">Favorite key</param>
 		/// <param name="chatRoomId">Chat room steam64ID</param>
-		bool AddFavoriteChatRoom (string key, ulong chatRoomId);
+		bool AddFavoriteChatRoom(string key, ulong chatRoomId);
 
 		/// <summary>
 		/// Removes a user from favorites.
 		/// </summary>
 		/// <returns><c>true</c>, if favorite user was removed, <c>false</c> otherwise (key not found).</returns>
 		/// <param name="key">Favorite user's key</param>
-		bool RemoveFavoriteUser (string key);
+		bool RemoveFavoriteUser(string key);
 
 		/// <summary>
 		/// Removes all favorite users.
 		/// </summary>
-		void RemoveAllFavoriteUsers ();
+		void RemoveAllFavoriteUsers();
 
 		/// <summary>
 		/// Removes a chat room from favorites.
 		/// </summary>
 		/// <returns><c>true</c>, if favorite chat room was removed, <c>false</c> otherwise (key not found).</returns>
 		/// <param name="key">Key.</param>
-		bool RemoveFavoriteChatRoom (string key);
+		bool RemoveFavoriteChatRoom(string key);
 
 		/// <summary>
 		/// Removes all favorite chat rooms.
 		/// </summary>
-		void RemoveAllFavoriteChatRooms ();
+		void RemoveAllFavoriteChatRooms();
 
 		/// <summary>
 		/// Configures a value in the ini file. Adds a new setting if it doesn't exist.
 		/// </summary>
 		/// <param name="setting">Setting to update</param>
 		/// <param name="value">new value</param>
-		void SetSetting (ConfigSetting setting, string value);
+		void SetSetting(ConfigSetting setting, string value);
 
 		/// <summary>
 		/// Gets a setting's value from the ini file.
 		/// </summary>
 		/// <returns>The setting value</returns>
 		/// <param name="setting">Setting.</param>
-		string GetSetting (ConfigSetting setting);
+		string GetSetting(ConfigSetting setting);
 
 	}
 }

@@ -8,7 +8,7 @@ using System.Linq;
 namespace MoistureBot
 {
 
-	[ConsoleCommand( 
+	[ConsoleCommand(
 		Name = "disconnect",
 		Description = "Sign out and disconnect from Steam.",
 		ShortDescription = "Sign out and disconnect from Steam.",
@@ -22,25 +22,25 @@ namespace MoistureBot
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
 		public OptionSet Options {
-			get { return new OptionSet (); }
+			get { return new OptionSet(); }
 		}
 
 		public bool Execute(string[] args)
 		{
-			Logger.Info ("Executing command...");
+			Logger.Info("Executing command...");
 
-			List<string> extra = Options.Parse (args);
+			List<string> extra = Options.Parse(args);
 
 			if (extra.Count > 0)
 				Console.WriteLine(ConsoleMessage.ExtraParametersNotAllowed("disconnect"));
 				
-			if (!Bot.IsConnected ()) {
-				Logger.Info ("Bot already offline.");
+			if (!Bot.IsConnected()) {
+				Logger.Info("Bot already offline.");
 				return false;
 			}
 
 			Console.WriteLine("Disconnecting bot...");
-			Bot.Disconnect ();
+			Bot.Disconnect();
 			return false;
 		}
 	}

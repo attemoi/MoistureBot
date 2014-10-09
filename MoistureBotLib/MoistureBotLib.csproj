@@ -53,7 +53,6 @@
     <Compile Include="MoistureBotLib.Attributes\NameAttribute.cs" />
     <Compile Include="MoistureBotLib.Attributes\SectionAttribute.cs" />
     <Compile Include="EnumUtils.cs" />
-    <Compile Include="ExtensionPoints\IMoistureBotAddin.cs" />
     <Compile Include="ConsoleUtils.cs" />
     <Compile Include="MoistureBotLib.Attributes\ConsoleCommandAttribute.cs" />
     <Compile Include="ExtensionPoints\IMoistureBot.cs" />

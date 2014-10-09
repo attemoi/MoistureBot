@@ -7,7 +7,7 @@ using Mono.Addins;
 namespace MoistureBot
 {
 
-	[TypeExtensionPoint (ExtensionAttributeType=typeof(ConsoleCommandAttribute))]
+	[TypeExtensionPoint(ExtensionAttributeType = typeof(ConsoleCommandAttribute))]
 	public interface IConsoleCommand
 	{
 

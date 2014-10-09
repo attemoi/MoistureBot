@@ -17,21 +17,21 @@ namespace MoistureBot
 	public class ConnectCommand : IConsoleCommand
 	{
 	
-		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot ();
-		private ILogger Logger = MoistureBotComponentProvider.GetLogger ();
+		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
 		public OptionSet Options {
 			get {
-				return new OptionSet ();
+				return new OptionSet();
 			}
 		}
 
-		public bool Execute (string[] args)
+		public bool Execute(string[] args)
 		{
 
-			Logger.Info ("Executing command...");
+			Logger.Info("Executing command...");
 		
-			List<string> extra = Options.Parse (args);
+			List<string> extra = Options.Parse(args);
 
 			string user = null;
 			string pass = null;
@@ -42,20 +42,20 @@ namespace MoistureBot
 				pass = extra.ElementAt(1);
 
 			if (extra.Count > 2)
-				Console.WriteLine (ConsoleMessage.InvalidNumberOfParameters("connect"));
+				Console.WriteLine(ConsoleMessage.InvalidNumberOfParameters("connect"));
 
-			if (String.IsNullOrEmpty (user)) {
-				Console.Write ("username:");
-				user = Console.ReadLine ();
+			if (String.IsNullOrEmpty(user)) {
+				Console.Write("username:");
+				user = Console.ReadLine();
 			}
-			if (String.IsNullOrEmpty (pass)) {
-				Console.Write ("password:");
-				pass = ConsoleUtils.ReadPassword ();
+			if (String.IsNullOrEmpty(pass)) {
+				Console.Write("password:");
+				pass = ConsoleUtils.ReadPassword();
 			}
 
 			Console.WriteLine("Logging in as " + user + "...");
 			Console.WriteLine(ConsoleMessage.SEE_STATUS);
-			Bot.Connect(user, pass);
+			Bot.Connect(user,pass);
 
 			return false;
 		}

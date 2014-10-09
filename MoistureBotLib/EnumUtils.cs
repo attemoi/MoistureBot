@@ -5,7 +5,7 @@ namespace MoistureBot
 {
 	public static class EnumUtils
 	{
-		public static string GetValue<T> (Enum value) where T : StringAttribute
+		public static string GetValue<T>(Enum value) where T : StringAttribute
 		{
 			string output = null;
 			Type type = value.GetType();

@@ -23,21 +23,21 @@ namespace MoistureBot
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
 		public OptionSet Options {
-			get { return new OptionSet (); }
+			get { return new OptionSet(); }
 		}
 
 		public bool Execute(string[] args)
 		{
-			Logger.Info ("Executing command...");
+			Logger.Info("Executing command...");
 
-			List<string> extra = Options.Parse (args);
+			List<string> extra = Options.Parse(args);
 
 			if (extra.Count > 0)
 				Console.Write(ConsoleMessage.ExtraParametersNotAllowed("exit"));
 
 			Console.WriteLine("Disconnecting from Steam...");
-			Bot.Disconnect ();
-			Bot.Terminate ();
+			Bot.Disconnect();
+			Bot.Terminate();
 			Console.WriteLine("Exiting program...");
 			return true;
 		}
