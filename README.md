@@ -26,6 +26,13 @@ The project includes an example addin called "Moikkaaja", which
 responds to basic Finnish greetings in messages received either in group or friend chat.
 All the interfaces needed for creating an addin are included in the MoistureBotLib library.
 
+### Addin dependencies
+
+In order to compile an addin, the following dependencies are required:
+
+  - [Mono.Addins](http://monoaddins.codeplex.com/) (published to NuGet)
+  - MoistureBotLib.dll (included in this project)
+
 ## License
 
 This project is licensed under the [MIT](http://opensource.org/licenses/MIT) license.
