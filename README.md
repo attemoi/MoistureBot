@@ -5,6 +5,8 @@ Note: This is still a work in progress...
 MoistureBot is an extensible chat bot for steam based on [SteamKit2](https://github.com/SteamRE/SteamKit). 
 It uses [Mono.Addins](http://monoaddins.codeplex.com/) to provide extensibility.
 
+![Example usage](/assets/example_usage.gif?raw=true "Example usage")
+
 ## Dependencies
 
 The project has so far been built only under Windows using Mono 3.2.3.
