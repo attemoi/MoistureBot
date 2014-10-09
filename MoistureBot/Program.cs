@@ -34,6 +34,7 @@ namespace MoistureBot
 
 			AddinManager.AddinLoadError += OnLoadError;
 			AddinManager.AddinLoaded += OnLoad;
+			AddinManager.AddinUnloaded += OnUnload;
 
 			AddinManager.Initialize(".",".","./addins");
 			AddinManager.Registry.Update();
@@ -105,6 +106,9 @@ namespace MoistureBot
 			try
 			{
 				Run(args);
+
+				AddinManager.Shutdown();
+
 				return Environment.ExitCode;
 			} 
 			catch(Exception e)
@@ -122,9 +126,14 @@ namespace MoistureBot
 			Logger.Error("Failed to load addin",args.Exception);
 		}
 
+		static void OnUnload(object s, AddinEventArgs args)
+		{
+			Logger.Info("Add-in unloaded: " + args.AddinId);
+		}
+
 		static void OnLoad(object s, AddinEventArgs args)
 		{
-			Logger.Debug("Add-in loaded: " + args.AddinId);
+			Logger.Info("Add-in loaded: " + args.AddinId);
 		}
 			
 	}

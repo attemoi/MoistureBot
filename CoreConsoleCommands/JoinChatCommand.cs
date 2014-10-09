@@ -13,7 +13,9 @@ namespace MoistureBot
 		Description = "Join chat room(s).",
 		ShortDescription = "Join chat room(s).",
 		ShortUsage = "join <chat_id|favorite_key>",
-		Usage = "join <chat_id|favorite_key>\n  join -favorites"
+		Usage = 
+			"join <chat_id|favorite_key>\n" +
+			"join -favorites"
 	)]
 	public class JoinChatCommand : IConsoleCommand
 	{
