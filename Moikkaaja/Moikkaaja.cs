@@ -2,6 +2,8 @@
 using Mono.Addins;
 using System.Text.RegularExpressions;
 using System.Linq;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.Steam;
 
 [assembly:Addin("Moikkaaja", "1.0")]
 [assembly:AddinDependency("MoistureBot", "1.0")]

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Options;
 
-namespace MoistureBot
+namespace MoistureBot.Utils
 {
-	public class ConsoleUtils
+	public class ConsoleHelper
 	{
 		/// <summary>
 		/// Like System.Console.ReadLine(), only with a mask.

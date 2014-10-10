@@ -1,5 +1,6 @@
 ﻿using System;
 using Mono.Addins;
+using MoistureBot.ExtensionPoints;
 
 namespace MoistureBot.Logging
 {

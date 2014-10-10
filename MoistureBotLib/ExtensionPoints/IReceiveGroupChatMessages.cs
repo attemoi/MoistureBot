@@ -1,7 +1,8 @@
 ﻿using System;
 using Mono.Addins;
+using MoistureBot.Steam;
 
-namespace MoistureBot
+namespace MoistureBot.ExtensionPoints
 {
 	[TypeExtensionPoint]
 	public interface IReceiveGroupChatMessages

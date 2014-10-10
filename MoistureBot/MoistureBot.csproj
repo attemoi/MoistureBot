@@ -50,10 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="MoistureBotConfig.cs" />
-    <Compile Include="LaunchCommand.cs" />
-    <Compile Include="HelpCommand.cs" />
     <Compile Include="MoistureBotCore.cs" />
     <Compile Include="MoistureBotLogger.cs" />
+    <Compile Include="CoreConsoleCommands\HelpCommand.cs" />
+    <Compile Include="CoreConsoleCommands\LaunchCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="c:\Users\ammoi_000\Projects\moisture-bot\MoistureBot\MoistureBot.Config\" />
+    <Folder Include="CoreConsoleCommands\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="app.config" />

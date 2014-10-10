@@ -3,8 +3,11 @@ using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.ExtensionAttributes;
+using MoistureBot.Config;
 
-namespace MoistureBot
+namespace MoistureBot.ConsoleCommands
 {
 	[ConsoleCommand(
 		Name = "status",
@@ -41,7 +44,7 @@ namespace MoistureBot
 			Options.Parse(args);
 
 			Console.WriteLine();
-			string status = EnumUtils.GetValue<NameAttribute>(Bot.GetOnlineStatus());
+			string status = ConfigUtils.GetValue<NameAttribute>(Bot.GetOnlineStatus());
 			if (Bot.IsConnected())
 			{
 				Console.WriteLine("  logged on as {0}",Bot.UserName);

@@ -1,7 +1,7 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace MoistureBot
+namespace MoistureBot.ExtensionAttributes
 {
 	public class ConsoleCommandAttribute : CustomExtensionAttribute
 	{
@@ -27,7 +27,7 @@ namespace MoistureBot
 		[NodeAttribute]
 		public string Name { get; set; }
 
-		[NodeAttribute( "Description", typeof(Array)) ]
+		[NodeAttribute]
 		public string Description { get; set; }
 
 		[NodeAttribute]

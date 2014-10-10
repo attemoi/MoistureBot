@@ -37,37 +37,41 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Favorite.cs" />
-    <Compile Include="FriendChatMessage.cs" />
-    <Compile Include="ConfigSetting.cs" />
-    <Compile Include="OnlineStatus.cs" />
-    <Compile Include="EnumUtils.cs" />
-    <Compile Include="ConsoleUtils.cs" />
     <Compile Include="ExtensionPoints\IMoistureBot.cs" />
     <Compile Include="ExtensionPoints\IConfig.cs" />
     <Compile Include="ExtensionPoints\ILogger.cs" />
-    <Compile Include="ConsoleMessage.cs" />
     <Compile Include="MoistureBotComponentProvider.cs" />
     <Compile Include="ExtensionPoints\IConsoleCommand.cs" />
-    <Compile Include="Attributes\StringAttribute.cs" />
-    <Compile Include="Attributes\KeyAttribute.cs" />
-    <Compile Include="Attributes\NameAttribute.cs" />
-    <Compile Include="Attributes\SectionAttribute.cs" />
-    <Compile Include="Attributes\ConsoleCommandAttribute.cs" />
     <Compile Include="Mono.Options\Options.cs" />
-    <Compile Include="Invite.cs" />
-    <Compile Include="GroupChatMessage.cs" />
     <Compile Include="ExtensionPoints\IReceiveGroupChatMessages.cs" />
     <Compile Include="ExtensionPoints\IReceiveFriendGroupChatInvites.cs" />
     <Compile Include="ExtensionPoints\IReceiveFriendChatMessages.cs" />
     <Compile Include="ExtensionPoints\IReceiveGameLobbyInvites.cs" />
     <Compile Include="ExtensionPoints\IReceiveCommunityGroupChatInvites.cs" />
+    <Compile Include="Config\ConfigSetting.cs" />
+    <Compile Include="Config\KeyAttribute.cs" />
+    <Compile Include="Config\NameAttribute.cs" />
+    <Compile Include="Config\SectionAttribute.cs" />
+    <Compile Include="Config\StringAttribute.cs" />
+    <Compile Include="Config\DefaultValueAttribute.cs" />
+    <Compile Include="ExtensionAttributes\ConsoleCommandAttribute.cs" />
+    <Compile Include="Steam\OnlineStatus.cs" />
+    <Compile Include="Steam\GroupChatMessage.cs" />
+    <Compile Include="Steam\FriendChatMessage.cs" />
+    <Compile Include="Steam\Favorite.cs" />
+    <Compile Include="Steam\Invite.cs" />
+    <Compile Include="Utils\ConsoleMessage.cs" />
+    <Compile Include="Utils\ConsoleHelper.cs" />
+    <Compile Include="Config\ConfigUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
-    <Folder Include="Attributes\" />
+    <Folder Include="Config\" />
+    <Folder Include="ExtensionAttributes\" />
+    <Folder Include="Steam\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>

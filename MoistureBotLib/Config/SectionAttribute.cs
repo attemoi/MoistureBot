@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoistureBot
+namespace MoistureBot.Config
 {
 	[System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = false)]
 	public class SectionAttribute : StringAttribute

@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Mono.Addins;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.Config;
+using MoistureBot.Steam;
 
 namespace MoistureBot
 {
@@ -69,12 +72,12 @@ namespace MoistureBot
 
 		private string GetSection(ConfigSetting settings)
 		{
-			return EnumUtils.GetValue<SectionAttribute>(settings);
+			return ConfigUtils.GetValue<SectionAttribute>(settings);
 		}
 
 		private string GetKey(ConfigSetting settings)
 		{
-			return EnumUtils.GetValue<KeyAttribute>(settings);
+			return ConfigUtils.GetValue<KeyAttribute>(settings);
 		}
 
 		#region IConfig implementation
@@ -97,7 +100,7 @@ namespace MoistureBot
 
 			SetSetting(
 				ConfigSetting.STATUS, 
-				EnumUtils.GetValue<StringAttribute>(OnlineStatus.ONLINE));
+				ConfigUtils.GetValue<StringAttribute>(OnlineStatus.ONLINE));
 		}
 
 		public void ResetConfig()

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Mono.Options;
 using System.Threading;
 using System.Linq;
+using MoistureBot.ConsoleCommands;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.ExtensionAttributes;
 
 [assembly:AddinRoot("MoistureBot", "1.0")]
 [assembly:AddinAuthor("Atte Moisio")]

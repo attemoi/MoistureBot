@@ -8,6 +8,9 @@ using System.Threading;
 using System.Collections.Generic;
 using IniParser.Model;
 using System.Reflection;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.Steam;
+using MoistureBot.Config;
 
 namespace MoistureBot
 {
@@ -194,10 +197,10 @@ namespace MoistureBot
 			{
 				SetOnlineStatus(configState);
 			}
-			catch(ArgumentException e)
+			catch(ArgumentException)
 			{
-				Logger.Info("Invalid value for online status in config, setting to default value");
-				// TODO: invalid value in config, fix to default
+				Logger.Info("Invalid value for online status in config, setting to default value.");
+				SetOnlineStatus(ConfigUtils.GetValue<DefaultValueAttribute>(ConfigSetting.STATUS));
 			}
 
 		}
@@ -499,7 +502,7 @@ namespace MoistureBot
 
 			foreach (OnlineStatus ps in Enum.GetValues(typeof(OnlineStatus)))
 			{
-				var str = EnumUtils.GetValue<StringAttribute>(ps);
+				var str = ConfigUtils.GetValue<StringAttribute>(ps);
 				if (status.Equals(str))
 				{
 					SetOnlineStatus(ps);
@@ -542,7 +545,7 @@ namespace MoistureBot
 
 			new MoistureBotConfig().SetSetting(
 				ConfigSetting.STATUS,
-				EnumUtils.GetValue<StringAttribute>(status));
+				ConfigUtils.GetValue<StringAttribute>(status));
 		}
 
 		public void JoinChatRoom(ulong roomId)

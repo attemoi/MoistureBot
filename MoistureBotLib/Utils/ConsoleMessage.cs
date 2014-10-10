@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoistureBot
+namespace MoistureBot.Utils
 {
 	public static class ConsoleMessage
 	{

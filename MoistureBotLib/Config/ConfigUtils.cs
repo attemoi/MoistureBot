@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Reflection;
 
-namespace MoistureBot
+namespace MoistureBot.Config
 {
-	public static class EnumUtils
+	public class ConfigUtils
 	{
+
 		public static string GetValue<T>(Enum value) where T : StringAttribute
 		{
 			string output = null;

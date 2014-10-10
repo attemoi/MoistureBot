@@ -3,8 +3,11 @@ using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
+using MoistureBot.ExtensionAttributes;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.Utils;
 
-namespace MoistureBot
+namespace MoistureBot.ConsoleCommands
 {
 
 	[ConsoleCommand(
@@ -54,7 +57,7 @@ namespace MoistureBot
 			if (String.IsNullOrEmpty(pass))
 			{
 				Console.Write("password:");
-				pass = ConsoleUtils.ReadPassword();
+				pass = ConsoleHelper.ReadPassword();
 			}
 
 			Console.WriteLine("Logging in as " + user + "...");

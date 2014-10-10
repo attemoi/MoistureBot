@@ -3,8 +3,11 @@ using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
+using MoistureBot.ExtensionAttributes;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.Utils;
 
-namespace MoistureBot
+namespace MoistureBot.ConsoleCommands
 {
 
 	[ConsoleCommand(

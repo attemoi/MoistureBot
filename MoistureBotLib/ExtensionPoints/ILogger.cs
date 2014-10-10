@@ -1,8 +1,13 @@
 using System;
 using Mono.Addins;
 
-namespace MoistureBot
+namespace MoistureBot.ExtensionPoints
 {
+
+	/// <summary>
+	/// This is an extension point for a single instance addin intended for internal use. 
+	/// This should not be extended by external addins.
+	/// </summary>
 	[TypeExtensionPoint]
 	public interface ILogger
 	{

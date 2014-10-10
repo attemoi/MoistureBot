@@ -2,6 +2,7 @@
 using MoistureBot;
 using Mono.Addins;
 using System.Linq;
+using MoistureBot.ExtensionPoints;
 
 namespace MoistureBot
 {

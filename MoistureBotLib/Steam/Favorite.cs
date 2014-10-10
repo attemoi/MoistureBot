@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoistureBot
+namespace MoistureBot.Steam
 {
 	public struct Favorite
 	{

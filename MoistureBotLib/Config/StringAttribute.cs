@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoistureBot
+namespace MoistureBot.Config
 {
 
 	public class StringAttribute : System.Attribute

@@ -4,8 +4,11 @@ using Mono.Options;
 using Mono.Addins;
 using System.Linq;
 using System.Collections.Generic;
+using MoistureBot.ExtensionPoints;
+using MoistureBot.ExtensionAttributes;
+using MoistureBot.Utils;
 
-namespace MoistureBot
+namespace MoistureBot.ConsoleCommands
 {
 
 	[ConsoleCommand(
