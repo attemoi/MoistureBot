@@ -91,7 +91,7 @@ namespace MoistureBot
 
 					if (command != null)
 					{
-						command.Execute(args);
+						exit = command.Execute(args);
 					}
 					else
 					{

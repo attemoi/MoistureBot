@@ -39,6 +39,7 @@ namespace MoistureBot
 			Bot.Disconnect();
 			Bot.Terminate();
 			Console.WriteLine("Exiting program...");
+
 			return true;
 		}
 	}
