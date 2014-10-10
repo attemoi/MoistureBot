@@ -20,8 +20,10 @@ namespace MoistureBot
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
-		public OptionSet Options {
-			get {
+		public OptionSet Options
+		{
+			get
+			{
 				return new OptionSet();
 			}
 		}
@@ -44,11 +46,13 @@ namespace MoistureBot
 			if (extra.Count > 2)
 				Console.WriteLine(ConsoleMessage.InvalidNumberOfParameters("connect"));
 
-			if (String.IsNullOrEmpty(user)) {
+			if (String.IsNullOrEmpty(user))
+			{
 				Console.Write("username:");
 				user = Console.ReadLine();
 			}
-			if (String.IsNullOrEmpty(pass)) {
+			if (String.IsNullOrEmpty(pass))
+			{
 				Console.Write("password:");
 				pass = ConsoleUtils.ReadPassword();
 			}

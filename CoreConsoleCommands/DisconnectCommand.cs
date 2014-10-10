@@ -20,7 +20,8 @@ namespace MoistureBot
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
-		public OptionSet Options {
+		public OptionSet Options
+		{
 			get { return new OptionSet(); }
 		}
 
@@ -33,7 +34,8 @@ namespace MoistureBot
 			if (extra.Count > 0)
 				Console.WriteLine(ConsoleMessage.ExtraParametersNotAllowed("disconnect"));
 				
-			if (!Bot.IsConnected()) {
+			if (!Bot.IsConnected())
+			{
 				Logger.Info("Bot already offline.");
 				return false;
 			}

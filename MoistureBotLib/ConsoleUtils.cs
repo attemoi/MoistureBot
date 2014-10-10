@@ -29,14 +29,19 @@ namespace MoistureBot
 						System.Console.Write("\b \b");
 						pass.Pop();
 					}
-				} else if (chr == CTRLBACKSP)
+				}
+				else if (chr == CTRLBACKSP)
 				{
 					while (pass.Count > 0)
 					{
 						System.Console.Write("\b \b");
 						pass.Pop();
 					}
-				} else if (FILTERED.Count(x => chr == x) > 0) { } else
+				}
+				else if (FILTERED.Count(x => chr == x) > 0)
+				{
+				}
+				else
 				{
 					pass.Push((char)chr);
 					System.Console.Write(mask);

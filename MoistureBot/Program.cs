@@ -65,7 +65,8 @@ namespace MoistureBot
 				Console.Write(">>");
 
 				var input = Console.ReadLine();
-				if (!String.IsNullOrWhiteSpace(input)) {
+				if (!String.IsNullOrWhiteSpace(input))
+				{
 
 					Logger.Info("Parsing command '" + input + "'");
 
@@ -78,17 +79,22 @@ namespace MoistureBot
 
 					ExtensionNodeList commands = AddinManager.GetExtensionNodes(typeof(IConsoleCommand));
 
-					foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands) {
+					foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands)
+					{
 						var name = node.Data.Name;
-						if (commandName.Equals(name)) {
+						if (commandName.Equals(name))
+						{
 							command = (IConsoleCommand)node.CreateInstance();
 							break;
 						}
 					}
 
-					if (command != null) {
+					if (command != null)
+					{
 						command.Execute(args);
-					} else {
+					}
+					else
+					{
 						Console.WriteLine("Unknown command: '" + input + "'");
 					}
 
@@ -108,7 +114,7 @@ namespace MoistureBot
 				AddinManager.Shutdown();
 
 				return Environment.ExitCode;
-			} 
+			}
 			catch(Exception e)
 			{
 				Logger.Error("Program failure",e);

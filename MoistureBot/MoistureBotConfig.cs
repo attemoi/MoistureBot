@@ -39,9 +39,12 @@ namespace MoistureBot
 		{
 			lock(iniLock)
 			{
-				try {
+				try
+				{
 					parser.WriteFile(FILENAME,data,ENCODING);
-				} catch(Exception e) {
+				}
+				catch(Exception e)
+				{
 					Logger.Error("Failed to write data",e);
 				}
 			}
@@ -51,9 +54,12 @@ namespace MoistureBot
 		{
 			lock(iniLock)
 			{
-				try {
+				try
+				{
 					return parser.ReadFile(FILENAME,ENCODING);
-				} catch(Exception e) {
+				}
+				catch(Exception e)
+				{
 					Logger.Error("Failed to read data",e);
 				}
 
@@ -76,7 +82,8 @@ namespace MoistureBot
 		public void CreateConfig()
 		{
 
-			if (ConfigExists()) {
+			if (ConfigExists())
+			{
 				Logger.Info("Config already exists");
 				return;
 			}
@@ -135,18 +142,22 @@ namespace MoistureBot
 			if (collection == null)
 				return dict;
 				
-			foreach (KeyData kd in collection) {
-				try {
+			foreach (KeyData kd in collection)
+			{
+				try
+				{
 					string key = kd.KeyName;
 					ulong id = UInt64.Parse(kd.Value);
 					dict.Add(key,id);
-				} catch(Exception e){
+				}
+				catch(Exception e)
+				{
 					Logger.Error("Failed to parse favorite with key " + kd.Value,e);
 				}
 			}
 			return dict;
 		}
-			
+
 		public bool AddFavoriteUser(string key, ulong userId)
 		{
 			Logger.Info("Adding favorite user: key '" + key + "' + id: '" + userId + "'");
@@ -233,7 +244,8 @@ namespace MoistureBot
 
 		private void CreateSectionIfNotExists(IniData data, string section)
 		{
-			if (!data.Sections.ContainsSection(section)) {
+			if (!data.Sections.ContainsSection(section))
+			{
 				Logger.Info("Section '" + section + "' doesn't exist, creating new...");
 				data.Sections.AddSection(section);
 			}
@@ -244,7 +256,8 @@ namespace MoistureBot
 
 			CreateSectionIfNotExists(data,section);
 
-			if (!data[section].ContainsKey(key)) {
+			if (!data[section].ContainsKey(key))
+			{
 				Logger.Info("Key '" + key + "' doesn't exist, creating new...");
 				data[section].AddKey(key);
 			}
@@ -259,7 +272,7 @@ namespace MoistureBot
 			Logger.Info("Found value '" + value + "'");
 			return value;
 		}
-			
+
 		public void RemoveAllFavoriteUsers()
 		{
 			Logger.Info("Removing all favorite users...");
@@ -284,18 +297,24 @@ namespace MoistureBot
 
 		public string GetFavoriteUserId(string key)
 		{
-			try {
+			try
+			{
 				return ReadData(getParser())[SECTION_FAVORITE_USERS][key];
-			} catch {
+			}
+			catch
+			{
 				return null;
 			}
 		}
 
 		public string GetFavoriteChatRoomId(string key)
 		{
-			try {
+			try
+			{
 				return ReadData(getParser())[SECTION_FAVORITE_ROOMS][key];
-			} catch {
+			}
+			catch
+			{
 				return null;
 			}
 		}

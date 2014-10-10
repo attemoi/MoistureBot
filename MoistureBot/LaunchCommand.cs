@@ -22,13 +22,15 @@ namespace MoistureBot
 		private string user;
 		private string pass;
 
-		public OptionSet Options {
-			get {
-				return new OptionSet () {
+		public OptionSet Options
+		{
+			get
+			{
+				return new OptionSet() { 
 					{ "h|help", "Show this message." ,
-						v => help = v != null},
+						v => help = v != null },
 					{ "c|connect", "Connect to Steam on launch." ,
-						v => connect = v != null},
+						v => connect = v != null}, 
 					{ "j|join-favorites", "Join favourite rooms on launch" ,
 						v => joinFavs = v != null},
 				};
@@ -41,7 +43,8 @@ namespace MoistureBot
 
 			List<string> extra = Options.Parse(args);
 				
-			if (help) {
+			if (help)
+			{
 				Console.WriteLine();
 				Console.WriteLine("  Extensible chat bot for Steam. A steam user with at least one game");
 				Console.WriteLine("  is required to join chats or send messages (Steam requirement).");
@@ -55,19 +58,23 @@ namespace MoistureBot
 				return true;
 			}
 
-			if (connect || joinFavs) {
+			if (connect || joinFavs)
+			{
 
 				if (extra.Count > 0)
 					user = extra.First();
+
 				if (extra.Count > 1)
 					pass = extra.ElementAt(1);
 					
-				if (user == null) {
+				if (user == null)
+				{
 					Console.WriteLine();
 					Console.Write("username:");
 					user = Console.ReadLine();
 				}
-				if (pass == null) {
+				if (pass == null)
+				{
 					Console.Write("password:");
 					pass = Console.ReadLine();
 				}
@@ -78,8 +85,10 @@ namespace MoistureBot
 
 			}
 
-			if (joinFavs) {
-				foreach (KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms()) {
+			if (joinFavs)
+			{
+				foreach (KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms())
+				{
 					Console.WriteLine("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
 					Bot.JoinChatRoom(fav.Value);
 				}

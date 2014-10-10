@@ -21,7 +21,8 @@ namespace MoistureBot
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
-		public OptionSet Options {
+		public OptionSet Options
+		{
 			get { return new OptionSet(); }
 		}
 

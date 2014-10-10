@@ -23,12 +23,14 @@ namespace MoistureBot
 
 		private bool showAddins;
 
-		public OptionSet Options {
-			get {
-				return new OptionSet () {
+		public OptionSet Options
+		{
+			get
+			{
+				return new OptionSet() {
 					{ "a|addins", "Show activated addins.", 
-						v => showAddins = v != null }
-				};
+						v => showAddins = v != null}
+					};
 			}
 		}
 
@@ -41,24 +43,32 @@ namespace MoistureBot
 
 			Console.WriteLine();
 			string status = EnumUtils.GetValue<NameAttribute>(Bot.GetOnlineStatus());
-			if (Bot.IsConnected()) {
+			if (Bot.IsConnected())
+			{
 				Console.WriteLine("  logged on as {0}",Bot.UserName);
 				Console.WriteLine("  persona name: '{0}'",Bot.PersonaName);
 				Console.WriteLine("  online status: {0}",status);
-			} else {
+			}
+			else
+			{
 				Console.WriteLine("  not connected");
 				Console.WriteLine("  online status set to {0}",status);
 			}
 
-			if (showAddins) {
+			if (showAddins)
+			{
 				Console.WriteLine();
 				Console.WriteLine("Registered addins:");
 				Console.WriteLine();
 				var addins = AddinManager.Registry.GetAddins();
-				if (addins.Length == 0) {
+				if (addins.Length == 0)
+				{
 					Console.WriteLine("  -- no addins registered --");
-				} else {
-					foreach (Addin addin in addins) {
+				}
+				else
+				{
+					foreach (Addin addin in addins)
+					{
 						Console.WriteLine("  {0} {1}",addin.Name,addin.Version);
 					}
 				}

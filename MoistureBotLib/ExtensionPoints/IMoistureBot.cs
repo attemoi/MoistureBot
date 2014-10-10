@@ -10,8 +10,16 @@ namespace MoistureBot
 	public interface IMoistureBot
 	{
 
+		/// <summary>
+		/// Gets the bot Steam username.
+		/// </summary>
+		/// <value>The name of the user.</value>
 		string UserName { get; }
 
+		/// <summary>
+		/// Gets or sets the bot's persona name on Steam. Bot needs to be connected.
+		/// </summary>
+		/// <value>Bot persona name</value>
 		string PersonaName { get; set; }
 
 		/// <summary>
@@ -59,7 +67,7 @@ namespace MoistureBot
 		/// <param name="id">User id (steamID64)</param>
 		string GetUserName(ulong id);
 
-/// 
+		/// 
 
 		/// <summary>
 		/// Disconnect and terminate the bot.
