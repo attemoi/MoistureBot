@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBot", "MoistureBot\MoistureBot.csproj", "{89473D51-D556-4742-A560-8FEA79AAB641}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moikkaaja", "Moikkaaja\Moikkaaja.csproj", "{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreAddins", "CoreAddins", "{23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreConsoleCommands", "CoreConsoleCommands\CoreConsoleCommands.csproj", "{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBotLib", "MoistureBotLib\MoistureBotLib.csproj", "{559877FE-43FB-46A5-897E-978078951010}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleAddins", "SampleAddins", "{FA84E13C-6332-4188-B013-1E11752123C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moikkaaja", "SampleAddins\Moikkaaja\Moikkaaja\Moikkaaja.csproj", "{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357}.Debug|x86.Build.0 = Debug|Any CPU
 		{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357}.Release|x86.ActiveCfg = Release|Any CPU
 		{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357}.Release|x86.Build.0 = Release|Any CPU
+		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Debug|x86.Build.0 = Debug|Any CPU
+		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Release|x86.ActiveCfg = Release|Any CPU
+		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Release|x86.Build.0 = Release|Any CPU
 		{559877FE-43FB-46A5-897E-978078951010}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{559877FE-43FB-46A5-897E-978078951010}.Debug|x86.Build.0 = Debug|Any CPU
 		{559877FE-43FB-46A5-897E-978078951010}.Release|x86.ActiveCfg = Release|Any CPU
@@ -29,14 +35,10 @@ Global
 		{89473D51-D556-4742-A560-8FEA79AAB641}.Debug|x86.Build.0 = Debug|x86
 		{89473D51-D556-4742-A560-8FEA79AAB641}.Release|x86.ActiveCfg = Release|x86
 		{89473D51-D556-4742-A560-8FEA79AAB641}.Release|x86.Build.0 = Release|x86
-		{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}.Debug|x86.Build.0 = Debug|Any CPU
-		{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}.Release|x86.ActiveCfg = Release|Any CPU
-		{9ADEFAF8-ECAF-417B-A489-A47BF5C65653}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9ADEFAF8-ECAF-417B-A489-A47BF5C65653} = {23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}
 		{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357} = {23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}
+		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543} = {FA84E13C-6332-4188-B013-1E11752123C3}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MoistureBot\MoistureBot.csproj
