@@ -61,9 +61,29 @@ namespace MoistureBot
 			new Callback<SteamFriends.ChatMsgCallback>(ChatMsgCallback, manager);
 			new Callback<SteamFriends.ChatInviteCallback>(ChatInviteCallback, manager);
 			new Callback<SteamFriends.ChatActionResultCallback>(ChatActionResultCallback, manager);
+			new Callback<SteamFriends.ChatMemberInfoCallback>(ChatMemberInfoCallback, manager);
+			new Callback<SteamFriends.FriendsListCallback>(FriendsListCallback, manager);
+			new Callback<SteamFriends.PersonaStateCallback>(PersonaStateCallback, manager);
+			new Callback<SteamFriends.ProfileInfoCallback>(ProfileInfoCallback, manager);
 
 			new Callback<SteamFriends.FriendMsgCallback>(FriendMsgCallback, manager);
 
+		}
+
+		void ProfileInfoCallback(SteamFriends.ProfileInfoCallback obj)
+		{
+			Logger.Info("Profile info callback fired.");
+		}
+
+
+		void PersonaStateCallback(SteamFriends.PersonaStateCallback obj)
+		{
+			Logger.Info("Persona state callback fired with state " + obj.StatusFlags);
+		}
+
+		void FriendsListCallback(SteamFriends.FriendsListCallback obj)
+		{
+			Logger.Info("Friends list callback fired.");
 		}
 
 		void ChatActionResultCallback(SteamFriends.ChatActionResultCallback obj)
@@ -170,6 +190,17 @@ namespace MoistureBot
 				Username = user,
 				Password = pass,
 			});
+		}
+
+		void ChatMemberInfoCallback(SteamFriends.ChatMemberInfoCallback callback)
+		{
+
+			Logger.Info("Chat member info callback fired");
+
+			Logger.Debug("Chat info type: " + callback.Type);
+			Logger.Debug("Chatter acted by: " + callback.StateChangeInfo.ChatterActedBy.ConvertToUInt64());
+			Logger.Debug("Chatter acted on  " + callback.StateChangeInfo.ChatterActedOn.ConvertToUInt64());
+			Logger.Debug("State change: " + callback.StateChangeInfo.StateChange);
 		}
 
 		private void AccountInfoCallback(SteamUser.AccountInfoCallback callback)
