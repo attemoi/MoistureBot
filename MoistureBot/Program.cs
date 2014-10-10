@@ -58,9 +58,6 @@ namespace MoistureBot
 
 			HandleConsoleInput();
 
-			if (Bot != null)
-				Bot.Terminate();
-
 		}
 
 		public static void HandleConsoleInput()
@@ -120,6 +117,9 @@ namespace MoistureBot
 			{
 				Run(args);
 
+				if (Bot != null)
+					Bot.Terminate();
+	
 				AddinManager.Shutdown();
 				return Environment.ExitCode;
 			}

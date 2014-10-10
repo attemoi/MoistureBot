@@ -4,6 +4,10 @@ using MoistureBot.Steam;
 
 namespace MoistureBot.ExtensionPoints
 {
+	/// <summary>
+	/// Extension point for receiving invites to community group chats.
+	/// Closely related to <see cref="IReceiveFriendGroupChatInvites"/> 
+	/// </summary>
 	[TypeExtensionPoint]
 	public interface IReceiveCommunityGroupChatInvites
 	{

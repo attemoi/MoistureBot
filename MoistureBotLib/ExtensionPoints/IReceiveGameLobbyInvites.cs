@@ -4,6 +4,9 @@ using MoistureBot.Steam;
 
 namespace MoistureBot.ExtensionPoints
 {
+	/// <summary>
+	/// Extension point for receiving game lobby invites.
+	/// </summary>
 	[TypeExtensionPoint]
 	public interface IReceiveGameLobbyInvites
 	{

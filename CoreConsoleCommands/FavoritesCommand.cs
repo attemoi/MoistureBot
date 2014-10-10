@@ -12,7 +12,7 @@ namespace MoistureBot.ConsoleCommands
 
 	[ConsoleCommand(
 		Name = "favorites",
-		ShortUsage = "favorites", ShortDescription = "Manage favorite rooms and users.", 
+		ShortUsage = "favorites [OPTIONS]+", ShortDescription = "Manage favorite rooms and users.", 
 		Description = "Manage favorite rooms and users.",
 		Usage = 
 			"favorites -list\n" +

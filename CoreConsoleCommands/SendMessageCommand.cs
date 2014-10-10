@@ -14,7 +14,7 @@ namespace MoistureBot.ConsoleCommands
 		Name = "msg",
 		Description = "Send message to user or room.",
 		ShortDescription = "Send message to user or room.",
-		ShortUsage = "msg",
+		ShortUsage = "msg ...",
 		Usage = "msg user <user_id|favorite_key> <message>\n  msg room <user_id|favorite_key> <message>"
 	)]
 	public class SendMessageCommand : IConsoleCommand

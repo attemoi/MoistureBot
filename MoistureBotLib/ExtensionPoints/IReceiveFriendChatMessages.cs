@@ -4,6 +4,11 @@ using MoistureBot.Steam;
 
 namespace MoistureBot.ExtensionPoints
 {
+
+	/// <summary>
+	/// Extension point for receiving messages in a private chat with a user.
+	/// Closely related to <see cref="IReceiveGroupChatMessages"/> 
+	/// </summary>
 	[TypeExtensionPoint]
 	public interface IReceiveFriendChatMessages
 	{

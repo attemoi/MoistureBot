@@ -9,7 +9,7 @@ namespace MoistureBot.ExtensionPoints
 {
 
 	/// <summary>
-	/// This is an extension point for a console command.
+	/// Extension point for a console command.
 	/// </summary>
 	[TypeExtensionPoint(ExtensionAttributeType = typeof(ConsoleCommandAttribute))]
 	public interface IConsoleCommand
