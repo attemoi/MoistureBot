@@ -4,13 +4,6 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: Addin ("CoreConsoleCommands", "1.0")]
-[assembly: AddinAuthor ("Atte Moisio")]
-[assembly: AddinDescription ("Core console commands for MoistureBot.")]
-[assembly: AddinDependency ("MoistureBot", "1.0")]
-[assembly: AddinName("CoreConsoleCommands")]
-[assembly: AddinUrl("")]
-
 [assembly: AssemblyTitle ("CoreCommandParser")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]

@@ -41,6 +41,7 @@
     <Compile Include="SendMessageCommand.cs" />
     <Compile Include="SetCommand.cs" />
     <Compile Include="StatusCommand.cs" />
+    <Compile Include="Properties\AddinAssembly.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
