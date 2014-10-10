@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBot", "MoistureBot\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreAddins", "CoreAddins", "{23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreConsoleCommands", "CoreConsoleCommands\CoreConsoleCommands.csproj", "{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreConsoleCommands", "CoreAddins\CoreConsoleCommands\CoreConsoleCommands.csproj", "{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBotLib", "MoistureBotLib\MoistureBotLib.csproj", "{559877FE-43FB-46A5-897E-978078951010}"
 EndProject

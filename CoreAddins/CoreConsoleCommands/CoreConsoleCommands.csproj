@@ -29,7 +29,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Mono.Addins">
-      <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
+      <HintPath>..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -45,15 +45,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\MoistureBotLib\MoistureBotLib.csproj">
+    <ProjectReference Include="..\..\MoistureBotLib\MoistureBotLib.csproj">
       <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
       <Name>MoistureBotLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
