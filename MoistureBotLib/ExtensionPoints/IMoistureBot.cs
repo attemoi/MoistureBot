@@ -52,6 +52,12 @@ namespace MoistureBot.ExtensionPoints
 		void JoinChatRoom(ulong id);
 
 		/// <summary>
+		/// Leaves a chat room.
+		/// </summary>
+		/// <param name="id">Chat room id (steamID64)</param>
+		void LeaveChatRoom(ulong id);
+
+		/// <summary>
 		/// Sends chat message to friend.
 		/// </summary>
 		/// <param name="message">Message</param>

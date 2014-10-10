@@ -584,6 +584,11 @@ namespace MoistureBot
 			steamFriends.JoinChat(new SteamID(roomId));
 		}
 
+		public void LeaveChatRoom(ulong roomId)
+		{
+			steamFriends.LeaveChat(new SteamID(roomId));
+		}
+
 		public void SendChatRoomMessage(String message, ulong chatRoomId)
 		{
 
