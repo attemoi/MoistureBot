@@ -26,6 +26,8 @@ namespace MoistureBot
 	{
 
 		public static ILogger Logger;
+		public static IMoistureBot Bot;
+		public static IConfig Config;
 
 		static void Run(string[] args)
 		{
@@ -38,19 +40,23 @@ namespace MoistureBot
 			AddinManager.Registry.Update();
 
 			Logger = MoistureBotComponentProvider.GetLogger();
+			Config = MoistureBotComponentProvider.GetConfig();
+			Bot = MoistureBotComponentProvider.GetBot();
 
 			Console.WriteLine();
 			// TODO: read version dynamically
-			Console.WriteLine("Moisturebot 1.0.0");
+			Console.WriteLine("Moisturebot 1.0");
 
-			var config = new MoistureBotConfig();
-			if (!config.ConfigExists())
-				config.CreateConfig();
+			if (!Config.ConfigExists())
+				Config.CreateConfig();
 				
 			if (new LaunchCommand().Execute(args))
 				return; 
 
 			HandleConsoleInput();
+
+			if (Bot != null)
+				Bot.Terminate();
 
 		}
 
@@ -112,13 +118,12 @@ namespace MoistureBot
 				Run(args);
 
 				AddinManager.Shutdown();
-
 				return Environment.ExitCode;
 			}
 			catch(Exception e)
 			{
 				Logger.Error("Program failure",e);
-
+				Console.WriteLine(e);
 				return Environment.ExitCode != 0
 					? Environment.ExitCode : 100;
 			}

@@ -2,7 +2,6 @@
 using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
-using Mono.Addins;
 using System.Linq;
 
 namespace MoistureBot

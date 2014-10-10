@@ -54,6 +54,7 @@ namespace MoistureBot
 				Console.WriteLine("  MoistureBot [OPTIONS]+");
 				Console.WriteLine();
 				Console.WriteLine("Options: ");
+				Console.WriteLine();
 				Options.WriteOptionDescriptions(Console.Out);
 				return true;
 			}

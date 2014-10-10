@@ -4,19 +4,19 @@ namespace MoistureBot
 {
 	public enum OnlineStatus
 	{
-		[NameAttribute("online")]
+		[Name("online")]
 		ONLINE,
-		[NameAttribute("away")]
+		[Name("away")]
 		AWAY,
-		[NameAttribute("busy")]
+		[Name("busy")]
 		BUSY,
-		[NameAttribute("looking_to_play")]
+		[Name("looking_to_play")]
 		LOOKING_TO_PLAY,
-		[NameAttribute("looking_to_trade")]
+		[Name("looking_to_trade")]
 		LOOKING_TO_TRADE,
-		[NameAttribute("offline")]
+		[Name("offline")]
 		OFFLINE,
-		[NameAttribute("snooze")]
+		[Name("snooze")]
 		SNOOZE,
 
 	}

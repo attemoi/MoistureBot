@@ -267,11 +267,11 @@ namespace MoistureBot
 			switch(callback.ChatMsgType)
 			{
 				case EChatEntryType.ChatMsg:
-					foreach (IChatRoomAddin addin in AddinManager.GetExtensionObjects<IChatRoomAddin> ())
+					foreach (IReceiveGroupChatMessages addin in AddinManager.GetExtensionObjects<IReceiveGroupChatMessages> ())
 					{
 						try
 						{
-							addin.MessageReceived(new ChatRoomMessage(message, chatterId, chatId));
+							addin.MessageReceived(new GroupChatMessage(message, chatterId, chatId));
 						}
 						catch(Exception e)
 						{
@@ -313,11 +313,11 @@ namespace MoistureBot
 			{
 				case EChatEntryType.ChatMsg:
 					Logger.Info("Received message from " + chatterId + ": " + message);
-					foreach (IChatFriendAddin addin in AddinManager.GetExtensionObjects<IChatFriendAddin> ())
+					foreach (IReceiveFriendChatMessages addin in AddinManager.GetExtensionObjects<IReceiveFriendChatMessages> ())
 					{
 						try
 						{
-							addin.MessageReceived(new ChatMessage(message, chatterId));
+							addin.MessageReceived(new FriendChatMessage(message, chatterId));
 						}
 						catch(Exception e)
 						{
@@ -334,8 +334,93 @@ namespace MoistureBot
 
 		private void ChatInviteCallback(SteamFriends.ChatInviteCallback callback)
 		{
-			Logger.Info("Received invite");
-			// TODO create extension point
+			Logger.Info("Chat invite callback fired");
+
+			Logger.Debug("Callback chatroom id: " + callback.ChatRoomID);
+			Logger.Debug("Callback chatroom name: " + callback.ChatRoomName);
+			Logger.Debug("Callback chatroom type: " + callback.ChatRoomType);
+			Logger.Debug("Callback chat friend id: " + callback.FriendChatID);
+			Logger.Debug("Callback game id: " + callback.GameID);
+			Logger.Debug("Callback invited id: " + callback.InvitedID);
+			Logger.Debug("Callback patron id: " + callback.PatronID);
+
+			switch(callback.ChatRoomType)
+			{
+				case EChatRoomType.MUC: // both community and friend group chat
+				
+					if (String.IsNullOrEmpty(callback.ChatRoomName))
+					{
+						var friendInvite = new FriendGroupChatInvite(
+							             callback.ChatRoomID.ConvertToUInt64(),
+							             callback.PatronID.ConvertToUInt64()
+						);
+
+						foreach (IReceiveFriendGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveFriendGroupChatInvites> ())
+						{
+							try
+							{
+								addin.InviteReceived(friendInvite);
+							}
+							catch(Exception e)
+							{
+								Logger.Error("Error in addin",e);
+							}
+
+						}
+
+					}
+					else
+					{
+						var communityInvite = new CommunityGroupChatInvite(
+							callback.ChatRoomID.ConvertToUInt64(),
+							callback.ChatRoomName,
+							callback.PatronID.ConvertToUInt64()
+						);
+
+						foreach (IReceiveCommunityGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveCommunityGroupChatInvites> ())
+						{
+							try
+							{
+								addin.InviteReceived(communityInvite);
+							}
+							catch(Exception e)
+							{
+								Logger.Error("Error in addin",e);
+							}
+
+						}
+
+					}
+
+					break;
+				case EChatRoomType.Lobby: // Game invite
+
+					var gameInvite = new GameLobbyInvite(
+						callback.ChatRoomID.ConvertToUInt64(),
+						callback.PatronID.ConvertToUInt64(),
+						callback.GameID.ToUInt64()
+					);
+
+					foreach (IReceiveGameLobbyInvites addin in AddinManager.GetExtensionObjects<IReceiveGameLobbyInvites> ())
+					{
+						try
+						{
+							addin.InviteReceived(gameInvite);
+						}
+						catch(Exception e)
+						{
+							Logger.Error("Error in addin",e);
+						}
+
+					}
+
+					break;
+				case EChatRoomType.Friend :
+					// What is this, doesn't get called?
+					break;
+
+			}
+
 		}
 
 		private void LoggedOffCallback(SteamUser.LoggedOffCallback callback)

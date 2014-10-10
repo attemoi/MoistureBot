@@ -12,29 +12,29 @@ using System.Linq;
 namespace MoistureBot
 {
 
-	[Extension(typeof(IChatRoomAddin))]
-	[Extension(typeof(IChatFriendAddin))]
-	public class Moikkaaja: IChatRoomAddin, IChatFriendAddin
+	[Extension(typeof(IReceiveFriendChatMessages))]
+	[Extension(typeof(IReceiveGroupChatMessages))]
+	public class Moikkaaja: IReceiveFriendChatMessages, IReceiveGroupChatMessages
 	{
 	
 		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
-		public void MessageReceived(ChatRoomMessage message)
+		public void MessageReceived(GroupChatMessage message)
 		{
 			var reply = CreateReply(message);
 			if (!String.IsNullOrEmpty(reply))
 				Bot.SendChatRoomMessage(reply,message.ChatId);
 		}
 
-		public void MessageReceived(ChatMessage message)
+		public void MessageReceived(FriendChatMessage message)
 		{
 			var reply = CreateReply(message);
 			if (!String.IsNullOrEmpty(reply))
 				Bot.SendChatMessage(reply,message.ChatterId);
 		}
 
-		string CreateReply(ChatMessage message)
+		string CreateReply(FriendChatMessage message)
 		{
 			string[] greetings = {
 				"Moikka taas", "Moikkelis", "Moi kaikki", "Moikkamoi", 

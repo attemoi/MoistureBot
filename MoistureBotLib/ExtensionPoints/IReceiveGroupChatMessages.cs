@@ -4,13 +4,13 @@ using Mono.Addins;
 namespace MoistureBot
 {
 	[TypeExtensionPoint]
-	public interface IChatRoomAddin
+	public interface IReceiveGroupChatMessages
 	{
 		/// <summary>
-		/// Called when a message has been received in any chat room.
+		/// Called when the bot has received a message in a group chat.
 		/// </summary>
 		/// <param name="message">Received message</param>
-		void MessageReceived(ChatRoomMessage message);
+		void MessageReceived(GroupChatMessage message);
 	}
 		
 }

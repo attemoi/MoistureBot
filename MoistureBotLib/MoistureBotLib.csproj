@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -37,17 +37,13 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ChatRoomMessage.cs" />
-    <Compile Include="ChatMessage.cs" />
-    <Compile Include="ExtensionPoints\IChatFriendAddin.cs" />
-    <Compile Include="ExtensionPoints\IChatRoomAddin.cs" />
     <Compile Include="Favorite.cs" />
+    <Compile Include="FriendChatMessage.cs" />
     <Compile Include="ConfigSetting.cs" />
     <Compile Include="OnlineStatus.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="ConsoleUtils.cs" />
     <Compile Include="ExtensionPoints\IMoistureBot.cs" />
-    <Compile Include="ExtensionPoints\ICommandHelper.cs" />
     <Compile Include="ExtensionPoints\IConfig.cs" />
     <Compile Include="ExtensionPoints\ILogger.cs" />
     <Compile Include="ConsoleMessage.cs" />
@@ -58,8 +54,14 @@
     <Compile Include="Attributes\NameAttribute.cs" />
     <Compile Include="Attributes\SectionAttribute.cs" />
     <Compile Include="Attributes\ConsoleCommandAttribute.cs" />
-    <Compile Include="Attributes\MoistureBotAttribute.cs" />
     <Compile Include="Mono.Options\Options.cs" />
+    <Compile Include="Invite.cs" />
+    <Compile Include="GroupChatMessage.cs" />
+    <Compile Include="ExtensionPoints\IReceiveGroupChatMessages.cs" />
+    <Compile Include="ExtensionPoints\IReceiveFriendGroupChatInvites.cs" />
+    <Compile Include="ExtensionPoints\IReceiveFriendChatMessages.cs" />
+    <Compile Include="ExtensionPoints\IReceiveGameLobbyInvites.cs" />
+    <Compile Include="ExtensionPoints\IReceiveCommunityGroupChatInvites.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

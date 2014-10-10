@@ -4,8 +4,8 @@ namespace MoistureBot
 {
 	public enum ConfigSetting
 	{
-		[SectionAttribute("bot_settings")]
-		[KeyAttribute("online_status")]
+		[Section("bot_settings")]
+		[Key("online_status")]
 		STATUS,
 	}
 }
