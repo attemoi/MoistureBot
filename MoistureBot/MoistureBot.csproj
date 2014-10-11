@@ -54,6 +54,7 @@
     <Compile Include="MoistureBotLogger.cs" />
     <Compile Include="ConsoleCommands\HelpCommand.cs" />
     <Compile Include="ConsoleCommands\LaunchCommand.cs" />
+    <Compile Include="ConsoleCommands\ExitCommand.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

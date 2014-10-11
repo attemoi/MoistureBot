@@ -35,7 +35,6 @@
   <ItemGroup>
     <Compile Include="ConnectCommand.cs" />
     <Compile Include="DisconnectCommand.cs" />
-    <Compile Include="ExitCommand.cs" />
     <Compile Include="FavoritesCommand.cs" />
     <Compile Include="JoinChatCommand.cs" />
     <Compile Include="SendMessageCommand.cs" />
