@@ -56,6 +56,18 @@ namespace MoistureBot
 			if (new LaunchCommand().Execute(args))
 				return; 
 
+			foreach (IStartupCommand addin in AddinManager.GetExtensionObjects<IStartupCommand> ())
+			{
+				try
+				{
+					addin.ProgramStarted();
+				}
+				catch(Exception e)
+				{
+					Logger.Error("Error in addin startup command.",e);
+				}
+			}
+
 			HandleConsoleInput();
 
 		}
