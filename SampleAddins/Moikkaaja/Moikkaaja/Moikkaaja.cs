@@ -47,7 +47,7 @@ namespace MoistureBot
 				"Näkemiin", "Hei hei", "Moikka moi"
 			};
 
-			Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+			Regex rgx = new Regex("[^a-zäöA-ZÄÖ0-9 -]");
 			string strippedMsg = rgx.Replace(message.Message,"").ToLower();
 			string msg = Array.Find(greetings,t => t.Equals(strippedMsg,StringComparison.InvariantCultureIgnoreCase));
 
