@@ -20,6 +20,7 @@ namespace MoistureBot
 	{
 	
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+		private IConfig Config = MoistureBotComponentProvider.GetConfig();
 	
 		private volatile bool terminated;
 
@@ -194,13 +195,43 @@ namespace MoistureBot
 
 		void ChatMemberInfoCallback(SteamFriends.ChatMemberInfoCallback callback)
 		{
-
 			Logger.Info("Chat member info callback fired");
 
 			Logger.Debug("Chat info type: " + callback.Type);
 			Logger.Debug("Chatter acted by: " + callback.StateChangeInfo.ChatterActedBy.ConvertToUInt64());
 			Logger.Debug("Chatter acted on  " + callback.StateChangeInfo.ChatterActedOn.ConvertToUInt64());
 			Logger.Debug("State change: " + callback.StateChangeInfo.StateChange);
+
+			if ((callback.StateChangeInfo.StateChange & EChatMemberStateChange.Entered) == EChatMemberStateChange.Entered)
+			{
+				// TODO: Extension point
+				Logger.Info("User entered chat");
+			}
+
+			if ((callback.StateChangeInfo.StateChange & EChatMemberStateChange.Left) == EChatMemberStateChange.Left)
+			{
+				// TODO: Extension point
+				Logger.Info("User left chat");
+			}
+
+			if ((callback.StateChangeInfo.StateChange & EChatMemberStateChange.Disconnected) == EChatMemberStateChange.Disconnected)
+			{
+				// TODO: Extension point
+				Logger.Info("User disconnected chat");
+			}
+
+			if ((callback.StateChangeInfo.StateChange & EChatMemberStateChange.Kicked) == EChatMemberStateChange.Kicked)
+			{
+				// TODO: Extension point
+				Logger.Info("User kicked from chat");
+			}
+
+			if ((callback.StateChangeInfo.StateChange & EChatMemberStateChange.Banned) == EChatMemberStateChange.Banned)
+			{
+				// TODO: Extension point
+				Logger.Info("User kicked from chat");
+			}
+
 		}
 
 		private void AccountInfoCallback(SteamUser.AccountInfoCallback callback)
@@ -209,14 +240,12 @@ namespace MoistureBot
 			// this callback is posted shortly after a successful logon
 
 			// at this point, we can set online status
-			Logger.Info("Reading online status from config file");
-
-			var config = new MoistureBotConfig();
+			Logger.Info("Account info callback fired.");
 
 			string configState;
 			try
 			{
-				configState = config.GetSetting(ConfigSetting.STATUS);
+				configState = Config.GetSetting(ConfigSetting.STATUS);
 			}
 			catch(Exception e)
 			{
