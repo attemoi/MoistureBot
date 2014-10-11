@@ -63,6 +63,7 @@
     <Compile Include="Utils\ConsoleMessage.cs" />
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Config\ConfigUtils.cs" />
+    <Compile Include="ExtensionPoints\IStartupCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

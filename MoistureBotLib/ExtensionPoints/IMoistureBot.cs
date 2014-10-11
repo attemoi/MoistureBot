@@ -78,8 +78,6 @@ namespace MoistureBot.ExtensionPoints
 		/// <param name="id">User id (steamID64)</param>
 		string GetUserName(ulong id);
 
-		/// 
-
 		/// <summary>
 		/// Disconnect and terminate the bot.
 		/// </summary>
