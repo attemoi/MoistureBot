@@ -4,8 +4,8 @@ namespace MoistureBot.Steam
 {
 	public class Invite
 	{
-		ulong ChatRoomId { get; set; }
-		ulong InviterId { get; set; }
+		public ulong ChatRoomId { get; set; }
+		public ulong InviterId { get; set; }
 
 		public Invite( ulong chatRoomId, ulong inviterId) 
 		{
@@ -16,7 +16,7 @@ namespace MoistureBot.Steam
 
 	public class CommunityGroupChatInvite : Invite
 	{
-		string ChatRoomName { get; set; }
+		public string ChatRoomName { get; set; }
 
 		public  CommunityGroupChatInvite( ulong chatRoomId, string chatRoomName, ulong inviterId) 
 			: base(chatRoomId, inviterId)
@@ -35,7 +35,7 @@ namespace MoistureBot.Steam
 
 	public class GameLobbyInvite: Invite
 	{
-		ulong GameId { get; set; }
+		public ulong GameId { get; set; }
 
 		public GameLobbyInvite( ulong chatRoomId, ulong inviterId, ulong gameId) 
 			: base(chatRoomId, inviterId)
