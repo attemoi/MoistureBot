@@ -67,7 +67,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="c:\Users\ammoi_000\Projects\moisture-bot\MoistureBot\MoistureBot.Config\" />
     <Folder Include="ConsoleCommands\" />
   </ItemGroup>
   <ItemGroup>
