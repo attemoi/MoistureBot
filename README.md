@@ -27,6 +27,7 @@ The project includes two sample addins:
 
   - "Moikkaaja", responds to basic Finnish greetings in messages received either in group or friend chat.
   - "AutoJoiner", automatically join group chats when invited.
+  - "GameInviteReply", automatically reply to game lobby invites with random message sequences selected from an xml file.
 
 All the interfaces needed for creating an addin are included in the MoistureBotLib library.
 
