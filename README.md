@@ -23,7 +23,7 @@ I've tried to make creating an addin as simple as possible. However, you should
 probably familiarize yourself with the basic concepts of
 [Mono.Addins](http://monoaddins.codeplex.com/) before trying to create one.
 
-The project includes two sample addins: 
+The project includes three sample addins: 
 
   - "Moikkaaja", responds to basic Finnish greetings in messages received either in group or friend chat.
   - "AutoJoiner", automatically join group chats when invited.
