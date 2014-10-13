@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moikkaaja", "SampleAddins\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoJoiner", "SampleAddins\AutoJoiner\AutoJoiner.csproj", "{39AF8F24-934F-4759-B052-C061CFDD0A86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameInviteReply", "SampleAddins\GameInviteReply\GameInviteReply.csproj", "{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -33,6 +35,10 @@ Global
 		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Debug|x86.Build.0 = Debug|Any CPU
 		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Release|x86.ActiveCfg = Release|Any CPU
 		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}.Release|x86.Build.0 = Release|Any CPU
+		{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}.Debug|x86.Build.0 = Debug|Any CPU
+		{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}.Release|x86.Build.0 = Release|Any CPU
 		{559877FE-43FB-46A5-897E-978078951010}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{559877FE-43FB-46A5-897E-978078951010}.Debug|x86.Build.0 = Debug|Any CPU
 		{559877FE-43FB-46A5-897E-978078951010}.Release|x86.ActiveCfg = Release|Any CPU
@@ -46,6 +52,7 @@ Global
 		{1A1AAB45-3CA9-4FDE-AFB3-344D97E8C357} = {23E21EB3-2246-45D8-A09E-F89D5CDF8B7D}
 		{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543} = {FA84E13C-6332-4188-B013-1E11752123C3}
 		{39AF8F24-934F-4759-B052-C061CFDD0A86} = {FA84E13C-6332-4188-B013-1E11752123C3}
+		{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1} = {FA84E13C-6332-4188-B013-1E11752123C3}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MoistureBot\MoistureBot.csproj
