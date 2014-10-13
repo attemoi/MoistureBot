@@ -29,13 +29,32 @@ namespace MoistureBot
 
 		public void InviteReceived(GameLobbyInvite invite)
 		{
+		
+			//     GameInviteReply.xml example data:
+			//
+			//     <?xml version="1.0" encoding="UTF-8" ?>
+			//     <replies>
+			//     
+			//         <reply>
+			//             <message>Hello, Thank you for the invite!</message>
+			//         	   <message>Unfortunately, I don't have a mouse or a keyboard.</message>
+			//         </reply>
+			//         
+			//         <reply>
+			//         	   <message>Hmm, let me think about this...</message>
+			//         	   <message>...</message>
+			//         	   <message>...</message>
+			//         	   <message>No.</message>  
+			//         </reply>
+			//     
+			//     </replies>
+
 
 			List<List<string>> replies = new List<List<string>>();
 
 			using (XmlTextReader reader = new XmlTextReader("addins/GameInviteReply.xml"))
 			{
 			
-				// Parse the file and display each of the nodes.
 				reader.ReadToFollowing("replies");
 
 				while (reader.ReadToFollowing("reply"))
@@ -55,10 +74,10 @@ namespace MoistureBot
 
 				}
 
-
 			}
 
 			// We should now have a list of possible replies
+			// => pick one randomly and send the messages
 
 			int r = rnd.Next(replies.Count);
 
