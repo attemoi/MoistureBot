@@ -9,8 +9,6 @@ It uses [Mono.Addins](http://monoaddins.codeplex.com/) to provide extensibility.
 
 ## Dependencies
 
-The project has so far been built only under Windows using Mono 3.2.3.
-
 In order to compile and use MoistureBot, the following dependencies are required:
 
   - .NET 4.0 or [Mono ≥ 2.8](http://mono-project.com)
@@ -28,7 +26,7 @@ probably familiarize yourself with the basic concepts of
 The project includes two sample addins: 
 
   - "Moikkaaja", responds to basic Finnish greetings in messages received either in group or friend chat.
-  - "AutoJoiner", automatically joins group chats when invited.
+  - "AutoJoiner", automatically join group chats when invited.
 
 All the interfaces needed for creating an addin are included in the MoistureBotLib library.
 
