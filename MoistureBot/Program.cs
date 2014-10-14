@@ -42,6 +42,9 @@ namespace MoistureBot
 			AddinManager.Initialize(".",".","./addins");
 			AddinManager.Registry.Update();
 
+			// This needs to be called after Initialize
+			AddinManager.ExtensionChanged += OnExtensionChanged;
+
 			Logger = MoistureBotComponentProvider.GetLogger();
 			Config = MoistureBotComponentProvider.GetConfig();
 			Bot = MoistureBotComponentProvider.GetBot();
@@ -137,12 +140,17 @@ namespace MoistureBot
 			}
 			catch(Exception e)
 			{
-				Logger.Error("Program failure",e);
+				Logger.Error("Program failure", e);
 				Console.WriteLine(e);
 				return Environment.ExitCode != 0
 					? Environment.ExitCode : 100;
 			}
 
+		}
+
+		static void OnExtensionChanged(object s, ExtensionEventArgs args)
+		{
+			Logger.Info("Extension changed (" + args.Path + ").");
 		}
 
 		static void OnLoadError(object s, AddinErrorEventArgs args)

@@ -70,12 +70,12 @@ namespace MoistureBot
 			}
 		}
 
-		private string GetSection(ConfigSetting settings)
+		private string GetSection(Enum settings)
 		{
 			return ConfigUtils.GetValue<SectionAttribute>(settings);
 		}
 
-		private string GetKey(ConfigSetting settings)
+		private string GetKey(Enum settings)
 		{
 			return ConfigUtils.GetValue<KeyAttribute>(settings);
 		}
@@ -228,11 +228,9 @@ namespace MoistureBot
 			return true;
 		}
 
-		public void SetSetting(ConfigSetting setting, string value)
+		public void SetSetting(string section, string key, string value)
 		{
 
-			var key = GetKey(setting);
-			var section = GetSection(setting);
 			Logger.Info("Changing ini setting '" + key + "' in section '" + section + "'");
 
 			var parser = getParser();
@@ -243,6 +241,12 @@ namespace MoistureBot
 			Logger.Info("Setting ini setting value to '" + value + "'");
 			data[section][key] = value;
 			WriteData(data,parser);
+		}
+
+
+		public void SetSetting(ConfigSetting setting, string value)
+		{
+			SetSetting(GetSection(setting), GetKey(setting), value);
 		}
 
 		private void CreateSectionIfNotExists(IniData data, string section)
@@ -268,10 +272,13 @@ namespace MoistureBot
 
 		public string GetSetting(ConfigSetting setting)
 		{
-			var key = GetKey(setting);
-			var section = GetSection(setting);
+			return GetSetting(GetSection(setting),GetKey(setting));
+		}
+
+		public string GetSetting(string section, string key)
+		{
 			Logger.Info("Reading ini setting '" + key + "' in section '" + section + "'");
-			var value = ReadData(getParser())[GetSection(setting)][GetKey(setting)];
+			var value = ReadData(getParser())[section][key];
 			Logger.Info("Found value '" + value + "'");
 			return value;
 		}

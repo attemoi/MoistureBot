@@ -93,6 +93,14 @@ namespace MoistureBot.ExtensionPoints
 		/// <summary>
 		/// Configures a value in the ini file. Adds a new setting if it doesn't exist.
 		/// </summary>
+		/// <param name="section">Setting section</param>
+		/// <param name="key">Setting key</param>
+		/// <param name="value">Setting value</param>
+		void SetSetting(string section, string key, string value);
+
+		/// <summary>
+		/// Configures a value in the ini file. Adds a new setting if it doesn't exist.
+		/// </summary>
 		/// <param name="setting">Setting to update</param>
 		/// <param name="value">new value</param>
 		void SetSetting(ConfigSetting setting, string value);
@@ -103,6 +111,14 @@ namespace MoistureBot.ExtensionPoints
 		/// <returns>The setting value</returns>
 		/// <param name="setting">Setting.</param>
 		string GetSetting(ConfigSetting setting);
+
+		/// <summary>
+		/// Configures a value in the ini file. Adds a new setting if it doesn't exist.
+		/// </summary>
+		/// <param name="section">Setting section</param>
+		/// <param name="key">Setting key</param>
+		/// <param name="value">Setting value</param>
+		string GetSetting(string section, string key);
 
 	}
 }
