@@ -4,7 +4,7 @@ using System.Linq;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
 using Mono.Addins;
-using System.Data.SQLite;
+using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 
@@ -34,100 +34,160 @@ namespace MoistureBot
 		{
 		
 			var dbPath = Config.GetSetting(CONFIG_SECTION,CONFIG_KEY);
-			connectionString = "URI=file:" + dbPath;
 
-			if (String.IsNullOrEmpty(connectionString))
+			if (String.IsNullOrEmpty(dbPath))
 			{
-				Logger.Warn("Database path not defined. Setting default value to 'chat_log.db'");
+				dbPath = "chat_log.db";
+				Logger.Warn("Database path not defined. Setting default value to '" + dbPath + "'");
 				Config.SetSetting(CONFIG_SECTION,CONFIG_KEY,"chat_log.db");
 			} 
-			else 
-			{
-				try 
-				{
-					Logger.Info("Creating sqlite database...");
-					SQLiteConnection.CreateFile(dbPath);
-					Logger.Info("Database created succesfully!");
-					Logger.Info("Creating tables for database");
 
-					CreateTables();
-				}
-				catch (Exception e)
-				{
-					Logger.Error("Failed to create database",e);
-				}
+			connectionString = "URI=file:" + dbPath;
+
+			try 
+			{
+				Logger.Info("Creating sqlite database...");
+				SqliteConnection.CreateFile(dbPath);
+				Logger.Info("Database created succesfully!");
+				Logger.Info("Creating tables for database");
+
+				CreateTables();
+			}
+			catch (Exception e)
+			{
+				Logger.Error("Failed to create database",e);
 			}
 		}
 
 		private void CreateTables() 
 		{
-			try {
-				using(var conn = new SQLiteConnection(connectionString))
-				{
 
-					var sql = @"
+			Logger.Info("Creating tables...");
 
-						CREATE TABLE IF NOT EXISTS friend_chat (
-						timestamp TEXT NOT NULL,
-						user_id TEXT NOT NULL,
-						message TEXT NOT NULL
-						);
+			IDbConnection conn = null;
+			IDbCommand cmd = null;
+			try 
+			{
+			
+				var sql = @"
 
-						CREATE TABLE IF NOT EXISTS group_chat (
-						timestamp TEXT NOT NULL,
-						user_id TEXT NOT NULL,
-						room_id TEXT NOT NULL,
-						message TEXT NOT NULL
-						);
+					CREATE TABLE IF NOT EXISTS friend_chat (
+					timestamp TEXT NOT NULL,
+					user_id TEXT NOT NULL,
+					message TEXT NOT NULL
+					);
 
-					";
+					CREATE TABLE IF NOT EXISTS group_chat (
+					timestamp TEXT NOT NULL,
+					user_id TEXT NOT NULL,
+					room_id TEXT NOT NULL,
+					message TEXT NOT NULL
+					);
 
-					Logger.Info("Creating tables...");
-					conn.Open();
-					var sqlCommand = new SQLiteCommand(sql, conn);
-					sqlCommand.ExecuteNonQuery();
+				";
 
-				}
+				conn = (IDbConnection) new SqliteConnection(connectionString);
+				conn.Open();
+
+				cmd = conn.CreateCommand();
+				cmd.CommandType = CommandType.Text;
+				cmd.CommandText = sql;
+				cmd.ExecuteNonQuery();
+
+				Logger.Info("Log tables created");
+
 			} 
 			catch(Exception e)
 			{
 				Logger.Error("Failed to create tables",e);
 			}
+			finally
+			{
+				if (cmd != null)
+				{
+					cmd.Dispose();
+					cmd = null;
+				}
+				if (conn != null)
+				{
+					conn.Close();
+					conn = null;
+				}
+			}
 		}
 			
 		public void MessageReceived(FriendChatMessage message)
 		{
-			using(var conn = new SQLiteConnection(connectionString))
+			IDbConnection conn = null;
+			IDbCommand cmd = null;
+			try 
 			{
-
+				conn = (IDbConnection) new SqliteConnection(connectionString);
 				conn.Open();
 			
-				var insertSQL = new SQLiteCommand("INSERT INTO friend_chat (timestamp, user_id, message)" +
-					" VALUES (@timestamp, @user_id, @message)", conn);
-				insertSQL.Parameters.Add(new SQLiteParameter("@timestamp", DateTimeSQLite(DateTime.Now)));
-				insertSQL.Parameters.Add(new SQLiteParameter("@message", message.Message));
-				insertSQL.Parameters.Add(new SQLiteParameter("@user_id", message.ChatterId));
+				var sql = "INSERT INTO friend_chat (timestamp, user_id, message)" +
+				          " VALUES (@timestamp, @user_id, @message)";
+				cmd = conn.CreateCommand();
+				cmd.CommandType = CommandType.Text;
+				cmd.CommandText = sql;
 
-				insertSQL.ExecuteNonQuery();
+				cmd.Parameters.Add(new SqliteParameter("@timestamp", DateTimeSQLite(DateTime.Now)));
+				cmd.Parameters.Add(new SqliteParameter("@message", message.Message));
+				cmd.Parameters.Add(new SqliteParameter("@user_id", message.ChatterId));
+
+				cmd.ExecuteNonQuery();
+			}
+			catch(Exception e)
+			{
+				Logger.Error("Failed to log friend chat message to sqlite database",e);
+			}
+			finally
+			{
+				if (cmd != null)
+				{
+					cmd.Dispose();
+					cmd = null;
+				}
+				if (conn != null)
+				{
+					conn.Close();
+					conn = null;
+				}
 			}
 		}
 			
 		public void MessageReceived(GroupChatMessage message)
 		{
-			using(var conn = new SQLiteConnection(connectionString))
-			{
+			IDbConnection conn = null;
 
+			try 
+			{
+				conn = (IDbConnection)new SqliteConnection(connectionString);
 				conn.Open();
 
-				var insertSQL = new SQLiteCommand("INSERT INTO group_chat (timestamp, user_id, room_id, message)" +
-					" VALUES (@timestamp, @user_id, @room_id, @message)", conn);
-				insertSQL.Parameters.Add(new SQLiteParameter("@timestamp", DateTimeSQLite(DateTime.Now)));
-				insertSQL.Parameters.Add(new SQLiteParameter("@message", message.Message));
-				insertSQL.Parameters.Add(new SQLiteParameter("@user_id", message.ChatterId));
-				insertSQL.Parameters.Add(new SQLiteParameter("@room_id", message.ChatId ));
+				var sql = "INSERT INTO group_chat (timestamp, user_id, room_id, message)" +
+					" VALUES (@timestamp, @user_id, @room_id, @message)";
+				var cmd = conn.CreateCommand();
+				cmd.CommandType = CommandType.Text;
+				cmd.CommandText = sql;
 
-				insertSQL.ExecuteNonQuery();
+				cmd.Parameters.Add(new SqliteParameter("@timestamp", DateTimeSQLite(DateTime.Now)));
+				cmd.Parameters.Add(new SqliteParameter("@message", message.Message));
+				cmd.Parameters.Add(new SqliteParameter("@user_id", message.ChatterId));
+				cmd.Parameters.Add(new SqliteParameter("@room_id", message.ChatId ));
+
+				cmd.ExecuteNonQuery();
 			}
+			catch(Exception e)
+			{
+				Logger.Error("Failed to log group chat message to sqlite database",e);
+			}
+			finally
+			{
+				if (conn != null)
+					conn.Close();
+			}
+
 		}
 
 		private string DateTimeSQLite(DateTime datetime)

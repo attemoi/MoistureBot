@@ -274,13 +274,32 @@ namespace MoistureBot
 		{
 			return GetSetting(GetSection(setting),GetKey(setting));
 		}
-
+			
 		public string GetSetting(string section, string key)
 		{
-			Logger.Info("Reading ini setting '" + key + "' in section '" + section + "'");
-			var value = ReadData(getParser())[section][key];
-			Logger.Info("Found value '" + value + "'");
-			return value;
+			try {
+				Logger.Info("Reading ini setting '" + key + "' in section '" + section + "'");
+				var data = ReadData(getParser());
+
+				if (!data.Sections.ContainsSection(section)) {
+					Logger.Info("Config section not found."); 
+					return null;
+				}
+
+				if (!data[section].ContainsKey(key)) {
+					Logger.Info("Config key not found."); 
+					return null;
+				}
+
+				var value = ReadData(getParser())[section][key];
+				Logger.Info("Found value '" + value + "'");
+				return value;
+			}
+			catch (Exception e)
+			{
+				Logger.Error("Failed to read setting",e);
+				return null;
+			}
 		}
 
 		public void RemoveAllFavoriteUsers()

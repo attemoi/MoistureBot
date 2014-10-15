@@ -118,6 +118,7 @@ namespace MoistureBot.ExtensionPoints
 		/// <param name="section">Setting section</param>
 		/// <param name="key">Setting key</param>
 		/// <param name="value">Setting value</param>
+		/// <returns>Setting value, null if the setting doesn't exist</returns>
 		string GetSetting(string section, string key);
 
 	}
