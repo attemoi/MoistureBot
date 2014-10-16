@@ -25,7 +25,7 @@ probably familiarize yourself with the basic concepts of
 
 The project includes the following sample addins: 
 
-  - **Moikkaaja:**, responds to basic Finnish greetings in messages received either in group or friend chat.
+  - **Moikkaaja:** responds to basic Finnish greetings in messages received either in group or friend chat.
   - **AutoJoiner:** automatically join group chats when invited.
   - **GameInviteReply:** automatically reply to game lobby invites with random message sequences selected from an xml file.
   - **SQLiteChatLogger:** log chat messages to SQLite database.
