@@ -47,7 +47,7 @@ namespace MoistureBot.ConsoleCommands
 			string status = ConfigUtils.GetValue<NameAttribute>(Bot.GetOnlineStatus());
 			if (Bot.IsConnected())
 			{
-				Console.WriteLine("  logged on as {0}",Bot.UserName);
+				Console.WriteLine("  logged on as {0}",Bot.Username);
 				Console.WriteLine("  persona name: '{0}'",Bot.PersonaName);
 				Console.WriteLine("  online status: {0}",status);
 			}

@@ -54,7 +54,7 @@ namespace MoistureBot
 			if (msg != null && !msg.Equals(""))
 			{
 				Logger.Info("Moikkaaja: Greeting received, replying");
-				msg += " " + Bot.GetUserName(message.ChatterId) + "!";
+				msg += " " + Bot.GetPersonaName(message.ChatterId) + "!";
 			}
 
 			return msg;

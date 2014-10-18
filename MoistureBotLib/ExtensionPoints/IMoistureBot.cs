@@ -16,10 +16,16 @@ namespace MoistureBot.ExtensionPoints
 	{
 
 		/// <summary>
-		/// Gets the bot Steam username.
+		/// Gets Steam username used in the last login.
 		/// </summary>
-		/// <value>The name of the user.</value>
-		string UserName { get; }
+		/// <value>Last login username.</value>
+		string Username { get; }
+
+		/// <summary>
+		/// Gets Steam password used in the last login.
+		/// </summary>
+		/// <value>Last login password.</value>
+		string Password { get; }
 
 		/// <summary>
 		/// Gets or sets the bot's persona name on Steam. Bot needs to be connected.
@@ -72,11 +78,11 @@ namespace MoistureBot.ExtensionPoints
 		void SendChatRoomMessage(String message, ulong chatRoomId);
 
 		/// <summary>
-		/// Gets user name based from id.
+		/// Gets persona name of a user based on id.
 		/// </summary>
 		/// <returns>User profile name</returns>
 		/// <param name="id">User id (steamID64)</param>
-		string GetUserName(ulong id);
+		string GetPersonaName(ulong id);
 
 		/// <summary>
 		/// Disconnect and terminate the bot.

@@ -31,6 +31,7 @@ namespace MoistureBot
 		private SteamFriends steamFriends;
 
 		// Bot steam user properties
+
 		private string user;
 		private string pass;
 
@@ -127,7 +128,7 @@ namespace MoistureBot
 			} 
 		}
 
-		private string GetUserName(SteamID id)
+		private string GetPersonaName(SteamID id)
 		{
 			return steamFriends.GetFriendPersonaName(id);
 		}
@@ -493,7 +494,8 @@ namespace MoistureBot
 
 		#region PUBLIC
 
-		public string UserName { get { return user; } }
+		public string Username { get { return user; } }
+		public string Password { get { return pass; } }
 
 		public string PersonaName
 		{
@@ -518,8 +520,8 @@ namespace MoistureBot
 		public void Connect(string username, string password)
 		{
 			Logger.Info("Connecting user " + username + " to steam");
-			this.user = username;
-			this.pass = password;
+			user = username;
+			pass = password;
 			steamClient.Connect();
 			Start();
 		}
@@ -527,6 +529,8 @@ namespace MoistureBot
 		public void Disconnect()
 		{
 			Logger.Info("Disconnecting client...");
+			user = null;
+			pass = null;
 			steamClient.Disconnect();
 		}
 
@@ -665,7 +669,7 @@ namespace MoistureBot
 			}
 		}
 
-		public string GetUserName(ulong id)
+		public string GetPersonaName(ulong id)
 		{
 			return steamFriends.GetFriendPersonaName(new SteamID(id));
 		}

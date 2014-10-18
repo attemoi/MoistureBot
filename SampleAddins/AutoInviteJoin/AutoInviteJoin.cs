@@ -3,17 +3,17 @@ using Mono.Addins;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
 
-[assembly:Addin("AutoJoiner", "1.0")]
+[assembly:Addin("AutoInviteJoin", "1.0")]
 [assembly:AddinDependency("MoistureBot", "1.0")]
 [assembly:AddinAuthor("Atte Moisio")]
 [assembly:AddinDescription("Automatically join chat rooms when invited.")]
-[assembly:AddinName("AutoJoiner")]
+[assembly:AddinName("AutoInviteJoin")]
 [assembly:AddinUrl("")]
 namespace MoistureBot
 {
 	[Extension(typeof(IReceiveCommunityGroupChatInvites))]
 	[Extension(typeof(IReceiveFriendGroupChatInvites))]
-	public class AutoJoiner 
+	public class AutoInviteJoin 
 		: IReceiveCommunityGroupChatInvites, IReceiveFriendGroupChatInvites
 	{
 

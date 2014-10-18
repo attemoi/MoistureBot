@@ -49,12 +49,19 @@ namespace MoistureBot
 
 			try 
 			{
-				Logger.Info("Creating sqlite database...");
-				SqliteConnection.CreateFile(dbPath);
-				Logger.Info("Database created succesfully!");
-				Logger.Info("Creating tables for database");
+				if (File.Exists(dbPath))
+				{
+					Logger.Info("Chat log database found");
+				}
+				else
+				{
+					Logger.Info("Chat log database not found, creating...");
+					SqliteConnection.CreateFile(dbPath);
+					Logger.Info("Database created succesfully!");
+					Logger.Info("Creating tables for database");
 
-				CreateTables();
+					CreateTables();
+				}
 			}
 			catch (Exception e)
 			{
@@ -74,15 +81,17 @@ namespace MoistureBot
 				{
 					var sql = @"
 
-						CREATE TABLE IF NOT EXISTS friend_chat (
+						CREATE TABLE IF NOT EXISTS friend_chat (			
 							timestamp TEXT NOT NULL,
 							user_id TEXT NOT NULL,
+							user_persona_name TEXT NOT NULL,
 							message TEXT NOT NULL
 						);
 
 						CREATE TABLE IF NOT EXISTS group_chat (
 							timestamp TEXT NOT NULL,
 							user_id TEXT NOT NULL,
+							user_persona_name TEXT NOT NULL,
 							room_id TEXT NOT NULL,
 							message TEXT NOT NULL
 						);
@@ -90,6 +99,7 @@ namespace MoistureBot
 						CREATE TABLE IF NOT EXISTS group_chat_urls (
 							timestamp TEXT NOT NULL,
 							user_id TEXT NOT NULL,
+							user_persona_name TEXT NOT NULL,
 							room_id TEXT NOT NULL,
 							url TEXT NOT NULL
 						);
@@ -97,6 +107,7 @@ namespace MoistureBot
 						CREATE TABLE IF NOT EXISTS friend_chat_urls (
 							timestamp TEXT NOT NULL,
 							user_id TEXT NOT NULL,
+							user_persona_name TEXT NOT NULL,
 							url TEXT NOT NULL
 						);
 					";
@@ -122,14 +133,17 @@ namespace MoistureBot
 		{
 			Logger.Info("Logging friend chat message to SQLite");
 		
-			var sql = "INSERT INTO friend_chat (timestamp, user_id, message)" +
-			          " VALUES (@timestamp, @user_id, @message)";
+			var sql = "INSERT INTO friend_chat (timestamp, user_id, user_persona_name, message)" +
+				" VALUES (@timestamp, @user_id, @user_persona_name, @message)";
+
+			var personaName = Bot.GetPersonaName(message.ChatterId);
 
 			List<SqliteParameter> parameters = new List<SqliteParameter>();
 			var time = DateTimeSQLite(DateTime.Now);
 			parameters.Add(new SqliteParameter("@timestamp", time));
 			parameters.Add(new SqliteParameter("@message", message.Message));
 			parameters.Add(new SqliteParameter("@user_id", message.ChatterId));
+			parameters.Add(new SqliteParameter("@user_persona_name", personaName));
 
 			ExecuteQuery(sql,parameters);
 
@@ -142,13 +156,14 @@ namespace MoistureBot
 			{
 				Logger.Info("Found url in message, inserting to database");
 
-				var urlSql = "INSERT INTO friend_chat_urls (timestamp, user_id, url)" +
-				             " VALUES (@timestamp, @user_id, @url)";
+				var urlSql = "INSERT INTO friend_chat_urls (timestamp, user_id, user_persona_name, url)" +
+					" VALUES (@timestamp, @user_id, @user_persona_name, @url)";
 
 				var urlParameters = new List<SqliteParameter>();
 
 				urlParameters.Add(new SqliteParameter("@timestamp", time));
 				urlParameters.Add(new SqliteParameter("@user_id", message.ChatterId));
+				urlParameters.Add(new SqliteParameter("@user_persona_name", personaName));
 				urlParameters.Add(new SqliteParameter("@url", m.Value));
 
 				ExecuteQuery(urlSql,urlParameters);
@@ -162,13 +177,16 @@ namespace MoistureBot
 
 			Logger.Info("Logging group chat message to SQLite");
 
-			var sql = "INSERT INTO group_chat (timestamp, user_id, room_id, message)" +
-				" VALUES (@timestamp, @user_id, @room_id, @message)";
+			var sql = "INSERT INTO group_chat (timestamp, user_id, user_persona_name, room_id, message)" +
+				" VALUES (@timestamp, @user_id, @user_persona_name, @room_id, @message)";
+
+			var personaName = Bot.GetPersonaName(message.ChatterId);
 
 			var parameters = new List<SqliteParameter>();
 			var time = DateTimeSQLite(DateTime.Now);
 			parameters.Add(new SqliteParameter("@timestamp", time));
 			parameters.Add(new SqliteParameter("@user_id", message.ChatterId));
+			parameters.Add(new SqliteParameter("@user_persona_name", personaName));
 			parameters.Add(new SqliteParameter("@room_id", message.ChatId ));
 			parameters.Add(new SqliteParameter("@message", message.Message));
 
@@ -183,13 +201,14 @@ namespace MoistureBot
 			{
 				Logger.Info("Found url in message, inserting to database");
 
-				var urlSql = "INSERT INTO group_chat_urls (timestamp, user_id, room_id, url)" +
-				             " VALUES (@timestamp, @user_id, @room_id, @url)";
+				var urlSql = "INSERT INTO group_chat_urls (timestamp, user_id, user_persona_name, room_id, url)" +
+					" VALUES (@timestamp, @user_id, @user_persona_name, @room_id, @url)";
 
 				var urlParameters = new List<SqliteParameter>();
 
 				urlParameters.Add(new SqliteParameter("@timestamp", time));
 				urlParameters.Add(new SqliteParameter("@user_id", message.ChatterId));
+				urlParameters.Add(new SqliteParameter("@user_persona_name", personaName));
 				urlParameters.Add(new SqliteParameter("@room_id", message.ChatId));
 				urlParameters.Add(new SqliteParameter("@url", m.Value));
 
