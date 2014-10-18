@@ -23,8 +23,14 @@ probably familiarize yourself with the basic concepts of
 
 The project includes the following sample addins: 
 
+<<<<<<< HEAD
+  - **Moikkaaja:** responds to basic Finnish greetings in messages received either in group or friend chat.
+  - **AutoJoiner:** automatically join group chats when invited.
+=======
+  - **Moikkaaja:**, responds to basic Finnish greetings in messages received either in group or friend chat.
   - **AutoInviteJoin:** automatically join group chats when invited.
   - **AutoReconnect:** automatically check connection every 10 minutes and reconnect and join favorite rooms if needed.
+>>>>>>> Update readme
   - **GameInviteReply:** automatically reply to game lobby invites with random message sequences selected from an xml file.
   - **SQLiteChatLogger:** log chat messages and urls to SQLite database.
 
