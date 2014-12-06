@@ -113,7 +113,7 @@ namespace MoistureBot.ExtensionPoints
 		string GetSetting(ConfigSetting setting);
 
 		/// <summary>
-		/// Configures a value in the ini file. Adds a new setting if it doesn't exist.
+		/// Gets a setting's value from the ini file.
 		/// </summary>
 		/// <param name="section">Setting section</param>
 		/// <param name="key">Setting key</param>
