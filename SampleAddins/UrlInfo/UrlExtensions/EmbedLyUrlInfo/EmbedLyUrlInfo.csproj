@@ -28,20 +28,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Reactive">
-      <HintPath>..\..\..\..\packages\Rx-Main.1.0.11226\lib\Net4\System.Reactive.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\..\..\packages\Common.Logging.2.1.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Embedly">
-      <HintPath>..\..\..\..\packages\embedly.0.7\lib\net40\Embedly.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Addins">
       <HintPath>..\..\..\..\packages\Mono.Addins.1.2\lib\net40\Mono.Addins.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="Json">
+      <HintPath>..\..\..\..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

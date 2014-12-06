@@ -2,12 +2,12 @@
 using System.Text.RegularExpressions;
 using System.Linq;
 using Mono.Addins;
-using System.Web;
+using System.Net;
 using System.Collections.Specialized;
-using Embedly;
-using Embedly.OEmbed;
 using MoistureBot.ExtensionPoints;
 using MoistureBot;
+using Json;
+using System.Web;
 
 [assembly:Addin("EmbedlyUrlInfo", "1.0")]
 [assembly:AddinDependency("UrlInfo", "1.0")]
@@ -21,42 +21,32 @@ namespace UrlInfo
 	[Extension(typeof(IReceiveUrl))]
 	public class EmbedlyUrlInfo: IReceiveUrl
 	{
-	
-		private IConfig Config = MoistureBotComponentProvider.GetConfig();
+
+		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+
 		protected String apiKey = null;
 
 		#region IReceiveUrl implementation
 
 		public string ReplyToUrl(Uri uri)
 		{
-
-			// Get api key from config
-			if (String.IsNullOrEmpty(apiKey))
-				apiKey = Config.GetSetting("embed.ly","api_key");
-
-			// Create setting to ini file
-			if (String.IsNullOrEmpty(apiKey))
-				Config.SetSetting("embed.ly","api_key","");
 				
-			var client = new Client(apiKey);
+			var apiUrl = "http://api.embed.ly/1/oembed?url=" + HttpUtility.UrlEncode(uri.ToString());
 
-			if (client.IsUrlSupported(uri))
+			using(WebClient client = new WebClient())
 			{
-
-				var provider = client.GetProvider(uri);
-				if (provider.Type == ProviderType.Video)
-				{
-					var result = client.GetOEmbed(uri);
-					var link = result.Response.AsLink;
-					return link.Title;
-				}
+				var response = client.DownloadString(apiUrl);
+				return JsonParser.Deserialize<UrlResponse>(response).Title;
 			}
-
-			return null;
 
 		}
 
 		#endregion
 
+	}
+
+	public class UrlResponse
+	{
+		public string Title { get; set; }
 	}
 }
