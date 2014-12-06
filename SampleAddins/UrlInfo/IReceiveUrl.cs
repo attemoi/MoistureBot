@@ -12,7 +12,7 @@ namespace UrlInfo
 		/// </summary>
 		/// <returns>Bot reply to the url message. Null for no reply.</returns>
 		/// <param name="receivedUrl">Received URL.</param>
-		String replyToUrl(Uri receivedUrl);
+		String ReplyToUrl(Uri receivedUrl);
 	}
 }
 

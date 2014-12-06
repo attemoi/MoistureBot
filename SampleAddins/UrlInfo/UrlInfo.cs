@@ -59,7 +59,7 @@ namespace MoistureBot
 				{
 					try
 					{
-						return addin.replyToUrl(uri);
+						return addin.ReplyToUrl(uri);
 					}
 					catch(Exception e)
 					{
@@ -71,18 +71,6 @@ namespace MoistureBot
 
 			return null;
 				
-//			foreach (Match m in matches)
-//			{
-//				if (m.Value.Contains("youtube.com"))
-//				{
-//					var googleApi = new Google
-//					var youtubeService = new YouTubeService(new BaseClientService.Initializer()
-//					{
-//							ApplicationName = this.GetType().ToString();
-//					});
-//					youtubeService.
-//				}
-//			}
 		}
 	}
 }

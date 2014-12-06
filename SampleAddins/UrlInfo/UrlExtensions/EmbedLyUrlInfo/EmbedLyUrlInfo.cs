@@ -27,8 +27,9 @@ namespace UrlInfo
 
 		#region IReceiveUrl implementation
 
-		public string replyToUrl(Uri uri)
+		public string ReplyToUrl(Uri uri)
 		{
+
 			// Get api key from config
 			if (String.IsNullOrEmpty(apiKey))
 				apiKey = Config.GetSetting("embed.ly","api_key");

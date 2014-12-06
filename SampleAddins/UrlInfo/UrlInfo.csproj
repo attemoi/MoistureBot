@@ -49,7 +49,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UrlParsers\" />
     <Folder Include="UrlExtensions\" />
   </ItemGroup>
 </Project>
