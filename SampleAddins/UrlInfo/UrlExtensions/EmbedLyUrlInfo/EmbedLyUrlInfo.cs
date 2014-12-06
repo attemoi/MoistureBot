@@ -22,10 +22,6 @@ namespace UrlInfo
 	public class EmbedlyUrlInfo: IReceiveUrl
 	{
 
-		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-
-		protected String apiKey = null;
-
 		#region IReceiveUrl implementation
 
 		public string ReplyToUrl(Uri uri)
