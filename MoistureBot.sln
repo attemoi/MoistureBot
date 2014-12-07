@@ -9,23 +9,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreConsoleCommands", "Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBotLib", "MoistureBotLib\MoistureBotLib.csproj", "{559877FE-43FB-46A5-897E-978078951010}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleAddins", "SampleAddins", "{FA84E13C-6332-4188-B013-1E11752123C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addins", "Addins", "{FA84E13C-6332-4188-B013-1E11752123C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moikkaaja", "SampleAddins\Moikkaaja\Moikkaaja\Moikkaaja.csproj", "{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moikkaaja", "Addins\Moikkaaja\Moikkaaja\Moikkaaja.csproj", "{3E328CB1-0AA9-4B7E-8D09-7C6D9BD77543}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoInviteJoin", "SampleAddins\AutoInviteJoin\AutoInviteJoin.csproj", "{39AF8F24-934F-4759-B052-C061CFDD0A86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoInviteJoin", "Addins\AutoInviteJoin\AutoInviteJoin.csproj", "{39AF8F24-934F-4759-B052-C061CFDD0A86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameInviteReply", "SampleAddins\GameInviteReply\GameInviteReply.csproj", "{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameInviteReply", "Addins\GameInviteReply\GameInviteReply.csproj", "{4E4EF84A-0583-47D6-B454-5CB6C7A98AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteChatLogger", "SampleAddins\SQLiteChatLogger\SQLiteChatLogger.csproj", "{521F62D1-AB71-470C-96E3-C04421DD025E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteChatLogger", "Addins\SQLiteChatLogger\SQLiteChatLogger.csproj", "{521F62D1-AB71-470C-96E3-C04421DD025E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoReconnect", "SampleAddins\AutoReconnect\AutoReconnect.csproj", "{77F9672A-589A-4817-82CB-162976B03ACC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoReconnect", "Addins\AutoReconnect\AutoReconnect.csproj", "{77F9672A-589A-4817-82CB-162976B03ACC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlInfo", "SampleAddins\UrlInfo\UrlInfo.csproj", "{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlInfo", "Addins\UrlInfo\UrlInfo.csproj", "{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UrlInfoAddins", "UrlInfoAddins", "{6724F29B-5BB5-4FD9-AD99-A2B94C5C0591}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedLyUrlInfo", "SampleAddins\UrlInfo\UrlExtensions\EmbedLyUrlInfo\EmbedLyUrlInfo.csproj", "{81890942-06B3-4001-BCC5-5FE93F1E3503}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbedLyUrlInfo", "Addins\UrlInfo\UrlExtensions\EmbedLyUrlInfo\EmbedLyUrlInfo.csproj", "{81890942-06B3-4001-BCC5-5FE93F1E3503}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

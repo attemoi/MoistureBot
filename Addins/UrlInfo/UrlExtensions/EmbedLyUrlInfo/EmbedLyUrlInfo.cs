@@ -35,16 +35,16 @@ namespace UrlInfo
 			using(WebClient client = new WebClient())
 			{
 				var jsonStr = client.DownloadString(apiUrl);
+
+				UrlResponse response = JsonParser.Deserialize<UrlResponse>(jsonStr);
+
+				// reply only to video urls
+				if (response.Type.Equals("video"))
+					return response.Title;
+				else
+					return null;
 			}
-
-			UrlResponse response = JsonParser.Deserialize<UrlResponse>(jsonStr);
-
-			// reply only to video urls
-			if (response.Type.Equals("video"))
-				return response.Title;
-			else
-				return null;
-
+				
 		}
 
 		#endregion
