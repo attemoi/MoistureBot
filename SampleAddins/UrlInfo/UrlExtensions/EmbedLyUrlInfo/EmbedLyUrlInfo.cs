@@ -22,14 +22,15 @@ namespace UrlInfo
 	public class EmbedlyUrlInfo: IReceiveUrl
 	{
 
+		private IConfig Config = MoistureBotComponentProvider.GetConfig();
+		protected String apiKey = null;
+
 		#region IReceiveUrl implementation
 
 		public string ReplyToUrl(Uri uri)
 		{
-				
-			// TODO: filter video sites only
 
-			var apiUrl = "http://api.embed.ly/1/oembed?url=" + HttpUtility.UrlEncode(uri.ToString());
+			var apiUrl = CreateEmbedlyUri(uri);
 
 			using(WebClient client = new WebClient())
 			{
@@ -42,9 +43,31 @@ namespace UrlInfo
 
 			}
 
+			return null;
+
 		}
 
 		#endregion
+
+		private string CreateEmbedlyUri(Uri uri)
+		{
+			var url = "http://api.embed.ly/1/oembed?url=" + HttpUtility.UrlEncode(uri.ToString());
+
+			var apiKey = Config.GetSetting("embed.ly","api_key");
+
+			if (String.IsNullOrEmpty(apiKey))
+			{
+				// creates setting to ini file
+				Config.SetSetting("embed.ly","api_key",""); 
+			}
+			else
+			{
+				// add key to query
+				url += "&key=" + apiKey; 
+			}
+
+			return url;
+		}
 
 	}
 
