@@ -27,12 +27,19 @@ namespace UrlInfo
 		public string ReplyToUrl(Uri uri)
 		{
 				
+			// TODO: filter video sites only
+
 			var apiUrl = "http://api.embed.ly/1/oembed?url=" + HttpUtility.UrlEncode(uri.ToString());
 
 			using(WebClient client = new WebClient())
 			{
-				var response = client.DownloadString(apiUrl);
-				return JsonParser.Deserialize<UrlResponse>(response).Title;
+				var jsonStr = client.DownloadString(apiUrl);
+
+				UrlResponse response = JsonParser.Deserialize<UrlResponse>(jsonStr);
+
+				if (response.Type.Equals("video"))
+					return response.Title;
+
 			}
 
 		}
@@ -44,5 +51,6 @@ namespace UrlInfo
 	public class UrlResponse
 	{
 		public string Title { get; set; }
+		public string Type { get; set; }
 	}
 }
