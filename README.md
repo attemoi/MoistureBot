@@ -28,7 +28,6 @@ The project includes the following sample addins:
   - **GameInviteReply:** automatically reply to game lobby invites with random message sequences selected from an xml file.
   - **SQLiteChatLogger:** log chat messages and urls to SQLite database.
   - **EmbedlyUrlInfo:** reply to video urls with title using [embed.ly](http://embed.ly/) API.
-  - **SQLiteChatLogger:** log chat messages and urls to SQLite database.
   - **Moikkaaja:** reply to a number of finnish greetings.
 
 All the interfaces needed for creating an addin are included in the MoistureBotLib library.
