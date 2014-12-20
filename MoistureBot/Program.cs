@@ -112,7 +112,13 @@ namespace MoistureBot
 
 					if (command != null)
 					{
-						exit = command.Execute(args);
+						try {
+							exit = command.Execute(args);
+						} catch (Exception e) {
+							Console.WriteLine("Error while executing command!");
+							Console.WriteLine("Message: " + e.Message);
+							Logger.Error("Error while executing command.", e);
+						}
 					}
 					else
 					{
