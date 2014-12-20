@@ -45,6 +45,12 @@ namespace MoistureBot.ConsoleCommands
 				return false;
 			}
 
+			if (extra.Count == 0)
+			{
+				Console.WriteLine(ConsoleMessage.InvalidNumberOfParameters("msg"));
+				return false;
+			}
+
 			string target = extra.First();
 			string inputId = extra.ElementAt(1);
 			// get rest
