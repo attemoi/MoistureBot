@@ -44,7 +44,7 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="SteamKit2">
-      <HintPath>..\packages\SteamKit2.1.6.0\lib\net40\SteamKit2.dll</HintPath>
+      <HintPath>..\packages\SteamKit2.1.6.2\lib\net40\SteamKit2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
