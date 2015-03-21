@@ -11,7 +11,7 @@ using System.Xml.Linq;
 [assembly:Addin("Moikkaaja", "1.0")]
 [assembly:AddinDependency("MoistureBot", "1.0")]
 [assembly:AddinAuthor("Atte Moisio")]
-[assembly:AddinDescription("Responds to a number of finnish greetings.")]
+[assembly:AddinDescription("Greeter addon, responds to greetings defined in Greetings.xml")]
 [assembly:AddinName("Moikkaaja")]
 [assembly:AddinUrl("")]
 namespace MoistureBot
