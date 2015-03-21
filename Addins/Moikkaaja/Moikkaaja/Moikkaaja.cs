@@ -35,10 +35,12 @@ namespace MoistureBot
 					Value = str, 
 					Key = stripMessage(str)
 				})
+				.GroupBy(e => e.Key)
 				.ToDictionary(
-					x => x.Key,
-					x => x.Value
+					x => x.First().Key,
+					x => x.First().Value
 				);
+
 		}
 
 		public void MessageReceived(GroupChatMessage message)
