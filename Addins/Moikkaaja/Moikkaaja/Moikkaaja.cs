@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
 using Mono.Addins;
-using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Linq;
 
 [assembly:Addin("Moikkaaja", "1.0")]
 [assembly:AddinDependency("MoistureBot", "1.0")]
@@ -27,17 +29,8 @@ namespace MoistureBot
 
 		public Moikkaaja() {
 
-			string[] greetings = {
-				"Moikka taas", "Moikkelis", "Moi kaikki", "Moikkamoi", 
-				"Moikka", "Moips", "Moiks", "Moik", "Moi", "Terve", 
-				"Hello", "Tsau", "Heippa", "Heips", "Hei",
-				"Hoi", "Hola", "Iltaa", "Päivää", "Huomenta", "Moro",
-				"Hyvää yötä", "Hyvää päivää", "Hyvää huomenta", "Hyvää iltaa", 
-				"Näkemiin", "Hei hei", "Moikka moi"
-			};
-
-			// Convert the array to a dictionary with a stripped lowercase string as the key.
-			replyDict = greetings
+			// Convert greetings to a dictionary with a stripped lowercase string as the key.
+			replyDict = readGreetings()
 				.Select((str) => new { 
 					Value = str, 
 					Key = stripMessage(str)
@@ -46,10 +39,6 @@ namespace MoistureBot
 					x => x.Key,
 					x => x.Value
 				);
-		}
-
-		private string stripMessage(String value) {
-			return new Regex("[^a-zäöA-ZÄÖ0-9\\s-]").Replace(value,"").ToLower();
 		}
 
 		public void MessageReceived(GroupChatMessage message)
@@ -81,8 +70,29 @@ namespace MoistureBot
 				return null;
 			}
 
+		}
 
+		private IEnumerable<String> readGreetings() {
 
+			//     Greetings.xml example data:
+			//
+			//     <?xml version="1.0" encoding="UTF-8" ?>
+			//     <greetings>
+			//     
+			//         <greeting>Hello</greeting>
+			//		   <greeting>Hi</greeting>
+			//         <greeting>Hola</greeting>
+			//     
+			//     </greetings>
+
+			XDocument xdoc = XDocument.Load("addins/Greetings.xml");
+
+			return from greeting in xdoc.Root.Descendants("greeting")
+				select greeting.Value;
+		}
+
+		private string stripMessage(String value) {
+			return new Regex("[^a-zäöA-ZÄÖ0-9\\s-]").Replace(value,"").ToLower();
 		}
 	}
 }
