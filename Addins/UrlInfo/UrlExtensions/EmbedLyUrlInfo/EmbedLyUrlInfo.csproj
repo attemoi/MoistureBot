@@ -49,10 +49,12 @@
     <ProjectReference Include="..\..\UrlInfo.csproj">
       <Project>{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}</Project>
       <Name>UrlInfo</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\MoistureBotLib\MoistureBotLib.csproj">
       <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
       <Name>MoistureBotLib</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
 </Project>

@@ -35,7 +35,7 @@ namespace MoistureBot
 					Value = str, 
 					Key = stripMessage(str)
 				})
-				.GroupBy(e => e.Key)
+				.GroupBy(e => e.Key) // This is needed to handle duplicates
 				.ToDictionary(
 					x => x.First().Key,
 					x => x.First().Value

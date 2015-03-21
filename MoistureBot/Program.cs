@@ -136,6 +136,7 @@ namespace MoistureBot
 		
 			try
 			{
+
 				Run(args);
 
 				if (Bot != null)

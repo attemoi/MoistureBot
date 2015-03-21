@@ -30,14 +30,9 @@
     <Reference Include="System" />
     <Reference Include="Mono.Addins">
       <HintPath>..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Mono.Data.Sqlite">
       <HintPath>3rdParty\Mono.Data.Sqlite.dll</HintPath>
@@ -57,6 +52,7 @@
     <ProjectReference Include="..\..\MoistureBotLib\MoistureBotLib.csproj">
       <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
       <Name>MoistureBotLib</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
