@@ -3,8 +3,10 @@ using Mono.Addins;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
 using System.Xml;
+using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 
 [assembly:Addin("GameInviteReply", "1.0")]
 [assembly:AddinDependency("MoistureBot", "1.0")]
@@ -27,9 +29,14 @@ namespace MoistureBot
 		IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 		ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
-		public void InviteReceived(GameLobbyInvite invite)
-		{
-		
+		IEnumerable<IEnumerable<String>> replies;
+
+		public GameInviteReply() {
+			replies = readReplies();
+		}
+
+		private IEnumerable<IEnumerable<string>> readReplies() {
+
 			//     GameInviteReply.xml example data:
 			//
 			//     <?xml version="1.0" encoding="UTF-8" ?>
@@ -49,39 +56,18 @@ namespace MoistureBot
 			//     
 			//     </replies>
 
+			XDocument xdoc = XDocument.Load("addins/GameInviteReply.xml");
 
-			List<List<string>> replies = new List<List<string>>();
+			return xdoc.Root.Descendants("reply")
+				.Select((e => from msg in e.Descendants("message") select msg.Value));
+		}
 
-			using (XmlTextReader reader = new XmlTextReader("addins/GameInviteReply.xml"))
-			{
-			
-				reader.ReadToFollowing("replies");
-
-				while (reader.ReadToFollowing("reply"))
-				{
-					var messages = new List<string>();
-
-					if (reader.ReadToDescendant("message"))
-					{
-						do
-						{
-							messages.Add(reader.ReadElementContentAsString());
-
-						} while (reader.ReadToNextSibling("message"));
-					}
-
-					replies.Add(messages);
-
-				}
-
-			}
-
-			// We should now have a list of possible replies
-			// => pick one randomly and send the messages
-
-			int r = rnd.Next(replies.Count);
-
-			foreach (string message in replies[r])
+		public void InviteReceived(GameLobbyInvite invite)
+		{
+		
+			// Pick random reply and send the messages
+			int i = rnd.Next(replies.Count());
+			foreach (string message in replies.ElementAt(i))
 			{
 				Bot.SendChatMessage(message, invite.InviterId);
 				Thread.Sleep(1000);
