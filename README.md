@@ -34,10 +34,7 @@ All the interfaces needed for creating an addin are included in the MoistureBotL
 
 ### Addin dependencies
 
-In order to compile an addin, the following dependencies are required:
-
-  - [Mono.Addins](http://monoaddins.codeplex.com/) (published to NuGet)
-  - MoistureBotLib.dll (included in this project)
+In order to compile an addin, you only need to include MoistureBotLib.dll, which is included in this project.
 
 ## License
 
