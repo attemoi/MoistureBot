@@ -40,6 +40,7 @@ namespace MoistureBot
 			AddinManager.AddinUnloaded += OnUnload;
 
 			AddinManager.Initialize(".",".","./addins");
+
 			AddinManager.Registry.Update();
 
 			// This needs to be called after Initialize
@@ -50,8 +51,9 @@ namespace MoistureBot
 			Bot = MoistureBotComponentProvider.GetBot();
 
 			Console.WriteLine();
-			// TODO: read version dynamically
-			Console.WriteLine("Moisturebot 1.0");
+
+			var addinRoot = Assembly.GetExecutingAssembly().GetCustomAttribute<AddinRootAttribute>();
+			Console.WriteLine("Moisturebot " + addinRoot.Version);
 
 			if (!Config.ConfigExists())
 				Config.CreateConfig();
