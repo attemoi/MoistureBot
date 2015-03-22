@@ -419,7 +419,7 @@ namespace MoistureBot
 							             callback.PatronID.ConvertToUInt64()
 						);
 
-						foreach (IReceiveFriendGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveFriendGroupChatInvites> ())
+						foreach (IReceiveFriendGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveFriendGroupChatInvites> ("/MoistureBot/IReceiveFriendGroupChatInvites"))
 						{
 							try
 							{
@@ -441,7 +441,7 @@ namespace MoistureBot
 							callback.PatronID.ConvertToUInt64()
 						);
 
-						foreach (IReceiveCommunityGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveCommunityGroupChatInvites> ())
+						foreach (IReceiveCommunityGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveCommunityGroupChatInvites> ("/MoistureBot/IReceiveCommunityGroupChatInvites"))
 						{
 							try
 							{
@@ -465,7 +465,7 @@ namespace MoistureBot
 						callback.GameID.ToUInt64()
 					);
 
-					foreach (IReceiveGameLobbyInvites addin in AddinManager.GetExtensionObjects<IReceiveGameLobbyInvites> ())
+					foreach (IReceiveGameLobbyInvites addin in AddinManager.GetExtensionObjects<IReceiveGameLobbyInvites> ("/MoistureBot/IReceiveGameLobbyInvites"))
 					{
 						try
 						{
