@@ -12,6 +12,7 @@ using System.Linq;
 using MoistureBot.ConsoleCommands;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.ExtensionAttributes;
+using System.Collections;
 
 [assembly:AddinRoot("MoistureBot", "1.0")]
 [assembly:AddinAuthor("Atte Moisio")]
@@ -98,24 +99,14 @@ namespace MoistureBot
 					var commandName = commandParts[0];
 					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
-					IConsoleCommand command = null;
-
-					ExtensionNodeList commands = AddinManager.GetExtensionNodes(typeof(IConsoleCommand));
-
-					foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands)
-					{
-						var name = node.Data.Name;
-						if (commandName.Equals(name))
-						{
-							command = (IConsoleCommand)node.CreateInstance();
-							break;
-						}
-					}
+					var command = AddinManager
+						.GetExtensionNodes<TypeExtensionNode<ConsoleCommandAttribute>>(typeof(IConsoleCommand))
+						.FirstOrDefault((node) => node.Data.Name.Equals(commandName));
 
 					if (command != null)
 					{
 						try {
-							exit = command.Execute(args);
+							exit = ((IConsoleCommand)command.CreateInstance()).Execute(args);
 						} catch (Exception e) {
 							Console.WriteLine("Error while executing command!");
 							Console.WriteLine("Message: " + e.Message);
