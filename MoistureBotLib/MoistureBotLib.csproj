@@ -33,18 +33,6 @@
     <Reference Include="Mono.Addins">
       <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
     </Reference>
-    <Reference Include="INIFileParser">
-      <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
-    </Reference>
-    <Reference Include="SteamKit2">
-      <HintPath>..\packages\SteamKit2.1.6.2\lib\net40\SteamKit2.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -54,7 +42,6 @@
     <Compile Include="ExtensionPoints\ILogger.cs" />
     <Compile Include="MoistureBotComponentProvider.cs" />
     <Compile Include="ExtensionPoints\IConsoleCommand.cs" />
-    <Compile Include="Mono.Options\Options.cs" />
     <Compile Include="ExtensionPoints\IReceiveGroupChatMessages.cs" />
     <Compile Include="ExtensionPoints\IReceiveFriendGroupChatInvites.cs" />
     <Compile Include="ExtensionPoints\IReceiveFriendChatMessages.cs" />
@@ -76,10 +63,10 @@
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Config\ConfigUtils.cs" />
     <Compile Include="ExtensionPoints\IStartupCommand.cs" />
+    <Compile Include="Mono.Options\Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />

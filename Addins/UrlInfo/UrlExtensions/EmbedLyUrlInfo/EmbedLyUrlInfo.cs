@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Linq;
-using Mono.Addins;
 using System.Net;
 using System.Collections.Specialized;
 using MoistureBot.ExtensionPoints;
@@ -9,17 +8,10 @@ using MoistureBot;
 using Json;
 using System.Web;
 
-[assembly:Addin("EmbedlyUrlInfo", "1.0")]
-[assembly:AddinDependency("UrlInfo", "1.0")]
-[assembly:AddinAuthor("Atte Moisio")]
-[assembly:AddinDescription("Embedly url info reply.")]
-[assembly:AddinName("EmbedlyUrlinfo")]
-[assembly:AddinUrl("")]
-namespace UrlInfo
+namespace MoistureBot
 {
 
-	[Extension(typeof(IReceiveUrl))]
-	public class EmbedlyUrlInfo: IReceiveUrl
+	public class EmbedLyUrlInfo: IReceiveUrl
 	{
 
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();

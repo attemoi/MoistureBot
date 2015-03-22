@@ -6,7 +6,7 @@ namespace MoistureBot.ExtensionPoints
 	/// <summary>
 	/// Extension point for initializing addins during on program startup.
 	/// </summary>
-	[TypeExtensionPoint]
+	[TypeExtensionPoint("/MoistureBot/IStartupCommand")]
 	public interface IStartupCommand
 	{
 		/// <summary>

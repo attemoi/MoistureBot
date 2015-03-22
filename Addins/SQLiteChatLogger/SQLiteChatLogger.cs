@@ -3,23 +3,14 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
-using Mono.Addins;
 using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 using System.Collections.Generic;
 
-[assembly:Addin("SQLiteChatLogger", "1.0")]
-[assembly:AddinDependency("MoistureBot", "1.0")]
-[assembly:AddinAuthor("Atte Moisio")]
-[assembly:AddinDescription("Logs received messages to sqlite.")]
-[assembly:AddinName("SQLiteChatLogger")]
-[assembly:AddinUrl("")]
 namespace MoistureBot
 {
 
-	[Extension(typeof(IReceiveFriendChatMessages))]
-	[Extension(typeof(IReceiveGroupChatMessages))]
 	public class SQLiteChatLogger : IReceiveFriendChatMessages, IReceiveGroupChatMessages
 	{
 		const string CONFIG_SECTION = "sqlite_chat_logger";

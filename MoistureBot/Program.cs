@@ -98,7 +98,6 @@ namespace MoistureBot
 					var commandParts = input.Split(' ').ToList();
 					var commandName = commandParts[0];
 					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
-
 					var command = AddinManager
 						.GetExtensionNodes<TypeExtensionNode<ConsoleCommandAttribute>>(typeof(IConsoleCommand))
 						.FirstOrDefault((node) => node.Data.Name.Equals(commandName));

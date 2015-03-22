@@ -29,9 +29,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Addins">
-      <HintPath>..\..\..\..\packages\Mono.Addins.1.2\lib\net40\Mono.Addins.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="Json">
       <HintPath>..\..\..\..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
@@ -56,5 +53,8 @@
       <Name>MoistureBotLib</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EmbedLyUrlInfo.addin.xml" />
   </ItemGroup>
 </Project>

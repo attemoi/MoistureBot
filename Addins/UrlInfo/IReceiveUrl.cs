@@ -1,10 +1,10 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace UrlInfo
+namespace MoistureBot
 {
 
-	[TypeExtensionPoint]
+	[TypeExtensionPoint("/MoistureBot/UrlInfo/IReceiveUrl")]
 	public interface IReceiveUrl
 	{
 		/// <summary>

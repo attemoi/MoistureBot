@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{39AF8F24-934F-4759-B052-C061CFDD0A86}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AutoJoiner</RootNamespace>
-    <AssemblyName>AutoJoiner</AssemblyName>
+    <RootNamespace>AutoInviteJoin</RootNamespace>
+    <AssemblyName>AutoInviteJoin</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,10 +28,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Addins">
-      <HintPath>..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,6 +42,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <EmbeddedResource Include="AutoInviteJoin.addin.xml" />
   </ItemGroup>
 </Project>

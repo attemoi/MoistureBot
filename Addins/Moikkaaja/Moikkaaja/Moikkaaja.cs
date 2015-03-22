@@ -4,21 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
-using Mono.Addins;
 using System.Xml;
 using System.Xml.Linq;
 
-[assembly:Addin("Moikkaaja", "1.0")]
-[assembly:AddinDependency("MoistureBot", "1.0")]
-[assembly:AddinAuthor("Atte Moisio")]
-[assembly:AddinDescription("Greeter addon, responds to greetings defined in Greetings.xml")]
-[assembly:AddinName("Moikkaaja")]
-[assembly:AddinUrl("")]
 namespace MoistureBot
 {
 
-	[Extension(typeof(IReceiveFriendChatMessages))]
-	[Extension(typeof(IReceiveGroupChatMessages))]
 	public class Moikkaaja: IReceiveFriendChatMessages, IReceiveGroupChatMessages
 	{
 

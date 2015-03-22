@@ -3,20 +3,12 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
-using Mono.Addins;
 using System.Threading;
 using System.Collections.Generic;
 
-[assembly:Addin("AutoReconnect", "1.0")]
-[assembly:AddinDependency("MoistureBot", "1.0")]
-[assembly:AddinAuthor("Atte Moisio")]
-[assembly:AddinDescription("Automatically tries to reconnect and join favorite rooms every 10 minutes if disconnected.")]
-[assembly:AddinName("AutoReconnect")]
-[assembly:AddinUrl("")]
 namespace MoistureBot
 {
 
-	[Extension(typeof(IStartupCommand))]
 	public class AutoReconnect : IStartupCommand
 	{
 

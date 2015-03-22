@@ -10,7 +10,7 @@ namespace MoistureBot.ExtensionPoints
 	/// Extension point for receiving messages in a group chat.
 	/// Closely related to <see cref="IReceiveFriendChatMessages"/> 
 	/// </summary>
-	[TypeExtensionPoint]
+	[TypeExtensionPoint("/MoistureBot/IReceiveGroupChatMessages")]
 	public interface IReceiveGroupChatMessages
 	{
 		/// <summary>

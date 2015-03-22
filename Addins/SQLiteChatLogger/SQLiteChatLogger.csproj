@@ -28,10 +28,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Addins">
-      <HintPath>..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="Mono.Data.Sqlite">
@@ -44,8 +40,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="app.config" />
     <None Include="3rdParty\Mono.Data.Sqlite.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -57,5 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3rdParty\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SQLiteChatLogger.addin.xml" />
   </ItemGroup>
 </Project>

@@ -331,7 +331,7 @@ namespace MoistureBot
 			switch(callback.ChatMsgType)
 			{
 				case EChatEntryType.ChatMsg:
-					foreach (IReceiveGroupChatMessages addin in AddinManager.GetExtensionObjects<IReceiveGroupChatMessages> ())
+					foreach (IReceiveGroupChatMessages addin in AddinManager.GetExtensionObjects<IReceiveGroupChatMessages> ("/MoistureBot/IReceiveGroupChatMessages"))
 					{
 						try
 						{
@@ -377,7 +377,7 @@ namespace MoistureBot
 			{
 				case EChatEntryType.ChatMsg:
 					Logger.Info("Received message from " + chatterId + ": " + message);
-					foreach (IReceiveFriendChatMessages addin in AddinManager.GetExtensionObjects<IReceiveFriendChatMessages> ())
+					foreach (IReceiveFriendChatMessages addin in AddinManager.GetExtensionObjects<IReceiveFriendChatMessages>("/MoistureBot/IReceiveFriendChatMessages"))
 					{
 						try
 						{
