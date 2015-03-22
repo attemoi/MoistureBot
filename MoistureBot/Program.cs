@@ -53,7 +53,7 @@ namespace MoistureBot
 
 			Console.WriteLine();
 
-			var addinRoot = Assembly.GetExecutingAssembly().GetCustomAttribute<AddinRootAttribute>();
+			var addinRoot = ((AddinRootAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AddinRootAttribute), false));
 			Console.WriteLine("Moisturebot " + addinRoot.Version);
 
 			if (!Config.ConfigExists())
