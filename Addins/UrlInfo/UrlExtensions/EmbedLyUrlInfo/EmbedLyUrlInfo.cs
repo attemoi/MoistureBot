@@ -11,61 +11,62 @@ using System.Web;
 namespace MoistureBot
 {
 
-	public class EmbedLyUrlInfo: IReceiveUrl
-	{
+    public class EmbedLyUrlInfo: IReceiveUrl
+    {
 
-		private IConfig Config = MoistureBotComponentProvider.GetConfig();
-		protected String apiKey = null;
+        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        protected String apiKey = null;
 
-		#region IReceiveUrl implementation
+        #region IReceiveUrl implementation
 
-		public string ReplyToUrl(Uri uri)
-		{
+        public string ReplyToUrl(Uri uri)
+        {
 
-			var apiUrl = CreateEmbedlyUri(uri);
+            var apiUrl = CreateEmbedlyUri(uri);
 
-			using(WebClient client = new WebClient())
-			{
-				var jsonStr = client.DownloadString(apiUrl);
+            using (WebClient client = new WebClient())
+            {
+                var jsonStr = client.DownloadString(apiUrl);
 
-				UrlResponse response = JsonParser.Deserialize<UrlResponse>(jsonStr);
+                UrlResponse response = JsonParser.Deserialize<UrlResponse>(jsonStr);
 
-				// reply only to video urls
-				if (response.Type.Equals("video"))
-					return response.Title;
-				else
-					return null;
-			}
+                // reply only to video urls
+                if (response.Type.Equals("video"))
+                    return response.Title;
+                else
+                    return null;
+            }
 				
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private string CreateEmbedlyUri(Uri uri)
-		{
-			var url = "http://api.embed.ly/1/oembed?url=" + HttpUtility.UrlEncode(uri.ToString());
+        private string CreateEmbedlyUri(Uri uri)
+        {
+            var url = "http://api.embed.ly/1/oembed?url=" + HttpUtility.UrlEncode(uri.ToString());
 
-			var apiKey = Config.GetSetting("embed.ly","api_key");
+            var apiKey = Config.GetSetting("embed.ly", "api_key");
 
-			if (String.IsNullOrEmpty(apiKey))
-			{
-				// creates setting to ini file
-				Config.SetSetting("embed.ly","api_key",""); 
-			}
-			else
-			{
-				// add key to query
-				url += "&key=" + apiKey; 
-			}
+            if (String.IsNullOrEmpty(apiKey))
+            {
+                // creates setting to ini file
+                Config.SetSetting("embed.ly", "api_key", ""); 
+            }
+            else
+            {
+                // add key to query
+                url += "&key=" + apiKey; 
+            }
 
-			return url;
-		}
+            return url;
+        }
 
-	}
+    }
 
-	public class UrlResponse
-	{
-		public string Title { get; set; }
-		public string Type { get; set; }
-	}
+    public class UrlResponse
+    {
+        public string Title { get; set; }
+
+        public string Type { get; set; }
+    }
 }

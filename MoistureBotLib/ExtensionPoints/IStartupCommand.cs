@@ -3,16 +3,16 @@ using Mono.Addins;
 
 namespace MoistureBot.ExtensionPoints
 {
-	/// <summary>
-	/// Extension point for initializing addins during on program startup.
-	/// </summary>
-	[TypeExtensionPoint("/MoistureBot/IStartupCommand")]
-	public interface IStartupCommand
-	{
-		/// <summary>
-		/// Called when the program has started
-		/// </summary>
-		void ProgramStarted();
-	}
+    /// <summary>
+    /// Extension point for initializing addins during on program startup.
+    /// </summary>
+    [TypeExtensionPoint("/MoistureBot/IStartupCommand")]
+    public interface IStartupCommand
+    {
+        /// <summary>
+        /// Called when the program has started
+        /// </summary>
+        void ProgramStarted();
+    }
 		
 }

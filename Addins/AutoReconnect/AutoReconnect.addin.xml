@@ -1,15 +1,11 @@
 ﻿<Addin id="AutoReconnect" version="1.0" isroot="false">
-
-	<Runtime>
-		<Import assembly="AutoReconnect.dll"/>
-	</Runtime>
-
-	<Dependencies>
-		<Addin id="MoistureBot" version="1.0" />
-	</Dependencies>
-
-	<Extension path = "/MoistureBot/IStartupCommand">
-		<Type type = "MoistureBot.AutoReconnect" />
-	</Extension>
-		
+    <Runtime>
+        <Import assembly="AutoReconnect.dll" />
+    </Runtime>
+    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>
+    <Extension path="/MoistureBot/IStartupCommand">
+        <Type type="MoistureBot.AutoReconnect" />
+    </Extension>
 </Addin>

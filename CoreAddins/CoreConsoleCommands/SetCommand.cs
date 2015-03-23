@@ -10,30 +10,29 @@ using MoistureBot.Config;
 namespace MoistureBot.ConsoleCommands
 {
 
-	[ConsoleCommand(
-		Name = "set",
-		Description = "Configure Bot.",
-		ShortDescription = "Configure Bot.",
-		ShortUsage = "set [OPTIONS]+",
-		Usage = "set [OPTIONS]+"
-	)]
-	public class SetCommand : IConsoleCommand
-	{
+    [ConsoleCommand(
+        Name = "set",
+        Description = "Configure Bot.",
+        ShortDescription = "Configure Bot.",
+        ShortUsage = "set [OPTIONS]+",
+        Usage = "set [OPTIONS]+"
+    )]
+    public class SetCommand : IConsoleCommand
+    {
 
-		private IConfig Config = MoistureBotComponentProvider.GetConfig();
-		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
-		private string status;
-		private string name;
+        private string status;
+        private string name;
 
-		public OptionSet Options {
-			get 
-			{
-				return new OptionSet () {
-					{ "s=|status=", "Bot online status: online, offline, away, busy, looking_to_play, looking_to_trade, snooze", 
-						v => status = v },
-					{ "n=|name=", "Bot persona name.", 
+        public OptionSet Options {
+            get
+            {
+                return new OptionSet() { { "s=|status=", "Bot online status: online, offline, away, busy, looking_to_play, looking_to_trade, snooze", 
+                        v => status = v
+                    }, { "n=|name=", "Bot persona name.", 
 						v => name = v }
 					};
 			}

@@ -8,17 +8,17 @@ using MoistureBot.ExtensionAttributes;
 namespace MoistureBot.ExtensionPoints
 {
 
-	/// <summary>
-	/// Extension point for a console command.
-	/// </summary>
-	[TypeExtensionPoint(ExtensionAttributeType = typeof(ConsoleCommandAttribute))]
-	public interface IConsoleCommand
-	{
+    /// <summary>
+    /// Extension point for a console command.
+    /// </summary>
+    [TypeExtensionPoint(ExtensionAttributeType = typeof(ConsoleCommandAttribute))]
+    public interface IConsoleCommand
+    {
 
-		OptionSet Options { get; }
+        OptionSet Options { get; }
 
-		bool Execute(string[] args);
+        bool Execute(string[] args);
 
-	}
+    }
 }
 

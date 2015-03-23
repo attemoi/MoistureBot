@@ -1,17 +1,12 @@
 ﻿<Addin id="GameInviteReply" version="1.0" isroot="false">
-
-	<Runtime>
-		<Import assembly="GameInviteReply.dll"/>
-		<Import file="GameInviteReply.xml"/>
-	</Runtime>
-
-	<Dependencies>
-		<Addin id="MoistureBot" version="1.0" />
-	</Dependencies>
-
-	<Extension path = "/MoistureBot/IReceiveGameLobbyInvites">
-		<Type type = "MoistureBot.GameInviteReply" />
-	</Extension>
-		
-
+    <Runtime>
+        <Import assembly="GameInviteReply.dll" />
+        <Import file="GameInviteReply.xml" />
+    </Runtime>
+    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>
+    <Extension path="/MoistureBot/IReceiveGameLobbyInvites">
+        <Type type="MoistureBot.GameInviteReply" />
+    </Extension>
 </Addin>

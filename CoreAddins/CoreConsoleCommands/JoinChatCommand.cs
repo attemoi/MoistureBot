@@ -10,30 +10,28 @@ using MoistureBot.Utils;
 namespace MoistureBot.ConsoleCommands
 {
 
-	[ConsoleCommand(
-		Name = "join",
-		Description = "Join chat room(s).",
-		ShortDescription = "Join chat room(s).",
-		ShortUsage = "join <chat_id|favorite_key>",
-		Usage = 
+    [ConsoleCommand(
+        Name = "join",
+        Description = "Join chat room(s).",
+        ShortDescription = "Join chat room(s).",
+        ShortUsage = "join <chat_id|favorite_key>",
+        Usage = 
 		"join <chat_id|favorite_key>\n" +
-		"join -favorites"
-	)]
-	public class JoinChatCommand : IConsoleCommand
-	{
+        "join -favorites"
+    )]
+    public class JoinChatCommand : IConsoleCommand
+    {
 
-		private IConfig Config = MoistureBotComponentProvider.GetConfig();
-		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
-		public Boolean favorites;
+        public Boolean favorites;
 
-		public OptionSet Options
-		{
-			get
-			{
-				return new OptionSet() { 
-					{ "f|favorites", "join all favorite rooms", 
+        public OptionSet Options {
+            get
+            {
+                return new OptionSet() { { "f|favorites", "join all favorite rooms", 
 						h => favorites = h != null}
 				};
 			}

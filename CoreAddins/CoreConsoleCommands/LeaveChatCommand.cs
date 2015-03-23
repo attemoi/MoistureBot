@@ -10,30 +10,28 @@ using MoistureBot.Utils;
 namespace MoistureBot.ConsoleCommands
 {
 
-	[ConsoleCommand(
-		Name = "leave",
-		Description = "Leave chat room(s).",
-		ShortDescription = "Leave chat room(s).",
-		ShortUsage = "leave <chat_id|favorite_key>",
-		Usage = 
+    [ConsoleCommand(
+        Name = "leave",
+        Description = "Leave chat room(s).",
+        ShortDescription = "Leave chat room(s).",
+        ShortUsage = "leave <chat_id|favorite_key>",
+        Usage = 
 		"leave <chat_id|favorite_key>\n" +
-		"leave -favorites"
-	)]
-	public class LeaveChatCommand : IConsoleCommand
-	{
+        "leave -favorites"
+    )]
+    public class LeaveChatCommand : IConsoleCommand
+    {
 
-		private IConfig Config = MoistureBotComponentProvider.GetConfig();
-		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
-		public Boolean favorites;
+        public Boolean favorites;
 
-		public OptionSet Options
-		{
-			get
-			{
-				return new OptionSet() { 
-					{ "f|favorites", "leave all favorite rooms", 
+        public OptionSet Options {
+            get
+            {
+                return new OptionSet() { { "f|favorites", "leave all favorite rooms", 
 						h => favorites = h != null}
 				};
 			}

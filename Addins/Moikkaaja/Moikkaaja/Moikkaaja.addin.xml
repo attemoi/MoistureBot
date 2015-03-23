@@ -1,19 +1,14 @@
 ﻿<Addin id="Moikkaaja" version="1.0" isroot="false">
-
-	<Runtime>
-		<Import assembly="Moikkaaja.dll"/>
-	</Runtime>
-
-	<Dependencies>
-		<Addin id="MoistureBot" version="1.0" />
-	</Dependencies>
-
-		<Extension path = "/MoistureBot/IReceiveFriendChatMessages">
-		<Type type = "MoistureBot.Moikkaaja" />
-	</Extension>
-
-	<Extension path = "/MoistureBot/IReceiveGroupChatMessages">
-		<Type type = "MoistureBot.Moikkaaja" />
-	</Extension>
-		
+    <Runtime>
+        <Import assembly="Moikkaaja.dll" />
+    </Runtime>
+    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>
+    <Extension path="/MoistureBot/IReceiveFriendChatMessages">
+        <Type type="MoistureBot.Moikkaaja" />
+    </Extension>
+    <Extension path="/MoistureBot/IReceiveGroupChatMessages">
+        <Type type="MoistureBot.Moikkaaja" />
+    </Extension>
 </Addin>

@@ -1,15 +1,11 @@
 ﻿<Addin id="AutoInviteJoin" version="1.0" isroot="false">
-
-	<Runtime>
-		<Import assembly="AutoInviteJoin.dll"/>
-	</Runtime>
-
-	<Dependencies>
-		<Addin id="MoistureBot" version="1.0" />
-	</Dependencies>
-
-	<Extension path = "/MoistureBot/IReceiveGameLobbyInvites">
-		<Type type = "MoistureBot.AutoInviteJoin" />
-	</Extension>
-		
+    <Runtime>
+        <Import assembly="AutoInviteJoin.dll" />
+    </Runtime>
+    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>
+    <Extension path="/MoistureBot/IReceiveGameLobbyInvites">
+        <Type type="MoistureBot.AutoInviteJoin" />
+    </Extension>
 </Addin>

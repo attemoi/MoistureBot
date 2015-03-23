@@ -1,15 +1,11 @@
 ﻿<Addin id="EmbedLyUrlInfo" version="1.0" isroot="false">
-
-	<Runtime>
-		<Import assembly="EmbedLyUrlInfo.dll"/>
-	</Runtime>
-
-	<Dependencies>
-		<Addin id="UrlInfo" version="1.0" />
-	</Dependencies>
-
-	<Extension path = "/MoistureBot/UrlInfo/IReceiveUrl">
-		<Type type = "MoistureBot.EmbedLyUrlInfo" />
-	</Extension>
-		
+    <Runtime>
+        <Import assembly="EmbedLyUrlInfo.dll" />
+    </Runtime>
+    <Dependencies>
+        <Addin id="UrlInfo" version="1.0" />
+    </Dependencies>
+    <Extension path="/MoistureBot/UrlInfo/IReceiveUrl">
+        <Type type="MoistureBot.EmbedLyUrlInfo" />
+    </Extension>
 </Addin>
