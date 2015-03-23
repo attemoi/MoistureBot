@@ -85,7 +85,9 @@ namespace MoistureBot
 		}
 
 		private string stripMessage(String value) {
-			return new Regex("[^a-zäöA-ZÄÖ0-9\\s-]").Replace(value,"").ToLower();
+			char c = (char)720; // This odd character is used to wrap emoticons
+			var stripped = new Regex("("+c+".*"+c+")").Replace(value, "").ToLower();
+			return new Regex("[^a-zäöA-ZÄÖ0-9]").Replace(stripped, "");
 		}
 	}
 }
