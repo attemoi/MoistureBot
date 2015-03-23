@@ -33,28 +33,23 @@ namespace MoistureBot
 		public static IMoistureBot Bot;
 		public static IConfig Config;
 
+		public static AddinInvoker addinInvoker;
+
 		static void Run(string[] args)
 		{
 
-			AddinManager.AddinLoadError += OnLoadError;
-			AddinManager.AddinLoaded += OnLoad;
-			AddinManager.AddinUnloaded += OnUnload;
-
-			AddinManager.Initialize(".",".","./addins");
-
-			AddinManager.Registry.Update();
-
-			// This needs to be called after Initialize
-			AddinManager.ExtensionChanged += OnExtensionChanged;
+			initializeAddinManager();
 
 			Logger = MoistureBotComponentProvider.GetLogger();
 			Config = MoistureBotComponentProvider.GetConfig();
 			Bot = MoistureBotComponentProvider.GetBot();
 
+			addinInvoker = new AddinInvoker(Logger);
+
 			Console.WriteLine();
 
-			var addinRoot = ((AddinRootAttribute)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(AddinRootAttribute), false));
-			Console.WriteLine("Moisturebot " + addinRoot.Version);
+			var version = AddinUtils.getAddinRoot("MoistureBot").Version;
+			Console.WriteLine("Moisturebot " + version);
 
 			if (!Config.ConfigExists())
 				Config.CreateConfig();
@@ -62,23 +57,28 @@ namespace MoistureBot
 			if (new LaunchCommand().Execute(args))
 				return; 
 
-			foreach (IStartupCommand addin in AddinManager.GetExtensionObjects<IStartupCommand> ())
-			{
-				try
-				{
-					addin.ProgramStarted();
-				}
-				catch(Exception e)
-				{
-					Logger.Error("Error in addin startup command.",e);
-				}
-			}
+			// Call addins extending IStartupCommand
+			addinInvoker.invoke<IStartupCommand>((addin) => addin.ProgramStarted());
 
 			HandleConsoleInput();
 
 		}
 
-		public static void HandleConsoleInput()
+		private static void initializeAddinManager() {
+
+			AddinManager.AddinLoadError += (sender, args) => Logger.Error("Failed to load addin",args.Exception);
+			AddinManager.AddinLoaded += (sender, args) => Logger.Info("Add-in loaded: " + args.AddinId);
+			AddinManager.AddinUnloaded += (sender, args) => Logger.Info("Add-in unloaded: " + args.AddinId);
+
+			AddinManager.Initialize(".",".","./addins");
+			AddinManager.Registry.Update();
+
+			// This needs to be called after Initialize
+			AddinManager.ExtensionChanged += (sender, args) => Logger.Info("Extension changed (" + args.Path + ").");
+
+		}
+
+		private static void HandleConsoleInput()
 		{
 
 			var exit = false;
@@ -145,26 +145,6 @@ namespace MoistureBot
 					? Environment.ExitCode : 100;
 			}
 
-		}
-
-		static void OnExtensionChanged(object s, ExtensionEventArgs args)
-		{
-			Logger.Info("Extension changed (" + args.Path + ").");
-		}
-
-		static void OnLoadError(object s, AddinErrorEventArgs args)
-		{
-			Logger.Error("Failed to load addin",args.Exception);
-		}
-
-		static void OnUnload(object s, AddinEventArgs args)
-		{
-			Logger.Info("Add-in unloaded: " + args.AddinId);
-		}
-
-		static void OnLoad(object s, AddinEventArgs args)
-		{
-			Logger.Info("Add-in loaded: " + args.AddinId);
 		}
 			
 	}

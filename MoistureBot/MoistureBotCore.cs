@@ -21,6 +21,8 @@ namespace MoistureBot
 	
 		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 		private IConfig Config = MoistureBotComponentProvider.GetConfig();
+
+		private AddinInvoker addinHandler;
 	
 		private volatile bool terminated;
 
@@ -37,6 +39,8 @@ namespace MoistureBot
 
 		public MoistureBotCore()
 		{
+
+			addinHandler = new AddinInvoker(Logger);
 
 			// create our steamclient instance
 			steamClient = new SteamClient();
@@ -331,18 +335,11 @@ namespace MoistureBot
 			switch(callback.ChatMsgType)
 			{
 				case EChatEntryType.ChatMsg:
-					foreach (IReceiveGroupChatMessages addin in AddinManager.GetExtensionObjects<IReceiveGroupChatMessages> ("/MoistureBot/IReceiveGroupChatMessages"))
-					{
-						try
-						{
-							addin.MessageReceived(new GroupChatMessage(message, chatterId, chatId));
-						}
-						catch(Exception e)
-						{
-							Logger.Error("Error in addin",e);
-						}
 
-					}
+					addinHandler.invoke<IReceiveGroupChatMessages>(
+						(addin) => addin.MessageReceived(new GroupChatMessage(message, chatterId, chatId))
+					);
+
 					break;
 				case EChatEntryType.LeftConversation:
 					Logger.Info(chatterId + " left " + chatId);
@@ -377,17 +374,11 @@ namespace MoistureBot
 			{
 				case EChatEntryType.ChatMsg:
 					Logger.Info("Received message from " + chatterId + ": " + message);
-					foreach (IReceiveFriendChatMessages addin in AddinManager.GetExtensionObjects<IReceiveFriendChatMessages>("/MoistureBot/IReceiveFriendChatMessages"))
-					{
-						try
-						{
-							addin.MessageReceived(new FriendChatMessage(message, chatterId));
-						}
-						catch(Exception e)
-						{
-							Logger.Error("Error in addin",e);
-						}
-					}
+
+					addinHandler.invoke<IReceiveFriendChatMessages>(
+						(addin) =>  addin.MessageReceived(new FriendChatMessage(message, chatterId))
+					);
+
 					break;
 				case EChatEntryType.InviteGame:
 					Logger.Info("Game invite received from user " + chatterId);
@@ -419,18 +410,11 @@ namespace MoistureBot
 							             callback.PatronID.ConvertToUInt64()
 						);
 
-						foreach (IReceiveFriendGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveFriendGroupChatInvites> ("/MoistureBot/IReceiveFriendGroupChatInvites"))
-						{
-							try
-							{
-								addin.InviteReceived(friendInvite);
-							}
-							catch(Exception e)
-							{
-								Logger.Error("Error in addin",e);
-							}
 
-						}
+
+						addinHandler.invoke<IReceiveFriendGroupChatInvites>(
+							(addin) => addin.InviteReceived(friendInvite)
+						);
 
 					}
 					else
@@ -441,18 +425,9 @@ namespace MoistureBot
 							callback.PatronID.ConvertToUInt64()
 						);
 
-						foreach (IReceiveCommunityGroupChatInvites addin in AddinManager.GetExtensionObjects<IReceiveCommunityGroupChatInvites> ("/MoistureBot/IReceiveCommunityGroupChatInvites"))
-						{
-							try
-							{
-								addin.InviteReceived(communityInvite);
-							}
-							catch(Exception e)
-							{
-								Logger.Error("Error in addin",e);
-							}
-
-						}
+						addinHandler.invoke<IReceiveCommunityGroupChatInvites>(
+							(addin) => addin.InviteReceived(communityInvite)
+						);
 
 					}
 
@@ -465,18 +440,9 @@ namespace MoistureBot
 						callback.GameID.ToUInt64()
 					);
 
-					foreach (IReceiveGameLobbyInvites addin in AddinManager.GetExtensionObjects<IReceiveGameLobbyInvites> ("/MoistureBot/IReceiveGameLobbyInvites"))
-					{
-						try
-						{
-							addin.InviteReceived(gameInvite);
-						}
-						catch(Exception e)
-						{
-							Logger.Error("Error in addin",e);
-						}
-
-					}
+					addinHandler.invoke<IReceiveGameLobbyInvites>(
+						(addin) => addin.InviteReceived(gameInvite)
+					);
 
 					break;
 				case EChatRoomType.Friend :

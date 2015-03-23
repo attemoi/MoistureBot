@@ -56,6 +56,8 @@
     <Compile Include="ConsoleCommands\HelpCommand.cs" />
     <Compile Include="ConsoleCommands\LaunchCommand.cs" />
     <Compile Include="ConsoleCommands\ExitCommand.cs" />
+    <Compile Include="AddinInvoker.cs" />
+    <Compile Include="AddinUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

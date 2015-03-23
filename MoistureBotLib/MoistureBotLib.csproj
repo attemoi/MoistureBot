@@ -64,6 +64,7 @@
     <Compile Include="Config\ConfigUtils.cs" />
     <Compile Include="ExtensionPoints\IStartupCommand.cs" />
     <Compile Include="Mono.Options\Options.cs" />
+    <Compile Include="MoistureBotAddin.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
