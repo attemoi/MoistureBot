@@ -1,93 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{89473D51-D556-4742-A560-8FEA79AAB641}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>MoistureBot</RootNamespace>
-    <AssemblyName>MoistureBot</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <Externalconsole>true</Externalconsole>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <Externalconsole>true</Externalconsole>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="protobuf-net">
-      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Addins">
-      <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
-    </Reference>
-    <Reference Include="INIFileParser">
-      <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="SteamKit2">
-      <HintPath>..\packages\SteamKit2.1.6.2\lib\net40\SteamKit2.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="MoistureBotConfig.cs" />
-    <Compile Include="MoistureBotCore.cs" />
-    <Compile Include="MoistureBotLogger.cs" />
-    <Compile Include="ConsoleCommands\HelpCommand.cs" />
-    <Compile Include="ConsoleCommands\LaunchCommand.cs" />
-    <Compile Include="ConsoleCommands\ExitCommand.cs" />
-    <Compile Include="AddinInvoker.cs" />
-    <Compile Include="AddinUtils.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="MoistureBot.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ConsoleCommands\" />
-    <Folder Include="..\SampleAddins\SQLiteChatLogger\Sqlite\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="app.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MoistureBotLib\MoistureBotLib.csproj">
-      <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
-      <Name>MoistureBotLib</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <Target Name="AfterBuild">
-    <CreateItem Include="$(OutDir)\**\*.dll">
-      <Output TaskParameter="Include" ItemName="Libs" />
-    </CreateItem>
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).exe" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
-    <Copy SourceFiles="$(OutDir)$(AssemblyName).exe.config" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
-    <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
-    <Copy SourceFiles="$(OutDir)MoistureBot.ini" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
-    <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" />
-  </Target>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+        <ProjectGuid>{89473D51-D556-4742-A560-8FEA79AAB641}</ProjectGuid>
+        <OutputType>Exe</OutputType>
+        <RootNamespace>MoistureBot</RootNamespace>
+        <AssemblyName>MoistureBot</AssemblyName>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug</OutputPath>
+        <DefineConstants>DEBUG;</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>x86</PlatformTarget>
+        <Externalconsole>true</Externalconsole>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+        <DebugType>full</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release</OutputPath>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <PlatformTarget>x86</PlatformTarget>
+        <Externalconsole>true</Externalconsole>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="protobuf-net">
+            <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+        </Reference>
+        <Reference Include="Mono.Addins">
+            <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
+        </Reference>
+        <Reference Include="INIFileParser">
+            <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
+        </Reference>
+        <Reference Include="log4net">
+            <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Xml" />
+        <Reference Include="SteamKit2">
+            <HintPath>..\packages\SteamKit2.1.6.2\lib\net40\SteamKit2.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Program.cs" />
+        <Compile Include="MoistureBotConfig.cs" />
+        <Compile Include="MoistureBotCore.cs" />
+        <Compile Include="MoistureBotLogger.cs" />
+        <Compile Include="ConsoleCommands\HelpCommand.cs" />
+        <Compile Include="ConsoleCommands\LaunchCommand.cs" />
+        <Compile Include="ConsoleCommands\ExitCommand.cs" />
+        <Compile Include="AddinInvoker.cs" />
+        <Compile Include="AddinUtils.cs" />
+    </ItemGroup>
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+    <ItemGroup>
+        <None Include="packages.config" />
+        <None Include="MoistureBot.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="ConsoleCommands\" />
+        <Folder Include="..\SampleAddins\SQLiteChatLogger\Sqlite\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="app.config">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="MoistureBot.ini">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="moisture-bot.log">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\MoistureBotLib\MoistureBotLib.csproj">
+            <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
+            <Name>MoistureBotLib</Name>
+            <Private>False</Private>
+        </ProjectReference>
+    </ItemGroup>
+    <Target Name="AfterBuild">
+        <CreateItem Include="$(OutDir)\**\*.dll">
+            <Output TaskParameter="Include" ItemName="Libs" />
+        </CreateItem>
+        <Copy SourceFiles="$(OutDir)$(AssemblyName).exe" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+        <Copy SourceFiles="$(OutDir)$(AssemblyName).exe.config" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+        <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
+        <Copy SourceFiles="$(OutDir)MoistureBot.ini" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+        <Copy SourceFiles="$(OutDir)moisture-bot.log" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+        <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" />
+    </Target>
 </Project>
