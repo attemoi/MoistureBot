@@ -14,13 +14,12 @@ namespace MoistureBot.Utils
         /// <returns>the string the user typed in </returns>
         public static string ReadPassword(char mask)
         {
-            const int ENTER = 13 , BACKSP= 8 , CTRLBACKSP= 127;
+            const int ENTER = 13, ENTER2 = 33, BACKSP= 8 , CTRLBACKSP= 127;
             int[] FILTERED = { 0, 27, 9, 10 /*, 32 space, if you care */ }; // const
 
             var pass = new Stack<char>();
             char chr = (char)0;
-
-            while ((chr = System.Console.ReadKey(true).KeyChar) != ENTER)
+            while ((chr = System.Console.ReadKey(true).KeyChar) != ENTER && chr != ENTER2)
             {
                 if (chr == BACKSP)
                 {

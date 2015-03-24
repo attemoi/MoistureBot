@@ -75,4 +75,7 @@
     <Folder Include="Steam\" />
     <Folder Include="Utils\" />
   </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+  </Target>
 </Project>

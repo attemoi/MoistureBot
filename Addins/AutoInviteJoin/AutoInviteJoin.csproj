@@ -12,7 +12,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\MoistureBot\bin\Debug\addins</OutputPath>
+    <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -21,7 +21,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\MoistureBot\bin\Release\addins</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -44,4 +44,7 @@
   <ItemGroup>
     <EmbeddedResource Include="AutoInviteJoin.addin.xml" />
   </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
+  </Target>
 </Project>

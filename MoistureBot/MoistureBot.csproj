@@ -76,6 +76,16 @@
     <ProjectReference Include="..\MoistureBotLib\MoistureBotLib.csproj">
       <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
       <Name>MoistureBotLib</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <Target Name="AfterBuild">
+    <CreateItem Include="$(OutDir)\**\*.dll">
+      <Output TaskParameter="Include" ItemName="Libs" />
+    </CreateItem>
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).exe" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).exe.config" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+    <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="false" />
+    <Copy SourceFiles="$(OutDir)MoistureBot.ini" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
+  </Target>
 </Project>
