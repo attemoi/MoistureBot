@@ -57,10 +57,9 @@
   </ItemGroup>
   <Target Name="AfterBuild">
     <CreateItem Include="$(OutDir)\**\*.dll">
-      <Output TaskParameter="Include" ItemName="Libs"/>
+      <Output TaskParameter="Include" ItemName="Libs" />
     </CreateItem>
     <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="false" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
-
 </Project>

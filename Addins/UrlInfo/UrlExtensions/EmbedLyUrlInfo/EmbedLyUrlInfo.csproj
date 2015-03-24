@@ -57,7 +57,7 @@
   <ItemGroup>
     <EmbeddedResource Include="EmbedLyUrlInfo.addin.xml" />
   </ItemGroup>
-    <Target Name="AfterBuild">
+  <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)Json.dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="false" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
