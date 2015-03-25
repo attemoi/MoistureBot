@@ -20,14 +20,15 @@ namespace MoistureBot.Utils
         /// <returns>the string the user typed in </returns>
         public static string ReadPassword(char mask)
         {
-
-            ConsoleKey[] FILTERED = { ConsoleKey.Escape, ConsoleKey.Tab }; // const
+        
+            ConsoleKey[] FILTERED = { ConsoleKey.Escape, ConsoleKey.Tab };
 
             var pass = new Stack<char>();
-            ConsoleKeyInfo key;
-            while ((key = System.Console.ReadKey(true)).Key != ConsoleKey.Enter)
+
+            ConsoleKeyInfo keyInfo;
+            while ((keyInfo = System.Console.ReadKey(true)).Key != ConsoleKey.Enter)
             {
-                if (key.Key.Equals(ConsoleKey.Backspace))
+                if (keyInfo.Key.Equals(ConsoleKey.Backspace))
                 {
                     if (pass.Count > 0)
                     {
@@ -35,12 +36,9 @@ namespace MoistureBot.Utils
                         pass.Pop();
                     }
                 }
-                else if (FILTERED.Count(x => key.Key == x) > 0)
+                else if (!FILTERED.Contains(keyInfo.Key))
                 {
-                }
-                else
-                {
-                    pass.Push(key.KeyChar);
+                    pass.Push(keyInfo.KeyChar);
                     System.Console.Write(mask);
                 }
             }
