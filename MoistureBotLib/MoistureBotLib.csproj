@@ -13,7 +13,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\MoistureBot\bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -22,7 +22,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>..\MoistureBot\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -77,8 +77,8 @@
     <Folder Include="Utils\" />
   </ItemGroup>
   <Target Name="BeforeBuild">
-      <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' "/>
-      <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' "/>
+    <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' " />
   </Target>
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
