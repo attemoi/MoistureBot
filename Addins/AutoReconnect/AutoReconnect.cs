@@ -16,13 +16,15 @@ namespace MoistureBot
         private ILogger Logger = MoistureBotComponentProvider.GetLogger();
         private IConfig Config = MoistureBotComponentProvider.GetConfig();
 
-        Timer timer;
+        #pragma warning disable 414
+        private Timer Timer;
+        #pragma warning restore 414
 
         public void ProgramStarted()
         {
             Logger.Info("Creating timer for auto reconnect.");
 
-            timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            Timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
         }
 
         private void TimerCallback(object state)

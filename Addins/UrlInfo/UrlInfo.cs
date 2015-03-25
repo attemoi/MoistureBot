@@ -12,7 +12,6 @@ namespace MoistureBot
 
         private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
         private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
 
         const string URL_REGEX = @"\b(?:https?://|www\.)\S+\b";
 

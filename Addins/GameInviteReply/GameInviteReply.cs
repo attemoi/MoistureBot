@@ -17,7 +17,6 @@ namespace MoistureBot
         static Random rnd = new Random();
 
         IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
         IEnumerable<IEnumerable<String>> replies;
 
