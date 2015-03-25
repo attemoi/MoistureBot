@@ -87,7 +87,6 @@
       <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' "/>
       <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' "/>
   </Target>
-
   <Target Name="AfterBuild">
     <CreateItem Include="$(OutDir)\**\*.dll">
       <Output TaskParameter="Include" ItemName="Libs" />
