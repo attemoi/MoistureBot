@@ -33,9 +33,6 @@
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Addins">
-      <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
-    </Reference>
     <Reference Include="INIFileParser">
       <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
     </Reference>
@@ -45,6 +42,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="SteamKit2">
       <HintPath>..\packages\SteamKit2.1.6.2\lib\net40\SteamKit2.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins">
+      <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +83,11 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <Target Name="BeforeBuild">
+      <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' "/>
+      <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' "/>
+  </Target>
+
   <Target Name="AfterBuild">
     <CreateItem Include="$(OutDir)\**\*.dll">
       <Output TaskParameter="Include" ItemName="Libs" />
@@ -91,6 +96,6 @@
     <Copy SourceFiles="$(OutDir)$(AssemblyName).exe.config" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
     <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)MoistureBot.ini" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
-    <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" ContinueOnError="true"/>
+    <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" ContinueOnError="true" />
   </Target>
 </Project>
