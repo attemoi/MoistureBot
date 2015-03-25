@@ -76,6 +76,10 @@
     <Folder Include="Steam\" />
     <Folder Include="Utils\" />
   </ItemGroup>
+  <Target Name="BeforeBuild">
+      <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' "/>
+      <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' "/>
+  </Target>
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
   </Target>
