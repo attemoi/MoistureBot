@@ -7,34 +7,46 @@ It uses [Mono.Addins](http://monoaddins.codeplex.com/) to provide extensibility.
 
 ## Dependencies
 
-In order to compile and use MoistureBot, the following dependencies are required:
+In order to run or build MoistureBot, you will need .NET 4.0 or [Mono ≥ 2.8](http://mono-project.com). You can check your current Mono version by typing `mono --version` into your command line.
 
-  - .NET 4.0 or [Mono ≥ 2.8](http://mono-project.com)
-  - [Steamkit2](https://github.com/SteamRE/SteamKit) (published to NuGet)
-  - [Mono.Addins](http://monoaddins.codeplex.com/) (published to NuGet)
-  - [INI File Parser](https://github.com/rickyah/ini-parser) by [rickyah](https://github.com/rickyah) (published to NuGet)
-  - [Log4Net](http://logging.apache.org/log4net/) (published to NuGet)
-  
+### Building on Linux
+
+Tested on: Debian GNU/Linux 7 (wheezy), Mono JIT compiler version 2.10.8.1 (Debian 2.10.8.1-8)
+
+```
+cd ~
+git clone https://github.com/attemoi/MoistureBot.git
+cd MoistureBot
+xbuild
+```
+
+After a successful build, the binaries will be in _MoistureBot/bin/Debug_ and can be run with `mono MoistureBot.exe`
+
+#### Possible issues
+  - Nuget can't find referenced libraries:
+    * Try to import required certificates with `mozroots --import --sync`
+
+### Building on Windows
+
+Building on Windows is the same as for linux, but you may also use msbuild instead of xbuild if you don't have Mono installed.
+
 ## Creating addins
 
-I've tried to make creating an addin as simple as possible. However, you should
-probably familiarize yourself with the basic concepts of
-[Mono.Addins](http://monoaddins.codeplex.com/) before trying to create one.
+You can start by taking a look at some of the sample plugins listed below. In short, an addin only needs three things to work:   
+  1. A reference to _MoistureBotLib.dll_ (included in the project)
+  2. A file named _PluginName.addin.xml_ for configure the addin.
+  3. Your own fantastic addin code, that implements the wanted extension point interfaces defined in MoistureBotLib.dll.
+
+If you want to know more about how the addin system works, see [http://monoaddins.codeplex.com/](http://monoaddins.codeplex.com/).
 
 The project includes the following sample addins: 
 
+  - **Moikkaaja:** reply to greetings defined in an xml file.
   - **AutoInviteJoin:** automatically join group chats when invited.
   - **AutoReconnect:** automatically check connection every 10 minutes and reconnect and join favorite rooms if needed.
   - **GameInviteReply:** automatically reply to game lobby invites with random message sequences selected from an xml file.
   - **SQLiteChatLogger:** log chat messages and urls to SQLite database.
   - **EmbedlyUrlInfo:** reply to video urls with title using [embed.ly](http://embed.ly/) API.
-  - **Moikkaaja:** reply to greetings defined in an xml file.
-
-All the interfaces needed for creating an addin are included in the MoistureBotLib library.
-
-### Addin dependencies
-
-In order to compile an addin, you only need to include MoistureBotLib.dll, which is included in this project.
 
 ## License
 
