@@ -41,6 +41,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="3rdParty\Mono.Data.Sqlite.dll" />
+    <None Include="SQLiteChatLogger.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoistureBotLib\MoistureBotLib.csproj">
@@ -56,10 +57,8 @@
     <EmbeddedResource Include="SQLiteChatLogger.addin.xml" />
   </ItemGroup>
   <Target Name="AfterBuild">
-    <CreateItem Include="$(OutDir)\**\*.dll">
-      <Output TaskParameter="Include" ItemName="Libs" />
-    </CreateItem>
-    <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="false" />
+    <Copy SourceFiles="$(OutDir)Json.dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
+    <Copy SourceFiles="$(OutDir)Mono.Data.Sqlite.dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
 </Project>
