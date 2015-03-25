@@ -91,6 +91,6 @@
     <Copy SourceFiles="$(OutDir)$(AssemblyName).exe.config" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
     <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)MoistureBot.ini" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
-    <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" />
+    <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" ContinueOnError="true"/>
   </Target>
 </Project>
