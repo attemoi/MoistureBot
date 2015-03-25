@@ -34,7 +34,7 @@ Building on Windows is the same as for linux, but you may also use msbuild inste
 
 You can start by taking a look at some of the sample plugins listed below. In short, an addin only needs three things to work:   
   1. A reference to _MoistureBotLib.dll_ (included in the project)
-  2. A file named _PluginName.addin.xml_ for configure the addin.
+  2. A file named _PluginName.addin.xml_ for configuring what the addin extends.
   3. Your own fantastic addin code, that implements the wanted extension point interfaces defined in MoistureBotLib.dll.
 
 If you want to know more about how the addin system works, see [http://monoaddins.codeplex.com/](http://monoaddins.codeplex.com/).
