@@ -75,9 +75,6 @@
         <Content Include="MoistureBot.ini">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Include="moisture-bot.log">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\MoistureBotLib\MoistureBotLib.csproj">
@@ -94,7 +91,6 @@
         <Copy SourceFiles="$(OutDir)$(AssemblyName).exe.config" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
         <Copy SourceFiles="@(Libs)" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
         <Copy SourceFiles="$(OutDir)MoistureBot.ini" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
-        <Copy SourceFiles="$(OutDir)moisture-bot.log" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
         <RemoveDir Directories="C:\Users\Atte\Git\MoistureBot\bin\Debug\addins\addin-db-001" />
     </Target>
 </Project>
