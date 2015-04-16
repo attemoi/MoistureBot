@@ -1,13 +1,18 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace ChatCommand
+namespace MoistureBot
 {
     public class ChatCommandNode : TypeExtensionNode
     {
-        public ChatCommandNode()
-        {
+
+        [NodeAttribute("commandName", true)]
+        private String commandName;
+
+        public String CommandName {
+            get { return commandName; }
         }
+
     }
 }
 

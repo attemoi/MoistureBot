@@ -47,4 +47,7 @@
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
+  <ItemGroup>
+    <None Include="AutoInviteJoin.csproj" />
+  </ItemGroup>
 </Project>

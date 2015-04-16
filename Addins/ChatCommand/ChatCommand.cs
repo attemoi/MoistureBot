@@ -23,14 +23,15 @@ namespace MoistureBot
                 return;
 
             var commandNode = AddinManager
-                .GetExtensionNodes<TypeExtensionNode<ChatCommandAttribute>>(typeof(IFriendChatCommand))
-                .FirstOrDefault((node) => node.Data.Name.Equals(command.Name));
+
+                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IFriendChatCommand")
+                .FirstOrDefault((node) => node.CommandName.Equals(command.Name));
 
             if (commandNode != null)
             {
                 try {
                     Logger.Info("Friend chat command received, executing addin.");
-                    ((IFriendChatCommand)commandNode.CreateInstance()).Execute(command);
+                    ((IFriendChatCommand)commandNode.CreateInstance()).Execute(command, message);
                 } catch (Exception e) {
                     Logger.Error("Error while executing friend chat command.", e);
                 }
@@ -46,14 +47,14 @@ namespace MoistureBot
                 return;
 
             var commandNode = AddinManager
-                .GetExtensionNodes<TypeExtensionNode<ChatCommandAttribute>>(typeof(IGroupChatCommand))
-                .FirstOrDefault((node) => node.Data.Name.Equals(command.Name));
+                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IGroupChatCommand")
+                .FirstOrDefault((node) => node.CommandName.Equals(command.Name));
 
             if (commandNode != null)
             {
                 try {
                     Logger.Info("Group chat command received, executing addin.");
-                    ((IGroupChatCommand)commandNode.CreateInstance()).Execute(command);
+                    ((IGroupChatCommand)commandNode.CreateInstance()).Execute(command, message);
                 } catch (Exception e) {
                     Logger.Error("Error while executing group chat command.", e);
                 }

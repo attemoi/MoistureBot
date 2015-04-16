@@ -66,8 +66,8 @@ namespace MoistureBot
 
 		private static void initializeAddinManager() {
 
-			AddinManager.AddinLoadError += (sender, args) => Logger.Error("Failed to load addin",args.Exception);
-			AddinManager.AddinLoaded += (sender, args) => Logger.Info("Add-in loaded: " + args.AddinId);
+            AddinManager.AddinLoadError += (sender, args) => Logger.Error("Failed to load addin (" + args.Message + ")",args.Exception);
+            AddinManager.AddinLoaded += (sender, args) => Logger.Info("Add-in loaded: " + args.AddinId);
 			AddinManager.AddinUnloaded += (sender, args) => Logger.Info("Add-in unloaded: " + args.AddinId);
 
 			AddinManager.Initialize(".",".","./addins");
@@ -98,7 +98,7 @@ namespace MoistureBot
 					var commandParts = input.Split(' ').ToList();
 					var commandName = commandParts[0];
 					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
-					var command = AddinManager
+                    var command = AddinManager
 						.GetExtensionNodes<TypeExtensionNode<ConsoleCommandAttribute>>(typeof(IConsoleCommand))
 						.FirstOrDefault((node) => node.Data.Name.Equals(commandName));
 

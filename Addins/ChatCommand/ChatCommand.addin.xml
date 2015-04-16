@@ -2,13 +2,24 @@
     <Runtime>
         <Import assembly="ChatCommand.dll" />
     </Runtime>
+
     <Dependencies>
         <Addin id="MoistureBot" version="1.0" />
     </Dependencies>
-    <Extension path="/MoistureBot/IReceiveFriendChatCommands">
+
+    <Extension path="/MoistureBot/IReceiveFriendChatMessages">
         <Type type="MoistureBot.ChatCommand" />
     </Extension>
-    <Extension path="/MoistureBot/IReceiveGroupChatCommands">
+    <Extension path="/MoistureBot/IReceiveGroupChatMessages">
         <Type type="MoistureBot.ChatCommand" />
     </Extension>
+
+    <ExtensionPoint path = "/MoistureBot/ChatCommand/IFriendChatCommand"> 
+        <ExtensionNode name="ChatCommand" type="MoistureBot.ChatCommandNode" objectType="MoistureBot.IFriendChatCommand" /> 
+    </ExtensionPoint> 
+
+    <ExtensionPoint path = "/MoistureBot/ChatCommand/IGroupChatCommand"> 
+        <ExtensionNode name="ChatCommand" type="MoistureBot.ChatCommandNode" objectType="MoistureBot.IGroupChatCommand" /> 
+    </ExtensionPoint>
+
 </Addin>
