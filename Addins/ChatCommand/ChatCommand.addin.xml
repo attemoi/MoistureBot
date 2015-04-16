@@ -1,0 +1,14 @@
+﻿<Addin id="ChatCommand" version="1.0" isroot="false">
+    <Runtime>
+        <Import assembly="ChatCommand.dll" />
+    </Runtime>
+    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>
+    <Extension path="/MoistureBot/IReceiveFriendChatCommands">
+        <Type type="MoistureBot.ChatCommand" />
+    </Extension>
+    <Extension path="/MoistureBot/IReceiveGroupChatCommands">
+        <Type type="MoistureBot.ChatCommand" />
+    </Extension>
+</Addin>

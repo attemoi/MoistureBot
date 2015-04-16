@@ -88,13 +88,7 @@
     <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' " />
   </Target>
   <Target Name="AfterBuild">
-    <CreateItem Include="
-        $(OutDir)INIFileParser.dll;
-        $(OutDir)log4net.dll;
-        $(OutDir)Mono.Addins.dll;
-        $(OutDir)INIFileParser.dll;
-        $(OutDir)protobuf-net.dll;
-        $(OutDir)SteamKit2.dll">
+    <CreateItem Include="&#xA;        $(OutDir)INIFileParser.dll;&#xA;        $(OutDir)log4net.dll;&#xA;        $(OutDir)Mono.Addins.dll;&#xA;        $(OutDir)INIFileParser.dll;&#xA;        $(OutDir)protobuf-net.dll;&#xA;        $(OutDir)SteamKit2.dll">
       <Output TaskParameter="Include" ItemName="Libs" />
     </CreateItem>
     <Copy SourceFiles="$(OutDir)$(AssemblyName).exe" DestinationFolder="$(SolutionDir)bin\$(Configuration)" ContinueOnError="true" />
