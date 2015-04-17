@@ -10,59 +10,101 @@ namespace MoistureBot
     {
 
         private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        //private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
 
         public void Execute(Command command, GroupChatMessage message) {
-            if (command.Arguments.Length > 0 && command.Arguments[0].Equals("help"))
-                return;
 
-            Bot.SendChatMessage(createResponse(), message.ChatterId);
+            if (command.Arguments.Length > 0)
+            {
+                var commandNode = AddinManager
+                    .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IGroupChatCommand")
+                    .FirstOrDefault((node) => node.CommandName.Equals(command.Arguments[0]));
+
+                if (commandNode != null)
+                {
+                    try
+                    {
+                        Logger.Info("Displaying help for command.");
+                        ((IGroupChatCommand)commandNode.CreateInstance()).Help(message);
+                    } catch (Exception e) {
+                        Logger.Error("Error while displaying help for command.", e);
+                    }
+                }
+            }
+            else
+            {
+                Bot.SendChatMessage(".\n" + getGroupCommandsMessage() + "\n" + getFriendCommandsMessage(), message.ChatterId);
+            }
+
         }
 
         public void Execute(Command command, FriendChatMessage message) {
-            if (command.Arguments.Length > 0 && command.Arguments[0].Equals("help"))
-                return;
+            if (command.Arguments.Length > 0)
+            {
+                var commandNode = AddinManager
+                    .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IFriendChatCommand")
+                    .FirstOrDefault((node) => node.CommandName.Equals(command.Arguments[0]));
 
-            Bot.SendChatMessage(createResponse(), message.ChatterId);
+                if (commandNode != null)
+                {
+                    try
+                    {
+                        Logger.Info("Displaying help for command.");
+                        ((IFriendChatCommand)commandNode.CreateInstance()).Help(message);
+                    } catch (Exception e) {
+                        Logger.Error("Error while displaying help for command.", e);
+                    }
+                }
+            }
+            else
+            {
+                Bot.SendChatMessage(getResponse(), message.ChatterId);
+            }
         }
 
-        private String createResponse() {
+        private void displayHelp<CommandType, ChatMessageType>(Command command, String extensionPath, CommandType commandType, ChatMessageType messageType) {
             
-            var groupCommands = AddinManager
-                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IGroupChatCommand");
+        }
 
-            var friendCommands = AddinManager
-                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IFriendChatCommand");
+        private String getResponse() {
+            return ".\n" + getGroupCommandsMessage() + "\n" + getFriendCommandsMessage();
+        }
+            
+        private String getGroupCommandsMessage() {
+            var commands = AddinManager
+                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IGroupChatCommand")
+                .Select(c => "    !" + c.CommandName + " - " + c.CommandDescription)
+                .Aggregate((a, b) => a + "\n" + b);
 
-            string message = ".\n\nGroup chat commands:\n\n"; 
-            message += String.Join("\n\n    !", groupCommands.Select(c => c.CommandName + " - " + c.CommandDescription));
-          
-            message += "\n\nFriend chat commands:\n\n";
-            message += String.Join("\n\n", friendCommands.Select(c => c.CommandName + " - " + c.CommandDescription));
+            return "Group chat commands:\n" + commands;
+        }
 
-            return message;
+        private String getFriendCommandsMessage() {
+
+            var commands = AddinManager
+                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IFriendChatCommand")
+                .Select(c => "    !" + c.CommandName + " - " + c.CommandDescription)
+                .Aggregate((a, b) => a + "\n" + b);
+
+            return "Friend chat commands:\n" + commands;
         }
 
         public void Help(GroupChatMessage message) {
-            Bot.SendChatRoomMessage(getHelp(), message.ChatId);
+            Bot.SendChatMessage(getHelp(), message.ChatterId);
         }
 
         public void Help(FriendChatMessage message) {
             Bot.SendChatMessage(getHelp(), message.ChatterId);
         }
-            
+
         // Display help into private chat
         private String getHelp() {
-            return @"
-            
-Provides help for chat commands.
+            return @"Provides help for chat commands.
 
 !help
-
     displays list of available commands.
 
-!help command
-   
+!help command 
     displays help for a specific command.
 ";
 
