@@ -8,7 +8,7 @@
         <Addin id="ChatCommand" version="1.0" />
     </Dependencies>
 
-    <Extension path = "/MoistureBot/ChatCommand/IGroupChatCommand"> 
+    <Extension path = "/MoistureBot/ChatCommand/IChatCommand"> 
         <ChatCommand
             type="MoistureBot.UrlHistoryCommand"
             commandName="urlhistory" 

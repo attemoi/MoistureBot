@@ -29,6 +29,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Data" />
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>..\..\..\SQLiteChatLogger\3rdParty\Mono.Data.Sqlite.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
