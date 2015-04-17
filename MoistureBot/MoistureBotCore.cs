@@ -44,6 +44,7 @@ namespace MoistureBot
 
             // create our steamclient instance
             steamClient = new SteamClient();
+
             // create the callback manager which will route callbacks to function calls
             manager = new CallbackManager(steamClient);
 
@@ -272,7 +273,7 @@ namespace MoistureBot
 
         private void DisconnectedCallback(SteamClient.DisconnectedCallback callback)
         {
-            Logger.Info("Disconnected from Steam");
+            Logger.Info("Disconnected from Steam.");
         }
 
         private void LoggedOnCallback(SteamUser.LoggedOnCallback callback)
@@ -485,7 +486,7 @@ namespace MoistureBot
 
         public void Connect(string username, string password)
         {
-            Logger.Info("Connecting user " + username + " to steam");
+            Logger.Info("Connecting to Steam.");
             user = username;
             pass = password;
             steamClient.Connect();
