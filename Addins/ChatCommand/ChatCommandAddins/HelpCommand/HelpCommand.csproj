@@ -29,6 +29,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Mono.Addins">
+      <HintPath>..\..\..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -37,6 +40,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="HelpCommand.csproj" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MoistureBotLib\MoistureBotLib.csproj">

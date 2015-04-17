@@ -1,4 +1,5 @@
 ﻿<Addin id="HelpCommand" version="1.0" isroot="false">
+
     <Runtime>
         <Import assembly="HelpCommand.dll" />
     </Runtime>
@@ -8,11 +9,19 @@
     </Dependencies>
 
     <Extension path = "/MoistureBot/ChatCommand/IFriendChatCommand"> 
-        <ChatCommand commandName="help" type="MoistureBot.HelpCommand" /> 
+        <ChatCommand
+            type="MoistureBot.HelpCommand"
+            commandName="help" 
+            commandDescription="Provides help for chat commands"
+            /> 
     </Extension> 
 
     <Extension path = "/MoistureBot/ChatCommand/IGroupChatCommand"> 
-        <ChatCommand commandName="help" type="MoistureBot.HelpCommand" /> 
+        <ChatCommand
+            commandName="help" 
+            type="MoistureBot.HelpCommand" 
+            commandDescription="Provides help for chat commands"
+            /> 
     </Extension> 
 
 </Addin>

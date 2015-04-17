@@ -13,6 +13,13 @@ namespace MoistureBot
             get { return commandName; }
         }
 
+        [NodeAttribute("commandDescription", false)]
+        private String commandDescription;
+
+        public String CommandDescription {
+            get { return commandDescription; }
+        }
+
     }
 }
 

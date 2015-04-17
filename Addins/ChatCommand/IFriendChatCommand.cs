@@ -12,6 +12,12 @@ namespace MoistureBot
         /// </summary>
         /// <param name="command">Received Command.</param>
         void Execute(Command command, FriendChatMessage message);
+
+        /// <summary>
+        /// Used to display help, when the user types "!help <commandname>
+        /// </summary>
+        /// <param name="command">Received Command.</param>
+        void Help(FriendChatMessage message);
     }
 }
 
