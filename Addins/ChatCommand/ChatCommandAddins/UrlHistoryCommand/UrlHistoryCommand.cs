@@ -33,22 +33,9 @@ namespace MoistureBot
         }
 
         public void Help(Command command) {
-            Bot.SendChatMessage(getHelpMessage(), command.SenderId);
+            Bot.SendChatMessage("Displays the last 20 urls sent to a group chat.", command.SenderId);
         }
             
-        // Display help into private chat
-        private String getHelpMessage() {
-            return @"Provides help for chat commands.
-
-!help
-    displays list of available commands.
-
-!help command 
-    displays help for a specific command.
-";
-
-        }
-
         private IEnumerable<String> getUrls() {
             Logger.Info("Fetching urls...");
             var urls = new List<String>();
