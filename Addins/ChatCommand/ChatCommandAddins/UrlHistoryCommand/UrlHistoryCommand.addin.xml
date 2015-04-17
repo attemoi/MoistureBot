@@ -1,0 +1,20 @@
+﻿<Addin id="UrlHistoryCommand" version="1.0" isroot="false">
+
+    <Runtime>
+        <Import assembly="UrlHistoryCommand.dll" />
+    </Runtime>
+
+    <Dependencies>
+        <Addin id="ChatCommand" version="1.0" />
+    </Dependencies>
+
+    <Extension path = "/MoistureBot/ChatCommand/IGroupChatCommand"> 
+        <ChatCommand
+            type="MoistureBot.UrlHistoryCommand"
+            commandName="urlhistory" 
+            commandDescription="Displays the last 20 urls sent to the group chat."
+            /> 
+    </Extension> 
+
+</Addin>
+

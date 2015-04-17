@@ -8,15 +8,7 @@
         <Addin id="ChatCommand" version="1.0" />
     </Dependencies>
 
-    <Extension path = "/MoistureBot/ChatCommand/IFriendChatCommand"> 
-        <ChatCommand
-            type="MoistureBot.HelpCommand"
-            commandName="help" 
-            commandDescription="Provides help for chat commands"
-            /> 
-    </Extension> 
-
-    <Extension path = "/MoistureBot/ChatCommand/IGroupChatCommand"> 
+    <Extension path = "/MoistureBot/ChatCommand/IChatCommand"> 
         <ChatCommand
             commandName="help" 
             type="MoistureBot.HelpCommand" 

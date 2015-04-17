@@ -14,12 +14,8 @@
         <Type type="MoistureBot.ChatCommand" />
     </Extension>
 
-    <ExtensionPoint path = "/MoistureBot/ChatCommand/IFriendChatCommand"> 
-        <ExtensionNode name="ChatCommand" type="MoistureBot.ChatCommandNode" objectType="MoistureBot.IFriendChatCommand" /> 
+    <ExtensionPoint path = "/MoistureBot/ChatCommand/IChatCommand"> 
+        <ExtensionNode name="ChatCommand" type="MoistureBot.ChatCommandNode" objectType="MoistureBot.IChatCommand" /> 
     </ExtensionPoint> 
-
-    <ExtensionPoint path = "/MoistureBot/ChatCommand/IGroupChatCommand"> 
-        <ExtensionNode name="ChatCommand" type="MoistureBot.ChatCommandNode" objectType="MoistureBot.IGroupChatCommand" /> 
-    </ExtensionPoint>
 
 </Addin>
