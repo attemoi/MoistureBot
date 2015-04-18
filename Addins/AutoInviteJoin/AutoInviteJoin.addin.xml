@@ -5,7 +5,10 @@
     <Dependencies>
         <Addin id="MoistureBot" version="1.0" />
     </Dependencies>
-    <Extension path="/MoistureBot/IReceiveGameLobbyInvites">
+    <Extension path="/MoistureBot/IReceiveFriendGroupChatInvites">
+        <Type type="MoistureBot.AutoInviteJoin" />
+    </Extension>
+    <Extension path="/MoistureBot/IReceiveCommunityGroupChatInvites">
         <Type type="MoistureBot.AutoInviteJoin" />
     </Extension>
 </Addin>
