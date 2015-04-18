@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpCommand", "Addins\ChatC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlHistoryCommand", "Addins\ChatCommand\ChatCommandAddins\UrlHistoryCommand\UrlHistoryCommand.csproj", "{4D2BA35F-476E-48D9-843D-BB6CDD4BB8C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryCommand", "Addins\ChatCommand\ChatCommandAddins\HistoryCommand\HistoryCommand.csproj", "{8E137633-E973-403E-A76E-5896ACB274CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -89,6 +91,10 @@ Global
 		{8C1DF2EF-3DE3-4814-887E-A0D5E70E8F32}.Debug|x86.Build.0 = Debug|Any CPU
 		{8C1DF2EF-3DE3-4814-887E-A0D5E70E8F32}.Release|x86.ActiveCfg = Release|Any CPU
 		{8C1DF2EF-3DE3-4814-887E-A0D5E70E8F32}.Release|x86.Build.0 = Release|Any CPU
+		{8E137633-E973-403E-A76E-5896ACB274CB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E137633-E973-403E-A76E-5896ACB274CB}.Debug|x86.Build.0 = Debug|Any CPU
+		{8E137633-E973-403E-A76E-5896ACB274CB}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E137633-E973-403E-A76E-5896ACB274CB}.Release|x86.Build.0 = Release|Any CPU
 		{97D07A7E-F506-4192-8299-59BA1721D060}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{97D07A7E-F506-4192-8299-59BA1721D060}.Debug|x86.Build.0 = Debug|Any CPU
 		{97D07A7E-F506-4192-8299-59BA1721D060}.Release|x86.ActiveCfg = Release|Any CPU
@@ -108,6 +114,7 @@ Global
 		{81890942-06B3-4001-BCC5-5FE93F1E3503} = {6724F29B-5BB5-4FD9-AD99-A2B94C5C0591}
 		{3D9BD525-B5C6-49C5-949E-9183CDB013A2} = {B03B8E95-5A49-4CDB-9EAF-F52D2D9CFCD4}
 		{4D2BA35F-476E-48D9-843D-BB6CDD4BB8C7} = {B03B8E95-5A49-4CDB-9EAF-F52D2D9CFCD4}
+		{8E137633-E973-403E-A76E-5896ACB274CB} = {B03B8E95-5A49-4CDB-9EAF-F52D2D9CFCD4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

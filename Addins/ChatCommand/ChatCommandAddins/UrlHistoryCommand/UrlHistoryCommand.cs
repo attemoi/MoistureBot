@@ -56,7 +56,7 @@ namespace MoistureBot
                     var sql = @"
                         SELECT timestamp, user_persona_name, url from group_chat_urls 
                         WHERE room_id = '" + command.ChatRoomId + @"'
-                        ORDER BY timestamp ASC
+                        ORDER BY timestamp DESC
                         LIMIT 20                      
                     ";
 
@@ -75,6 +75,8 @@ namespace MoistureBot
                         var url = r.GetString(2);
                         urls.Add(date.ToString("[yyyy-MM-dd HH:mm:ss] ") + user + ": " + url);
                     }
+
+                    urls.Reverse();
 
                 }
 
