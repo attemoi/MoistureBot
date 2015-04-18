@@ -12,7 +12,7 @@
         <ChatCommand
             type="MoistureBot.HistoryCommand"
             commandName="history"
-            commandDescription="Displays the last 20 messages sent to a chat."
+            commandDescription="Displays chat message history."
             /> 
     </Extension> 
 

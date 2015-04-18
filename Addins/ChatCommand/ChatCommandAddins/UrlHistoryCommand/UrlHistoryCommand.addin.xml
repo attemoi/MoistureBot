@@ -12,7 +12,7 @@
         <ChatCommand
             type="MoistureBot.UrlHistoryCommand"
             commandName="urlhistory" 
-            commandDescription="Displays the last 20 urls sent to a group chat."
+            commandDescription="Displays group chat url history."
             /> 
     </Extension> 
 

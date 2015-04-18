@@ -19,6 +19,8 @@ namespace MoistureBot
         private ILogger Logger = MoistureBotComponentProvider.GetLogger();
         private IConfig Config = MoistureBotComponentProvider.GetConfig();
 
+        const int URL_COUNT = 20;
+
         string connectionString;
 
         public UrlHistoryCommand()
@@ -30,7 +32,19 @@ namespace MoistureBot
         public void Execute(Command command) {
             if (command.Source == Command.CommandSource.GROUPCHAT)
             {
-                var urls = getUrls(command);
+
+                uint pageNum;
+                try 
+                {
+                    pageNum = parsePageNum(command);
+                }
+                catch (Exception e)
+                {
+                    Bot.SendChatMessage("Sorry, the page number seems invalid.", command.SenderId);
+                    return;
+                }
+
+                var urls = getUrls(command, pageNum);
                 var message = ".\n" + String.Join("\n", urls);
               
                 Bot.SendChatMessage(message, command.SenderId);
@@ -42,10 +56,22 @@ namespace MoistureBot
         }
 
         public void Help(Command command) {
-            Bot.SendChatMessage("Displays the last 20 urls sent to a group chat.", command.SenderId);
-        }
             
-        private IEnumerable<String> getUrls(Command command) {
+            var helpMessage = 
+                @"Displays history of urls sent to a group chat.
+
+!urlhistory
+    displays the first page of url history (20 messages / page).
+
+!urlhistory <page_number>
+    displays a specific page of url history.
+";
+
+            Bot.SendChatMessage( 
+                helpMessage, command.SenderId);
+        }
+
+        private IEnumerable<String> getUrls(Command command, uint page) {
             Logger.Info("Fetching urls...");
             var urls = new List<String>();
             try
@@ -53,20 +79,12 @@ namespace MoistureBot
                 using (var conn = (IDbConnection)new SqliteConnection(connectionString))
                 using (var cmd = conn.CreateCommand())
                 {
-                    var sql = @"
-                        SELECT timestamp, user_persona_name, url from group_chat_urls 
-                        WHERE room_id = '" + command.ChatRoomId + @"'
-                        ORDER BY timestamp DESC
-                        LIMIT 20                      
-                    ";
 
                     conn.Open();
-
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = sql;
+                    cmd.CommandText = getSelectClause(command, page);
                     var r = cmd.ExecuteReader();
-
-
+                     
                     while (r.Read())
                     {
 
@@ -90,6 +108,23 @@ namespace MoistureBot
 
         }
             
+        string getSelectClause(Command command, uint page)
+        {
+            return 
+                  " SELECT timestamp, user_persona_name, url from group_chat_urls "
+                + " WHERE room_id = '" + command.ChatRoomId + "'"
+                + " ORDER BY timestamp DESC"
+                + " LIMIT " + URL_COUNT
+                + " OFFSET " + (page - 1) * URL_COUNT;
+                   
+        }
+
+        private uint parsePageNum(Command command) {
+            if (command.Arguments.Length == 0)
+                return 1;
+
+            return UInt32.Parse(command.Arguments[0]);
+        }
     }
 }
 

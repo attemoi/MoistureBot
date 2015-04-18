@@ -59,7 +59,7 @@ namespace MoistureBot
 !help
     displays list of available commands.
 
-!help command 
+!help <command_name> 
     displays help for a specific command.
 ";
 

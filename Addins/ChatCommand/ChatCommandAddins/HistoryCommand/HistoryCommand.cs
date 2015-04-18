@@ -16,6 +16,8 @@ namespace MoistureBot
         const string CONFIG_SECTION = "sqlite_chat_logger";
         const string CONFIG_KEY = "database_path";
 
+        const int MESSAGE_COUNT = 20;
+
         private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
         private ILogger Logger = MoistureBotComponentProvider.GetLogger();
         private IConfig Config = MoistureBotComponentProvider.GetConfig();
@@ -29,16 +31,39 @@ namespace MoistureBot
         }
 
         public void Execute(Command command) {
-            var urls = getMessages(command, 20);
+
+            uint pageNum;
+            try 
+            {
+                pageNum = parsePageNum(command);
+            }
+            catch (Exception e)
+            {
+                Bot.SendChatMessage("Sorry, the page number seems invalid.", command.SenderId);
+                return;
+            }
+
+            var urls = getMessages(command, pageNum);
             var message = ".\n" + String.Join("\n", urls);              
             Bot.SendChatMessage(message, command.SenderId);
         }
 
         public void Help(Command command) {
-            Bot.SendChatMessage("Displays the last 20 messages sent to a group chat.", command.SenderId);
+
+            var helpMessage = 
+                @"Displays group chat message history.
+
+!history
+    displays the first page of chat history (20 messages / page).
+
+!history <page_number>
+    displays a specific page of chat history.
+";
+
+            Bot.SendChatMessage(helpMessage, command.SenderId);
         }
 
-        private IEnumerable<String> getMessages(Command command, int count) {
+        private IEnumerable<String> getMessages(Command command, uint page) {
             Logger.Info("Fetching messages...");
             var messages = new List<String>();
             try
@@ -46,34 +71,14 @@ namespace MoistureBot
                 using (var conn = (IDbConnection)new SqliteConnection(connectionString))
                 using (var cmd = conn.CreateCommand())
                 {
-                    var isGroup = command.Source == Command.CommandSource.GROUPCHAT;
-                    String table, whereClause;
-                    if (isGroup)
-                    {
-                        table = "group_chat";
-                        whereClause = " WHERE room_id = " + command.ChatRoomId;
-                    }
-                    else
-                    {
-                        table = "friend_chat";
-                        whereClause = " WHERE user_id = " + command.SenderId;
-                    }
-
-                    String sql = 
-                        "SELECT timestamp, user_persona_name, message from " + table
-                        + whereClause
-                        + " ORDER BY timestamp DESC"
-                        + " LIMIT " + count;                      
-
+                                          
                     conn.Open();
-
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = sql;
+                    cmd.CommandText = getSelectClause(command, page);
                     var r = cmd.ExecuteReader();
 
                     while (r.Read())
                     {
-
                         var date = DateTime.ParseExact(r.GetString(0), "u", CultureInfo.InvariantCulture);
                         var user = r.GetString(1);
                         var message = r.GetString(2);
@@ -94,6 +99,37 @@ namespace MoistureBot
 
         }
             
+
+        private String getSelectClause( Command command, uint page ) {
+            
+            var isGroup = command.Source == Command.CommandSource.GROUPCHAT;
+            String table, whereClause;
+            if (isGroup)
+            {
+                table = "group_chat";
+                whereClause = " WHERE room_id = " + command.ChatRoomId;
+            }
+            else
+            {
+                table = "friend_chat";
+                whereClause = " WHERE user_id = " + command.SenderId;
+            }
+
+            return
+                "SELECT timestamp, user_persona_name, message from " + table
+                + whereClause
+                + " ORDER BY timestamp DESC"
+                + " LIMIT " + MESSAGE_COUNT
+                + " OFFSET " + (page - 1) * MESSAGE_COUNT;
+            
+        }
+
+        private uint parsePageNum(Command command) {
+            if (command.Arguments.Length == 0)
+                return 1;
+
+            return UInt32.Parse(command.Arguments[0]);
+        }
     }
 }
 
