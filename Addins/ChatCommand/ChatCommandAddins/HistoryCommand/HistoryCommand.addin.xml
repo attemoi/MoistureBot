@@ -11,8 +11,8 @@
     <Extension path = "/MoistureBot/ChatCommand/IChatCommand"> 
         <ChatCommand
             type="MoistureBot.HistoryCommand"
-            commandName="history" 
-            commandDescription="Displays the last 20 urls sent to a chat."
+            commandName="history"
+            commandDescription="Displays the last 20 messages sent to a chat."
             /> 
     </Extension> 
 
