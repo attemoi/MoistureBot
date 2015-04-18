@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using Mono.Data.Sqlite;
+using System.Globalization;
 
 namespace MoistureBot
 {
@@ -45,7 +46,7 @@ namespace MoistureBot
                 using (var cmd = conn.CreateCommand())
                 {
                     var sql = @"
-                        SELECT url from group_chat_urls 
+                        SELECT timestamp, user_persona_name, url from group_chat_urls 
                         ORDER BY timestamp DESC
                         LIMIT 20                      
                     ";
@@ -57,9 +58,13 @@ namespace MoistureBot
                     var r = cmd.ExecuteReader();
 
 
-                    while (r.Read()) 
+                    while (r.Read())
                     {
-                        urls.Add(Convert.ToString(r[0]));
+
+                        var date = DateTime.ParseExact(r.GetString(0), "u", CultureInfo.InvariantCulture);
+                        var user = r.GetString(1);
+                        var url = r.GetString(2);
+                        urls.Add(date.ToString("[yyyy-MM-dd HH:mm:ss] ") + user + ": " + url);
                     }
 
                 }
@@ -73,6 +78,7 @@ namespace MoistureBot
             return urls;
 
         }
+            
     }
 }
 

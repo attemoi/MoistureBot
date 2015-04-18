@@ -130,7 +130,7 @@ namespace MoistureBot
             var personaName = Bot.GetPersonaName(message.ChatterId);
 
             List<SqliteParameter> parameters = new List<SqliteParameter>();
-            var time = DateTimeSQLite(DateTime.Now);
+            String time = formatDateTime(DateTime.Now);
             parameters.Add(new SqliteParameter("@timestamp", time));
             parameters.Add(new SqliteParameter("@message", message.Message));
             parameters.Add(new SqliteParameter("@user_id", message.ChatterId));
@@ -174,7 +174,7 @@ namespace MoistureBot
             var personaName = Bot.GetPersonaName(message.ChatterId);
 
             var parameters = new List<SqliteParameter>();
-            var time = DateTimeSQLite(DateTime.Now);
+            var time = formatDateTime(DateTime.Now);
             parameters.Add(new SqliteParameter("@timestamp", time));
             parameters.Add(new SqliteParameter("@user_id", message.ChatterId));
             parameters.Add(new SqliteParameter("@user_persona_name", personaName));
@@ -235,13 +235,10 @@ namespace MoistureBot
             }
 		
         }
-
-
-
-        private string DateTimeSQLite(DateTime datetime)
+            
+        private string formatDateTime(DateTime datetime)
         {
-            string dateTimeFormat = "{0}-{1}-{2} {3}:{4}:{5}.{6}";
-            return string.Format(dateTimeFormat, datetime.Year, datetime.Month, datetime.Day, datetime.Hour, datetime.Minute, datetime.Second, datetime.Millisecond);
+            return datetime.ToString("u");
         }
 			
     }

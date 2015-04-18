@@ -33,6 +33,7 @@
     <Reference Include="System.Data" />
     <Reference Include="Mono.Data.Sqlite">
       <HintPath>..\..\..\SQLiteChatLogger\3rdParty\Mono.Data.Sqlite.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -48,5 +49,16 @@
   </Target>
   <ItemGroup>
     <EmbeddedResource Include="UrlHistoryCommand.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MoistureBotLib\MoistureBotLib.csproj">
+      <Project>{559877FE-43FB-46A5-897E-978078951010}</Project>
+      <Name>MoistureBotLib</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ChatCommand.csproj">
+      <Project>{8C1DF2EF-3DE3-4814-887E-A0D5E70E8F32}</Project>
+      <Name>ChatCommand</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
