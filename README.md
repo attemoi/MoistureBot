@@ -45,8 +45,10 @@ The project includes the following sample addins:
   - **AutoInviteJoin:** automatically join group chats when invited.
   - **AutoReconnect:** automatically check connection every 10 minutes and reconnect and join favorite rooms if needed.
   - **GameInviteReply:** automatically reply to game lobby invites with random message sequences selected from an xml file.
-  - **SQLiteChatLogger:** log chat messages and urls to SQLite database.
   - **EmbedlyUrlInfo:** reply to video urls with title using [embed.ly](http://embed.ly/) API.
+  - **SQLiteChatLogger:** log chat messages and urls to SQLite database.
+  - **UrlHistoryCommand:** Displays last 20 urls from chat log when user types !urlhistory.
+  - **HistoryCommand:** Displays last 20 messages from chat log when user types !history.
 
 ## License
 
