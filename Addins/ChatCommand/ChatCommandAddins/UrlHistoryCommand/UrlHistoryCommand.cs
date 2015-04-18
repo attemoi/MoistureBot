@@ -47,7 +47,7 @@ namespace MoistureBot
                 {
                     var sql = @"
                         SELECT timestamp, user_persona_name, url from group_chat_urls 
-                        ORDER BY timestamp DESC
+                        ORDER BY timestamp ASC
                         LIMIT 20                      
                     ";
 
