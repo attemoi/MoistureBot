@@ -30,14 +30,14 @@ namespace MoistureBot
         public void Execute(Command command) {
             if (command.Source == Command.CommandSource.GROUPCHAT)
             {
-                var urls = getUrls();
+                var urls = getUrls(command);
                 var message = ".\n" + String.Join("\n", urls);
               
                 Bot.SendChatMessage(message, command.SenderId);
             }
             else
             {
-                Bot.SendChatMessage("This command is only available in group chat.");
+                Bot.SendChatMessage("This command is only available in group chat.", command.SenderId);
             }
         }
 
