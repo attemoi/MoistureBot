@@ -28,16 +28,24 @@ namespace MoistureBot
         }
 
         public void Execute(Command command) {
-            var urls = getUrls();
-            var message = ".\n" + String.Join("\n", urls);
-            Bot.SendChatMessage(message, command.SenderId);
+            if (command.Source == Command.CommandSource.GROUPCHAT)
+            {
+                var urls = getUrls();
+                var message = ".\n" + String.Join("\n", urls);
+              
+                Bot.SendChatMessage(message, command.SenderId);
+            }
+            else
+            {
+                Bot.SendChatMessage("This command is only available in group chat.");
+            }
         }
 
         public void Help(Command command) {
             Bot.SendChatMessage("Displays the last 20 urls sent to a group chat.", command.SenderId);
         }
             
-        private IEnumerable<String> getUrls() {
+        private IEnumerable<String> getUrls(Command command) {
             Logger.Info("Fetching urls...");
             var urls = new List<String>();
             try
@@ -47,6 +55,7 @@ namespace MoistureBot
                 {
                     var sql = @"
                         SELECT timestamp, user_persona_name, url from group_chat_urls 
+                        WHERE room_id = '" + command.ChatRoomId + @"'
                         ORDER BY timestamp ASC
                         LIMIT 20                      
                     ";
