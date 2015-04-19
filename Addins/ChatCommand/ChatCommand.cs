@@ -48,7 +48,7 @@ namespace MoistureBot
                 try
                 {
                     Logger.Info("Chat command received, executing addin.");
-                    if (command.Arguments.Length > 0 && command.Arguments[0].Equals("help"))
+                    if (command.HasArguments() && command.FirstArgument.Equals("help"))
                         ((IChatCommand)commandNode.CreateInstance()).Help(command);
                     else
                         ((IChatCommand)commandNode.CreateInstance()).Execute(command);
@@ -73,9 +73,9 @@ namespace MoistureBot
         private Command parseCommand(String input) {
 
             var command = new Command();
-            var commandParts = input.Split(' ').ToList();
+            var commandParts = input.Split(' ');
             command.Name = commandParts[0].TrimStart('!');
-            command.Arguments = commandParts.Skip(1).ToArray();
+            command.Arguments = commandParts.Skip(1).ToList();
 
             return command;
         }

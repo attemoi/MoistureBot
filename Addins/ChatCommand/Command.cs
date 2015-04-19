@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MoistureBot
 {
@@ -11,7 +12,7 @@ namespace MoistureBot
         }
 
         public String Name { get; set; }
-        public String[] Arguments { get; set; }
+        public List<String> Arguments { get; set; }
         public CommandSource Source { get; set; }
 
         public ulong SenderId { get; set; }
@@ -21,13 +22,19 @@ namespace MoistureBot
         {
         }
 
-        public Command(String name, String[] arguments, CommandSource source, ulong chatterId, ulong chatRoomId)
+        public bool HasArguments()
         {
-            Name = name;
-            Arguments = arguments;
-            Source = source;
-            SenderId = chatterId;
-            ChatRoomId = chatRoomId;
+            return Arguments.Count > 0;
+        }
+
+        public string FirstArgument
+        {   
+            get {
+                if (!HasArguments())
+                    return null;
+            
+                return Arguments[0];
+            }
         }
             
     }

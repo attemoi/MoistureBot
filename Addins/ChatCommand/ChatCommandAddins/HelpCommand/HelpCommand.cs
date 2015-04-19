@@ -14,7 +14,7 @@ namespace MoistureBot
 
         public void Execute(Command command) {
 
-            if (command.Arguments.Length > 0)
+            if (command.Arguments.Count> 0)
             {
                 var commandNode = AddinManager
                     .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IChatCommand")

@@ -38,7 +38,7 @@ namespace MoistureBot
                 {
                     pageNum = parsePageNum(command);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Bot.SendChatMessage("Sorry, the page number seems invalid.", command.SenderId);
                     return;
@@ -120,7 +120,7 @@ namespace MoistureBot
         }
 
         private uint parsePageNum(Command command) {
-            if (command.Arguments.Length == 0)
+            if (!command.HasArguments())
                 return 1;
 
             return UInt32.Parse(command.Arguments[0]);
