@@ -32,6 +32,7 @@
     <Reference Include="Mono.Addins">
       <HintPath>..\..\..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

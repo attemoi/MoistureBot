@@ -40,13 +40,12 @@ namespace MoistureBot
                
         private String getAvailableCommandsMessage() {
 
-            return 
-              "Available commands:\n"
-            + AddinManager
-                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IChatCommand")
-                .Select(c => "    !" + c.CommandName + " - " + c.CommandDescription)
-                .Aggregate((a, b) => a + "\n" + b)
-            + "\n\n    Type '!help <command>' to get help for a single command.";
+            return "Available commands:\n"
+                + String.Join("\n", 
+                    AddinManager
+                        .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IChatCommand")
+                        .Select(c => "    !" + c.CommandName + " - " + c.CommandDescription))
+                + "\n\n    Type '!help <command>' to get help for a single command.";
 
         }
 
