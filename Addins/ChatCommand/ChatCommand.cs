@@ -13,6 +13,7 @@ namespace MoistureBot
     {
 
         private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
 
         const string COMMAND_REGEX = @"^!+.";
 
@@ -44,28 +45,37 @@ namespace MoistureBot
 
             if (commandNode != null)
             {
-                try {
+                try
+                {
                     Logger.Info("Chat command received, executing addin.");
-                    ((IChatCommand)commandNode.CreateInstance()).Execute(command);
-                } catch (Exception e) {
+                    if (command.Arguments.Length > 0 && command.Arguments[0].Equals("help"))
+                        ((IChatCommand)commandNode.CreateInstance()).Help(command);
+                    else
+                        ((IChatCommand)commandNode.CreateInstance()).Execute(command);
+                }
+                catch (Exception e)
+                {
                     Logger.Error("Error while executing chat command.", e);
                 }
+            }
+            else
+            {
+                Bot.SendChatMessage("Command not recognized. Type !help for a list of commands.", command.SenderId);
             }
 
         }
 
         private bool isValidCommand(string message)
         {
-            return Regex.IsMatch(message, COMMAND_REGEX);
+            return message.Equals("help") || Regex.IsMatch(message, COMMAND_REGEX);
         }
 
         private Command parseCommand(String input) {
 
             var command = new Command();
-
             var commandParts = input.Split(' ').ToList();
-            command.Name = commandParts[0].Substring(1);
-            command.Arguments = commandParts.Skip(1).ToArray(); // the arguments is after the command
+            command.Name = commandParts[0].TrimStart('!');
+            command.Arguments = commandParts.Skip(1).ToArray();
 
             return command;
         }
