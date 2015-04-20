@@ -1,0 +1,20 @@
+﻿<Addin id="JokeCommand" version="1.0" isroot="false">
+
+    <Runtime>
+        <Import assembly="JokeCommand.dll" />
+    </Runtime>
+
+    <Dependencies>
+        <Addin id="ChatCommand" version="1.0" />
+    </Dependencies>
+
+    <Extension path = "/MoistureBot/ChatCommand/IChatCommand"> 
+        <ChatCommand
+            type="MoistureBot.JokeCommand"
+            commandName="joke" 
+            commandDescription="Tells a joke."
+            /> 
+    </Extension> 
+
+</Addin>
+
