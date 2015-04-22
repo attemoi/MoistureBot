@@ -1,7 +1,7 @@
 ﻿using System;
 using MoistureBot.Config;
 
-namespace MoistureBot.Steam
+namespace MoistureBot.Model
 {
     public enum OnlineStatus
     {

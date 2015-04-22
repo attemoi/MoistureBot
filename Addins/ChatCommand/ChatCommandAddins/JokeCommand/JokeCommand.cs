@@ -1,10 +1,9 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Threading;
-using MoistureBot;
 using System.Linq;
 
 namespace MoistureBot
@@ -12,18 +11,20 @@ namespace MoistureBot
     public class JokeCommand : IChatCommand
     {
 
-        static Random rnd = new Random();
+        static Random Rnd = new Random();
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        IEnumerable<IEnumerable<String>> Jokes;
 
-        IEnumerable<IEnumerable<String>> jokes;
+        IMoistureBot Bot;
 
-        public JokeCommand()
+        [Provide]
+        public JokeCommand(IContext context)
         {
-            jokes = readJokes();
+            this.Bot = context.GetBot();
+            this.Jokes = ReadJokes();
         }
 
-        private IEnumerable<IEnumerable<string>> readJokes()
+        private IEnumerable<IEnumerable<string>> ReadJokes()
         {
 
             //     Jokes.xml example data:
@@ -55,14 +56,14 @@ namespace MoistureBot
         public void Execute(Command command)
         {
             // Pick random reply and send the messages
-            int i = rnd.Next(jokes.Count());
-            foreach (string message in jokes.ElementAt(i))
+            int i = Rnd.Next(Jokes.Count());
+            foreach (string message in Jokes.ElementAt(i))
             {
                 if (command.Source == Command.CommandSource.FRIEND)
                     Bot.SendChatMessage(message, command.SenderId);
                 else
                     Bot.SendChatRoomMessage(message, command.ChatRoomId);
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
             }
         }
 

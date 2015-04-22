@@ -1,8 +1,8 @@
 ﻿using System;
 using Mono.Addins;
-using MoistureBot.Steam;
+using MoistureBot.Model;
 
-namespace MoistureBot.ExtensionPoints
+namespace MoistureBot
 {
     /// <summary>
     /// Extension point for receiving game lobby invites.

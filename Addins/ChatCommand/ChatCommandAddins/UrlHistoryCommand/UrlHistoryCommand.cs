@@ -1,6 +1,6 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
@@ -12,23 +12,28 @@ namespace MoistureBot
     public class UrlHistoryCommand : IChatCommand
     {
 
+        const int URL_COUNT = 20;
+
+        string ConnectionString;
+
         const string CONFIG_SECTION = "sqlite_chat_logger";
         const string CONFIG_KEY = "database_path";
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        IConfig Config = new MoistureBotFactory().GetConfig();
+        IMoistureBot Bot;
+        ILogger Logger;
+        IConfig Config;
 
-        const int URL_COUNT = 20;
-
-        string connectionString;
-
-        public UrlHistoryCommand()
+        [Provide]
+        public UrlHistoryCommand(IContext context)
         {
-            var dbPath = Config.GetSetting(CONFIG_SECTION, CONFIG_KEY);
-            connectionString = "URI=file:" + dbPath;
-        }
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Config = context.GetConfig();
 
+            var dbPath = Config.GetSetting(CONFIG_SECTION, CONFIG_KEY);
+            ConnectionString = "URI=file:" + dbPath;
+        }
+            
         public void Execute(Command command) {
             if (command.Source == Command.CommandSource.GROUPCHAT)
             {
@@ -76,7 +81,7 @@ namespace MoistureBot
             var urls = new List<String>();
             try
             {
-                using (var conn = (IDbConnection)new SqliteConnection(connectionString))
+                using (var conn = (IDbConnection)new SqliteConnection(ConnectionString))
                 using (var cmd = conn.CreateCommand())
                 {
 

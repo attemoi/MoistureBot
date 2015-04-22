@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoistureBot.Steam
+namespace MoistureBot.Model
 {
     public class GroupChatMessage : FriendChatMessage
     {

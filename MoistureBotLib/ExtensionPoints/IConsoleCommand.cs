@@ -5,7 +5,7 @@ using MoistureBot;
 using Mono.Addins;
 using MoistureBot.ExtensionAttributes;
 
-namespace MoistureBot.ExtensionPoints
+namespace MoistureBot
 {
 
     /// <summary>

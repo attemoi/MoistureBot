@@ -33,25 +33,16 @@
     <Reference Include="Mono.Addins">
       <HintPath>..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="SteamKit2">
       <HintPath>..\packages\SteamKit2.1.6.2\lib\net40\SteamKit2.dll</HintPath>
     </Reference>
-    <Reference Include="INIFileParser">
-      <HintPath>..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ExtensionPoints\IMoistureBot.cs" />
-    <Compile Include="ExtensionPoints\IConfig.cs" />
-    <Compile Include="ExtensionPoints\ILogger.cs" />
     <Compile Include="ExtensionPoints\IConsoleCommand.cs" />
     <Compile Include="ExtensionPoints\IReceiveGroupChatMessages.cs" />
     <Compile Include="ExtensionPoints\IReceiveFriendGroupChatInvites.cs" />
@@ -65,33 +56,32 @@
     <Compile Include="Config\StringAttribute.cs" />
     <Compile Include="Config\DefaultValueAttribute.cs" />
     <Compile Include="ExtensionAttributes\ConsoleCommandAttribute.cs" />
-    <Compile Include="Steam\OnlineStatus.cs" />
-    <Compile Include="Steam\GroupChatMessage.cs" />
-    <Compile Include="Steam\FriendChatMessage.cs" />
-    <Compile Include="Steam\Favorite.cs" />
-    <Compile Include="Steam\Invite.cs" />
     <Compile Include="Utils\ConsoleMessage.cs" />
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Config\ConfigUtils.cs" />
     <Compile Include="ExtensionPoints\IStartupCommand.cs" />
+    <Compile Include="IConfig.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IMoistureBot.cs" />
+    <Compile Include="Model\OnlineStatus.cs" />
+    <Compile Include="Model\GroupChatMessage.cs" />
+    <Compile Include="Model\FriendChatMessage.cs" />
+    <Compile Include="Model\Favorite.cs" />
+    <Compile Include="Model\Invite.cs" />
+    <Compile Include="ProvideAttribute.cs" />
+    <Compile Include="IContext.cs" />
     <Compile Include="Mono.Options\Options.cs" />
-    <Compile Include="MoistureBotLogger.cs" />
-    <Compile Include="MoistureBotCore.cs" />
-    <Compile Include="MoistureBotConfig.cs" />
-    <Compile Include="MoistureBotFactory.cs" />
-    <Compile Include="AddinInvoker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="MoistureBotLib.csproj" />
-    <None Include="LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
     <Folder Include="Config\" />
     <Folder Include="ExtensionAttributes\" />
-    <Folder Include="Steam\" />
     <Folder Include="Utils\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' " />

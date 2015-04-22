@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Options;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 
 namespace MoistureBot.ConsoleCommands
 {
@@ -14,14 +14,23 @@ namespace MoistureBot.ConsoleCommands
 	public class LaunchCommand
 	{
 
-        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IMoistureBot Bot;
+        private ILogger Logger;
+        private IConfig Config;
 
 		private bool connect;
 		private bool help;
 		private bool joinFavs;
 		private string user;
 		private string pass;
+
+        [Provide]
+        public LaunchCommand(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(typeof(ExitCommand));
+            this.Config = context.GetConfig();
+        }
 
 		public OptionSet Options
 		{
@@ -89,7 +98,7 @@ namespace MoistureBot.ConsoleCommands
 
 			if (joinFavs)
 			{
-				foreach (KeyValuePair<string, ulong> fav in new MoistureBotConfig().GetFavoriteChatRooms())
+				foreach (KeyValuePair<string, ulong> fav in Config.GetFavoriteChatRooms())
 				{
 					Console.WriteLine("Joining chat room '" + fav.Key + "' [" + fav.Value + "]");
 					Bot.JoinChatRoom(fav.Value);

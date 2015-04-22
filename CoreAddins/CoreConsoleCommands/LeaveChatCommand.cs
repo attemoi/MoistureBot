@@ -3,7 +3,7 @@ using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
@@ -22,9 +22,17 @@ namespace MoistureBot.ConsoleCommands
     public class LeaveChatCommand : IConsoleCommand
     {
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        IConfig Config = new MoistureBotFactory().GetConfig();
+        IMoistureBot Bot;
+        ILogger Logger;
+        IConfig Config;
+
+        [Provide]
+        public LeaveChatCommand(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Config = context.GetConfig();
+        }
 
         public Boolean favorites;
 

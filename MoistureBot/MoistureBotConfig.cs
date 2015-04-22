@@ -4,19 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.Config;
-using MoistureBot.Steam;
+using MoistureBot.Model;
 using IniParser;
 using IniParser.Model;
 
 namespace MoistureBot
 {
 
-    public class MoistureBotConfig : IConfig
+    internal class MoistureBotConfig : IConfig
     {
 
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private ILogger Logger;
 
         private static string SECTION_FAVORITE_USERS = "favorite_users";
         private static string SECTION_FAVORITE_ROOMS = "favorite_rooms";
@@ -26,9 +26,9 @@ namespace MoistureBot
 
         private static readonly object iniLock = new object();
 
-        public MoistureBotConfig()
+        public MoistureBotConfig(IContext context)
         {
-
+            Logger = context.GetLogger(typeof(MoistureBotConfig));
         }
 
         private FileIniDataParser getParser()

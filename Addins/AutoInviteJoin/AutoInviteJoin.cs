@@ -1,6 +1,6 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 
 namespace MoistureBot
 {
@@ -8,8 +8,15 @@ namespace MoistureBot
 		: IReceiveCommunityGroupChatInvites, IReceiveFriendGroupChatInvites
     {
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IMoistureBot Bot;
+        ILogger Logger;
+
+        [Provide]
+        public AutoInviteJoin(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
 
         public void InviteReceived(FriendGroupChatInvite invite)
         {

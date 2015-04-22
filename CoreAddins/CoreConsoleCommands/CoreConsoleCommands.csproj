@@ -32,6 +32,9 @@
       <HintPath>..\..\packages\Mono.Addins.1.1\lib\Mono.Addins.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="INIFileParser">
+      <HintPath>..\..\packages\ini-parser.2.1.1\lib\INIFileParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectCommand.cs" />
@@ -49,6 +52,7 @@
   <ItemGroup>
     <None Include="Properties\AssemblyInfo.cs" />
     <None Include="packages.config" />
+    <None Include="LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoistureBotLib\MoistureBotLib.csproj">

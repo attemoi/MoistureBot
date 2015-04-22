@@ -1,6 +1,6 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using Mono.Addins;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -12,8 +12,17 @@ namespace MoistureBot
     public class ChatCommand : IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
 
-        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IMoistureBot Bot;
+        private ILogger Logger;
+        private IContext Context;
+
+        [Provide]
+        public ChatCommand(IContext context)
+        {
+            this.Context = context;
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
 
         const string COMMAND_REGEX = @"^!+.";
 
@@ -49,9 +58,9 @@ namespace MoistureBot
                 {
                     Logger.Info("Chat command received, executing addin.");
                     if (command.HasArguments() && command.FirstArgument.Equals("help"))
-                        ((IChatCommand)commandNode.CreateInstance()).Help(command);
+                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Help(command);
                     else
-                        ((IChatCommand)commandNode.CreateInstance()).Execute(command);
+                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Execute(command);
                 }
                 catch (Exception e)
                 {

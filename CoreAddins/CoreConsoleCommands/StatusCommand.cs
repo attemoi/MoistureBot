@@ -3,7 +3,7 @@ using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 using MoistureBot.Config;
 
@@ -19,8 +19,15 @@ namespace MoistureBot.ConsoleCommands
     public class StatusCommand : IConsoleCommand
     {
     
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IMoistureBot Bot;
+        ILogger Logger;
+
+        [Provide]
+        public StatusCommand(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
 
         private bool showAddins;
 

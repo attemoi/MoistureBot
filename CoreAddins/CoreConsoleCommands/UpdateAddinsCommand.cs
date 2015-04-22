@@ -2,7 +2,7 @@
 using Mono.Options;
 using Mono.Addins;
 using System.Linq;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 using MoistureBot.Config;
@@ -20,7 +20,13 @@ namespace MoistureBot.ConsoleCommands
     public class UpdateAddinsCommand : IConsoleCommand
     {
 	
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        ILogger Logger;
+
+        [Provide]
+        public UpdateAddinsCommand(IContext context)
+        {
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
 
         public OptionSet Options {
             get

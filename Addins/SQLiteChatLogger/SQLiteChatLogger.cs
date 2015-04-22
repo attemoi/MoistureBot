@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Linq;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
@@ -19,14 +19,19 @@ namespace MoistureBot
         const string URL_REGEX = @"\b(?:https?://|www\.)\S+\b";
 
         string connectionString;
+         
+        IMoistureBot Bot;
+        ILogger Logger;
+        IConfig Config;
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private IConfig Config = new MoistureBotFactory().GetConfig();
-
-        public SQLiteChatLogger()
+        [Provide]
+        public SQLiteChatLogger(IContext context)
         {
 		
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Config = context.GetConfig();
+
             var dbPath = Config.GetSetting(CONFIG_SECTION, CONFIG_KEY);
 
             if (String.IsNullOrEmpty(dbPath))

@@ -7,20 +7,20 @@ using Mono.Addins;
 using System.Threading;
 using System.Collections.Generic;
 using System.Reflection;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using MoistureBot.Config;
 
 namespace MoistureBot
 {
 
-    public class MoistureBotCore : IMoistureBot
+    internal class MoistureBotCore : IMoistureBot
     {
 	
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private IConfig Config = new MoistureBotFactory().GetConfig();
+        private ILogger Logger;
+        private IConfig Config;
 
-        private AddinInvoker addinHandler;
+        private IContext context;
 	
         private volatile bool terminated;
 
@@ -35,10 +35,12 @@ namespace MoistureBot
         private string user;
         private string pass;
 
-        public MoistureBotCore()
+        public MoistureBotCore(IContext context)
         {
 
-            addinHandler = new AddinInvoker(Logger);
+            this.context = context;
+            Logger = context.GetLogger(typeof(MoistureBotCore));
+            Config = context.GetConfig();
 
             // create our steamclient instance
             steamClient = new SteamClient();
@@ -335,8 +337,8 @@ namespace MoistureBot
             {
                 case EChatEntryType.ChatMsg:
 
-                    addinHandler.invoke<IReceiveGroupChatMessages>(
-                        (addin) => addin.MessageReceived(new GroupChatMessage(message, chatterId, chatId))
+                    context.InvokeAddins<IReceiveGroupChatMessages>(
+                        addin => addin.MessageReceived(new GroupChatMessage(message, chatterId, chatId))
                     );
 
                     break;
@@ -374,7 +376,7 @@ namespace MoistureBot
                 case EChatEntryType.ChatMsg:
                     Logger.Info("Received message from " + chatterId + ": " + message);
 
-                    addinHandler.invoke<IReceiveFriendChatMessages>(
+                    context.InvokeAddins<IReceiveFriendChatMessages>(
                         (addin) => addin.MessageReceived(new FriendChatMessage(message, chatterId))
                     );
 
@@ -411,7 +413,7 @@ namespace MoistureBot
 
 
 
-                        addinHandler.invoke<IReceiveFriendGroupChatInvites>(
+                        context.InvokeAddins<IReceiveFriendGroupChatInvites>(
                             (addin) => addin.InviteReceived(friendInvite)
                         );
 
@@ -424,7 +426,7 @@ namespace MoistureBot
                                                   callback.PatronID.ConvertToUInt64()
                                               );
 
-                        addinHandler.invoke<IReceiveCommunityGroupChatInvites>(
+                        context.InvokeAddins<IReceiveCommunityGroupChatInvites>(
                             (addin) => addin.InviteReceived(communityInvite)
                         );
 
@@ -439,7 +441,7 @@ namespace MoistureBot
                                          callback.GameID.ToUInt64()
                                      );
 
-                    addinHandler.invoke<IReceiveGameLobbyInvites>(
+                    context.InvokeAddins<IReceiveGameLobbyInvites>(
                         (addin) => addin.InviteReceived(gameInvite)
                     );
 
@@ -572,7 +574,7 @@ namespace MoistureBot
                     break;
             }
 
-            new MoistureBotConfig().SetSetting(
+            Config.SetSetting(
                 ConfigSetting.STATUS,
                 ConfigUtils.GetValue<StringAttribute>(status));
         }

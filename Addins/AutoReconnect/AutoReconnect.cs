@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Linq;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using System.Threading;
 using System.Collections.Generic;
 
@@ -12,9 +12,17 @@ namespace MoistureBot
     public class AutoReconnect : IStartupCommand
     {
 
-        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private IConfig Config = new MoistureBotFactory().GetConfig();
+        IMoistureBot Bot;
+        ILogger Logger;
+        IConfig Config;
+
+        [Provide]
+        public AutoReconnect(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Config = context.GetConfig();
+        }
 
         #pragma warning disable 414
         private Timer Timer;
@@ -23,7 +31,6 @@ namespace MoistureBot
         public void ProgramStarted()
         {
             Logger.Info("Creating timer for auto reconnect.");
-
             Timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
         }
 

@@ -1,43 +1,43 @@
 ﻿using System;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 
 namespace MoistureBot
 {
 
-    public class MoistureBotLogger : ILogger
+    internal class MoistureBotLogger : ILogger
     {
-        private log4net.ILog log;
+        private log4net.ILog Log;
 
         public MoistureBotLogger(Type type) {
-            this.log = log4net.LogManager.GetLogger(type /*System.Reflection.MethodBase.GetCurrentMethod().DeclaringType*/);
+            this.Log = log4net.LogManager.GetLogger(type /*System.Reflection.MethodBase.GetCurrentMethod().DeclaringType*/);
         }
 	
         #region ILogger implementation
 
         public void Debug(string message)
         {
-            log.Debug(message);
+            Log.Debug(message);
         }
 
         public void Info(string message)
         {
-            log.Info(message);
+            Log.Info(message);
         }
 
         public void Warn(string message)
         {
-            log.Warn(message);
+            Log.Warn(message);
         }
 
         public void Error(string message, Exception e)
         {
-            log.Error(message, e);
+            Log.Error(message, e);
         }
 
         public void Fatal(string message)
         {
-            log.Fatal(message);
+            Log.Fatal(message);
         }
 
         #endregion

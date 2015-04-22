@@ -1,6 +1,6 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
@@ -17,16 +17,21 @@ namespace MoistureBot
 
         const int MESSAGE_COUNT = 20;
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private IConfig Config = new MoistureBotFactory().GetConfig();
+        string ConnectionString;
+        
+        IMoistureBot Bot;
+        ILogger Logger;
+        IConfig Config;
 
-        string connectionString;
-
-        public HistoryCommand()
+        [Provide]
+        public HistoryCommand(IContext context)
         {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Config = context.GetConfig();
+
             var dbPath = Config.GetSetting(CONFIG_SECTION, CONFIG_KEY);
-            connectionString = "URI=file:" + dbPath;
+            ConnectionString = "URI=file:" + dbPath;
         }
 
         public void Execute(Command command) {
@@ -67,7 +72,7 @@ namespace MoistureBot
             var messages = new List<String>();
             try
             {
-                using (var conn = (IDbConnection)new SqliteConnection(connectionString))
+                using (var conn = (IDbConnection)new SqliteConnection(ConnectionString))
                 using (var cmd = conn.CreateCommand())
                 {
                                           

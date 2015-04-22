@@ -3,7 +3,7 @@ using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 
 namespace MoistureBot.ConsoleCommands
@@ -18,10 +18,16 @@ namespace MoistureBot.ConsoleCommands
     )]
     public class HelpCommand : IConsoleCommand
     {
-    
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private ILogger Logger;
 
         public string command;
+
+        [Provide]
+        public HelpCommand(IContext context)
+        {
+            this.Logger = context.GetLogger(typeof(ExitCommand));
+        }
 
         public OptionSet Options {
             get { return new OptionSet(); }

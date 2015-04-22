@@ -1,8 +1,8 @@
 ﻿using System;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using System.Text.RegularExpressions;
-using MoistureBot.Steam;
+using MoistureBot.Model;
 
 namespace MoistureBot
 {
@@ -10,9 +10,15 @@ namespace MoistureBot
     public class UrlInfo : IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IMoistureBot Bot;
+        IContext Context;
 
+        [Provide]
+        public UrlInfo(IContext context)
+        {
+            this.Context = context;
+            this.Bot = context.GetBot();
+        }
         const string URL_REGEX = @"\b(?:https?://|www\.)\S+\b";
 
         public void MessageReceived(FriendChatMessage message)
@@ -44,17 +50,7 @@ namespace MoistureBot
             {
                 Uri uri = new Uri(m.Value);
 
-                foreach (IReceiveUrl addin in AddinManager.GetExtensionObjects<IReceiveUrl> ("MoistureBot/UrlInfo/IReceiveUrl"))
-                {
-                    try
-                    {
-                        return addin.ReplyToUrl(uri);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error("Error in UrlInfo extension.", e);
-                    }
-                }
+                Context.InvokeAddins<IReceiveUrl>("MoistureBot/UrlInfo/IReceiveUrl", addin => addin.ReplyToUrl(uri));
 
             }
 

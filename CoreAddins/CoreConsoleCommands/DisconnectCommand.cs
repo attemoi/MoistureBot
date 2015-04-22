@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
 using MoistureBot.ExtensionAttributes;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
@@ -20,8 +20,15 @@ namespace MoistureBot.ConsoleCommands
     public class DisconnectCommand : IConsoleCommand
     {
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IMoistureBot Bot;
+        ILogger Logger;
+
+        [Provide]
+        public DisconnectCommand(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
 
         public OptionSet Options {
             get { return new OptionSet(); }
@@ -30,7 +37,6 @@ namespace MoistureBot.ConsoleCommands
         public bool Execute(string[] args)
         {
             Logger.Info("Executing command...");
-
             List<string> extra = Options.Parse(args);
 
             if (extra.Count > 0)

@@ -1,6 +1,6 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using Mono.Addins;
 using System.Linq;
 
@@ -9,8 +9,15 @@ namespace MoistureBot
     public class HelpCommand : IChatCommand
     {
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IMoistureBot Bot;
+        private ILogger Logger;
+
+        [Provide]
+        public HelpCommand(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        }
 
         public void Execute(Command command) {
 

@@ -3,7 +3,7 @@ using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
@@ -23,8 +23,15 @@ namespace MoistureBot.ConsoleCommands
     public class FavoritesCommand : IConsoleCommand
     {
       
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        IConfig Config = new MoistureBotFactory().GetConfig();
+        ILogger Logger;
+        IConfig Config;
+
+        [Provide]
+        public FavoritesCommand(IContext context)
+        {
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Config = context.GetConfig();
+        }
 
         private bool list;
 

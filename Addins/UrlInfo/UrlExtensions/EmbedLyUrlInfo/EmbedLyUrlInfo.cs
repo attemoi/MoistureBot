@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Net;
 using System.Collections.Specialized;
-using MoistureBot.ExtensionPoints;
 using MoistureBot;
 using Json;
 using System.Web;
@@ -14,9 +13,13 @@ namespace MoistureBot
     public class EmbedLyUrlInfo: IReceiveUrl
     {
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        IConfig Config = new MoistureBotFactory().GetConfig();
+        IConfig Config;
+
+        [Provide]
+        public EmbedLyUrlInfo(IContext context)
+        {
+            this.Config = context.GetConfig();
+        }
 
         protected String apiKey = null;
 

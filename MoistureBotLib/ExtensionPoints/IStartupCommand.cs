@@ -1,10 +1,10 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace MoistureBot.ExtensionPoints
+namespace MoistureBot
 {
     /// <summary>
-    /// Extension point for initializing addins during on program startup.
+    /// Extension point for initializing addins on program startup.
     /// </summary>
     [TypeExtensionPoint("/MoistureBot/IStartupCommand")]
     public interface IStartupCommand

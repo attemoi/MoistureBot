@@ -49,11 +49,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="ConsoleCommands\HelpCommand.cs" />
     <Compile Include="ConsoleCommands\LaunchCommand.cs" />
     <Compile Include="ConsoleCommands\ExitCommand.cs" />
     <Compile Include="AddinUtils.cs" />
+    <Compile Include="MoistureBotConfig.cs" />
+    <Compile Include="MoistureBotCore.cs" />
+    <Compile Include="MoistureBotLogger.cs" />
+    <Compile Include="MoistureBotContext.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -12,28 +12,33 @@ namespace MoistureBot
 
     public class Moikkaaja: IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
+        
+        Dictionary<String, String> ReplyDict;
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IMoistureBot Bot;
+        ILogger Logger;
 
-        Dictionary<String, String> replyDict;
-
-        public Moikkaaja()
+        [Provide]
+        public Moikkaaja(IContext context)
         {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             // Convert greetings to a dictionary with a stripped lowercase string as the key.
-            replyDict = readGreetings()
-				.Select((str) => new { 
-					Value = str, 
-					Key = stripMessage(str)
-				})
-				.GroupBy(e => e.Key) // This is needed to handle duplicates
-				.ToDictionary(
+            ReplyDict = readGreetings()
+                .Select((str) => new { 
+                    Value = str, 
+                    Key = stripMessage(str)
+                })
+                .GroupBy(e => e.Key) // This is needed to handle duplicates
+                .ToDictionary(
                     x => x.First().Key,
                     x => x.First().Value
                 );
-
         }
+
+       
+
 
         public void MessageReceived(GroupChatMessage message)
         {
@@ -53,7 +58,7 @@ namespace MoistureBot
         {
             string key = stripMessage(message.Message);
             string reply;
-            if (replyDict.TryGetValue(key, out reply))
+            if (ReplyDict.TryGetValue(key, out reply))
             {
                 Logger.Info("Moikkaaja: Greeting received, replying");
                 reply += " " + Bot.GetPersonaName(message.ChatterId) + "!";

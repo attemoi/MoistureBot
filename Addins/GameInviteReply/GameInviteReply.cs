@@ -1,6 +1,6 @@
 ﻿using System;
-using MoistureBot.ExtensionPoints;
-using MoistureBot.Steam;
+using MoistureBot;
+using MoistureBot.Model;
 using System.Xml;
 using System.Xml.Linq;
 using System.Collections.Generic;
@@ -16,16 +16,18 @@ namespace MoistureBot
 
         static Random rnd = new Random();
 
-        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        IMoistureBot Bot;
 
-        IEnumerable<IEnumerable<String>> replies;
-
-        public GameInviteReply()
+        [Provide]
+        public GameInviteReply(IContext context)
         {
-            replies = readReplies();
+            this.Bot = context.GetBot();
+            Replies = ReadReplies();  
         }
 
-        private IEnumerable<IEnumerable<string>> readReplies()
+        IEnumerable<IEnumerable<String>> Replies;  
+
+        private IEnumerable<IEnumerable<string>> ReadReplies()
         {
 
             //     GameInviteReply.xml example data:
@@ -58,8 +60,8 @@ namespace MoistureBot
         {
 		
             // Pick random reply and send the messages
-            int i = rnd.Next(replies.Count());
-            foreach (string message in replies.ElementAt(i))
+            int i = rnd.Next(Replies.Count());
+            foreach (string message in Replies.ElementAt(i))
             {
                 Bot.SendChatMessage(message, invite.InviterId);
                 Thread.Sleep(1000);

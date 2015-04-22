@@ -1,6 +1,6 @@
 ﻿using System;
 using Mono.Addins;
-using MoistureBot.Steam;
+using MoistureBot.Model;
 
 namespace MoistureBot
 {

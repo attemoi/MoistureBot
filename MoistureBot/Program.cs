@@ -10,9 +10,10 @@ using Mono.Options;
 using System.Threading;
 using System.Linq;
 using MoistureBot.ConsoleCommands;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 using System.Collections;
+using System.Runtime.Serialization;
 
 [assembly:AddinRoot("MoistureBot", "1.0")]
 [assembly:AddinAuthor("Atte Moisio")]
@@ -21,48 +22,49 @@ using System.Collections;
 [assembly:AddinUrl("")]
 [assembly:ImportAddinAssembly("MoistureBotLib.dll")]
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 namespace MoistureBot
 {
 
 	static class Program
 	{
 
-        public static ILogger Logger;
-		public static IMoistureBot Bot;
-		public static IConfig Config;
+        private static ILogger Logger;
+        private static IConfig Config;
+        private static IMoistureBot Bot;
 
-		public static AddinInvoker addinInvoker;
+        private static IContext Context;
 
 		static void Run(string[] args)
 		{
 
-            Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            Config = new MoistureBotFactory().GetConfig();
-            Bot = new MoistureBotFactory().GetBot();
+            Context = new MoistureBotContext();
 
-			initializeAddinManager();
+            Logger = Context.GetLogger(typeof(Program));
+            Config = Context.GetConfig();
+            Bot = Context.GetBot();
 
-			addinInvoker = new AddinInvoker(Logger);
+			InitializeAddinManager();
 
 			Console.WriteLine();
-
 			var version = AddinUtils.getAddinRoot("MoistureBot").Version;
 			Console.WriteLine("Moisturebot " + version);
 
 			if (!Config.ConfigExists())
 				Config.CreateConfig();
 				
-			if (new LaunchCommand().Execute(args))
+            if (new LaunchCommand(Context).Execute(args))
 				return; 
 
 			// Call addins extending IStartupCommand
-			addinInvoker.invoke<IStartupCommand>((addin) => addin.ProgramStarted());
+            Context.InvokeAddins<IStartupCommand>(addin => addin.ProgramStarted());
 
 			HandleConsoleInput();
 
 		}
 
-		private static void initializeAddinManager() {
+		private static void InitializeAddinManager() {
 
             AddinManager.AddinLoadError += (sender, args) => Logger.Error("Failed to load addin (" + args.Message + ")",args.Exception);
             AddinManager.AddinLoaded += (sender, args) => Logger.Info("Add-in loaded: " + args.AddinId);
@@ -70,7 +72,6 @@ namespace MoistureBot
 
 			AddinManager.Initialize(".",".","./addins");
 			AddinManager.Registry.Update();
-
 			// This needs to be called after Initialize
 			AddinManager.ExtensionChanged += (sender, args) => Logger.Info("Extension changed (" + args.Path + ").");
 
@@ -91,19 +92,22 @@ namespace MoistureBot
 				{
 
 					Logger.Info("Parsing command '" + input + "'");
-
 					// Parse your string and create Command object
 					var commandParts = input.Split(' ').ToList();
 					var commandName = commandParts[0];
 					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
-                    var command = AddinManager
+
+                    var commandNode = AddinManager
 						.GetExtensionNodes<TypeExtensionNode<ConsoleCommandAttribute>>(typeof(IConsoleCommand))
 						.FirstOrDefault((node) => node.Data.Name.Equals(commandName));
 
-					if (command != null)
+                    if (commandNode != null)
 					{
 						try {
-							exit = ((IConsoleCommand)command.CreateInstance()).Execute(args);
+                            
+                            IConsoleCommand command = Context.GetInstanceWithContext<IConsoleCommand>(commandNode.Type);
+                            exit = command.Execute(args);
+
 						} catch (Exception e) {
 							Console.WriteLine("Error while executing command!");
 							Console.WriteLine("Message: " + e.Message);

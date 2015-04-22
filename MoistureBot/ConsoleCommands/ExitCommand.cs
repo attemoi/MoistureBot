@@ -4,7 +4,7 @@ using Mono.Options;
 using Mono.Addins;
 using System.Linq;
 using System.Collections.Generic;
-using MoistureBot.ExtensionPoints;
+using MoistureBot;
 using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
@@ -21,8 +21,15 @@ namespace MoistureBot.ConsoleCommands
     public class ExitCommand : IConsoleCommand
     {
 	
-        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
-        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IMoistureBot Bot;
+        private ILogger Logger;
+
+        [Provide]
+        public ExitCommand(IContext context)
+        {
+            this.Bot = context.GetBot();
+            this.Logger = context.GetLogger(typeof(ExitCommand));
+        }
 
         public OptionSet Options {
             get { return new OptionSet(); }
