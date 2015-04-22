@@ -24,7 +24,7 @@ namespace MoistureBot
 
         public void invoke<AddinType>(string path, Action<AddinType> onNext)
         {
-            foreach (AddinType addin in AddinManager.GetExtensionObjects<AddinType>(path))
+            foreach (AddinType addin in AddinManager.GetExtensionObjects<AddinType>(path, true))
             {
                 try
                 {

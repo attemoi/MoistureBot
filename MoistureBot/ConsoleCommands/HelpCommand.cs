@@ -19,7 +19,7 @@ namespace MoistureBot.ConsoleCommands
     public class HelpCommand : IConsoleCommand
     {
     
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public string command;
 

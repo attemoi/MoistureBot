@@ -19,8 +19,8 @@ namespace MoistureBot.ConsoleCommands
     public class StatusCommand : IConsoleCommand
     {
     
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private bool showAddins;
 

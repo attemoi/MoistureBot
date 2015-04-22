@@ -12,8 +12,8 @@ namespace MoistureBot
     public class ChatCommand : IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
 
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         const string COMMAND_REGEX = @"^!+.";
 

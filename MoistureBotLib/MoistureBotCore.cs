@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using Mono.Addins;
 using System.Threading;
 using System.Collections.Generic;
-using IniParser.Model;
 using System.Reflection;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Steam;
@@ -15,12 +14,11 @@ using MoistureBot.Config;
 namespace MoistureBot
 {
 
-    [Extension(typeof(IMoistureBot))]
     public class MoistureBotCore : IMoistureBot
     {
 	
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IConfig Config = new MoistureBotFactory().GetConfig();
 
         private AddinInvoker addinHandler;
 	

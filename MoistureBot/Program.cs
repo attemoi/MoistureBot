@@ -21,15 +21,13 @@ using System.Collections;
 [assembly:AddinUrl("")]
 [assembly:ImportAddinAssembly("MoistureBotLib.dll")]
 
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-
 namespace MoistureBot
 {
 
 	static class Program
 	{
 
-		public static ILogger Logger;
+        public static ILogger Logger;
 		public static IMoistureBot Bot;
 		public static IConfig Config;
 
@@ -38,11 +36,11 @@ namespace MoistureBot
 		static void Run(string[] args)
 		{
 
-			initializeAddinManager();
+            Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            Config = new MoistureBotFactory().GetConfig();
+            Bot = new MoistureBotFactory().GetBot();
 
-			Logger = MoistureBotComponentProvider.GetLogger();
-			Config = MoistureBotComponentProvider.GetConfig();
-			Bot = MoistureBotComponentProvider.GetBot();
+			initializeAddinManager();
 
 			addinInvoker = new AddinInvoker(Logger);
 

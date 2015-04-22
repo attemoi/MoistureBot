@@ -20,7 +20,7 @@ namespace MoistureBot.ConsoleCommands
     public class UpdateAddinsCommand : IConsoleCommand
     {
 	
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public OptionSet Options {
             get

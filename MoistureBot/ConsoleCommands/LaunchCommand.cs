@@ -14,8 +14,8 @@ namespace MoistureBot.ConsoleCommands
 	public class LaunchCommand
 	{
 
-		private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-		private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private bool connect;
 		private bool help;

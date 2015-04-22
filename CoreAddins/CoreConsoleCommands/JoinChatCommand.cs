@@ -22,9 +22,9 @@ namespace MoistureBot.ConsoleCommands
     public class JoinChatCommand : IConsoleCommand
     {
 
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IConfig Config = new MoistureBotFactory().GetConfig();
 
         public Boolean favorites;
 

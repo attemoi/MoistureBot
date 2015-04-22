@@ -22,9 +22,9 @@ namespace MoistureBot.ConsoleCommands
     )]
     public class FavoritesCommand : IConsoleCommand
     {
-
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+      
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IConfig Config = new MoistureBotFactory().GetConfig();
 
         private bool list;
 

@@ -13,8 +13,8 @@ namespace MoistureBot
     public class Moikkaaja: IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
 
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         Dictionary<String, String> replyDict;
 

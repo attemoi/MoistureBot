@@ -20,9 +20,9 @@ namespace MoistureBot
 
         string connectionString;
 
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IConfig Config = new MoistureBotFactory().GetConfig();
 
         public SQLiteChatLogger()
         {

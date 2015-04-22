@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using IniParser;
-using IniParser.Model;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,15 +7,16 @@ using Mono.Addins;
 using MoistureBot.ExtensionPoints;
 using MoistureBot.Config;
 using MoistureBot.Steam;
+using IniParser;
+using IniParser.Model;
 
 namespace MoistureBot
 {
 
-    [Extension(typeof(IConfig))]
     public class MoistureBotConfig : IConfig
     {
 
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private static string SECTION_FAVORITE_USERS = "favorite_users";
         private static string SECTION_FAVORITE_ROOMS = "favorite_rooms";

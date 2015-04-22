@@ -8,8 +8,8 @@ namespace MoistureBot
 		: IReceiveCommunityGroupChatInvites, IReceiveFriendGroupChatInvites
     {
 
-        IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void InviteReceived(FriendGroupChatInvite invite)
         {

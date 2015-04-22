@@ -20,8 +20,8 @@ namespace MoistureBot.ConsoleCommands
     public class DisconnectCommand : IConsoleCommand
     {
 
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public OptionSet Options {
             get { return new OptionSet(); }

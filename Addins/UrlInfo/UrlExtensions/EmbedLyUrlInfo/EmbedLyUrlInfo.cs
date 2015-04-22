@@ -14,7 +14,10 @@ namespace MoistureBot
     public class EmbedLyUrlInfo: IReceiveUrl
     {
 
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IConfig Config = new MoistureBotFactory().GetConfig();
+
         protected String apiKey = null;
 
         #region IReceiveUrl implementation

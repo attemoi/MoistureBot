@@ -2,15 +2,17 @@
 using Mono.Addins;
 using MoistureBot.ExtensionPoints;
 
-namespace MoistureBot.Logging
+namespace MoistureBot
 {
 
-    [Extension(Type = typeof(ILogger))]
     public class MoistureBotLogger : ILogger
     {
-	
-        private log4net.ILog log = log4net.LogManager.GetLogger("MoistureBot" /*System.Reflection.MethodBase.GetCurrentMethod().DeclaringType*/);
+        private log4net.ILog log;
 
+        public MoistureBotLogger(Type type) {
+            this.log = log4net.LogManager.GetLogger(type /*System.Reflection.MethodBase.GetCurrentMethod().DeclaringType*/);
+        }
+	
         #region ILogger implementation
 
         public void Debug(string message)

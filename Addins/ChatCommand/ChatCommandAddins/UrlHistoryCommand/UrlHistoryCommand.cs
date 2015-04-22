@@ -15,9 +15,9 @@ namespace MoistureBot
         const string CONFIG_SECTION = "sqlite_chat_logger";
         const string CONFIG_KEY = "database_path";
 
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        IConfig Config = new MoistureBotFactory().GetConfig();
 
         const int URL_COUNT = 20;
 

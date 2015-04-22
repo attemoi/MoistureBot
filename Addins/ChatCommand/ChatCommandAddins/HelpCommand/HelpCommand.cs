@@ -9,8 +9,8 @@ namespace MoistureBot
     public class HelpCommand : IChatCommand
     {
 
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void Execute(Command command) {
 

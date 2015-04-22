@@ -12,9 +12,9 @@ namespace MoistureBot
     public class AutoReconnect : IStartupCommand
     {
 
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
-        private IConfig Config = MoistureBotComponentProvider.GetConfig();
+        private IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        private ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IConfig Config = new MoistureBotFactory().GetConfig();
 
         #pragma warning disable 414
         private Timer Timer;

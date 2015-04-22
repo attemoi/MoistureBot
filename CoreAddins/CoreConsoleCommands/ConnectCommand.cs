@@ -20,8 +20,8 @@ namespace MoistureBot.ConsoleCommands
     public class ConnectCommand : IConsoleCommand
     {
 	
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public OptionSet Options {
             get

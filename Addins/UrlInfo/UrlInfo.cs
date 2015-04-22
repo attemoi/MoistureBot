@@ -10,8 +10,8 @@ namespace MoistureBot
     public class UrlInfo : IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
 
-        private IMoistureBot Bot = MoistureBotComponentProvider.GetBot();
-        private ILogger Logger = MoistureBotComponentProvider.GetLogger();
+        IMoistureBot Bot = new MoistureBotFactory().GetBot();
+        ILogger Logger = new MoistureBotFactory().GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         const string URL_REGEX = @"\b(?:https?://|www\.)\S+\b";
 
