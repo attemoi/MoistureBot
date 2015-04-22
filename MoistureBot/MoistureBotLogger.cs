@@ -5,7 +5,7 @@ using MoistureBot;
 namespace MoistureBot
 {
 
-    internal class MoistureBotLogger : ILogger
+    public class MoistureBotLogger : ILogger
     {
         private log4net.ILog Log;
 

@@ -48,29 +48,42 @@ namespace MoistureBot
             command.ChatRoomId = chatId;
             command.SenderId = senderId;
 
-            var commandNode = AddinManager
-                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IChatCommand")
-                .FirstOrDefault((node) => node.CommandName.Equals(command.Name));
-
-            if (commandNode != null)
-            {
-                try
-                {
-                    Logger.Info("Chat command received, executing addin.");
+            Context.InvokeAddins<IChatCommand, ChatCommandNode>(
+                "/MoistureBot/ChatCommand/IChatCommand",
+                node => node.CommandName.Equals(command.Name),
+                addin => {
                     if (command.HasArguments() && command.FirstArgument.Equals("help"))
-                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Help(command);
+                        addin.Help(command);
                     else
-                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Execute(command);
+                        addin.Execute(command);
                 }
-                catch (Exception e)
-                {
-                    Logger.Error("Error while executing chat command.", e);
-                }
-            }
-            else
-            {
-                Bot.SendChatMessage("Command not recognized. Type !help for a list of commands.", command.SenderId);
-            }
+                
+            );
+               
+//
+//            var commandNode = AddinManager
+//                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IChatCommand")
+//                .FirstOrDefault((node) => node.CommandName.Equals(command.Name));
+//
+//            if (commandNode != null)
+//            {
+//                try
+//                {
+//                    Logger.Info("Chat command received, executing addin.");
+//                    if (command.HasArguments() && command.FirstArgument.Equals("help"))
+//                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Help(command);
+//                    else
+//                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Execute(command);
+//                }
+//                catch (Exception e)
+//                {
+//                    Logger.Error("Error while executing chat command.", e);
+//                }
+//            }
+//            else
+//            {
+//                Bot.SendChatMessage("Command not recognized. Type !help for a list of commands.", command.SenderId);
+//            }
 
         }
 

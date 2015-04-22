@@ -40,16 +40,21 @@ namespace MoistureBot
         public void InvokeAddins<AddinType>(Action<AddinType> onNext)
         {
             String path = "/MoistureBot/" + typeof(AddinType).Name;
-            InvokeAddins(path, onNext);
+            InvokeAddins<AddinType>(path, onNext);
         }
 
         public void InvokeAddins<AddinType>(string path, Action<AddinType> onNext)
+        {
+            InvokeAddins<AddinType, TypeExtensionNode>(path, node => true, onNext);
+        }
+            
+        public void InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext )
         {
 
             foreach (var node in AddinManager.GetExtensionNodes(path))
             {
                 var typeNode = node as TypeExtensionNode;
-                if (typeNode != null && typeof(AddinType).IsAssignableFrom(typeNode.Type))
+                if (typeNode != null && typeof(AddinType).IsAssignableFrom(typeNode.Type) && predicate.Invoke((NodeType)node) == true)
                 {
                     AddinType addin = GetInstanceWithContext<AddinType>(typeNode.Type);
 

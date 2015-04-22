@@ -13,7 +13,7 @@ using IniParser.Model;
 namespace MoistureBot
 {
 
-    internal class MoistureBotConfig : IConfig
+    public class MoistureBotConfig : IConfig
     {
 
         private ILogger Logger;

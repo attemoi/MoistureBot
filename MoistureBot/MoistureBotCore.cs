@@ -14,7 +14,7 @@ using MoistureBot.Config;
 namespace MoistureBot
 {
 
-    internal class MoistureBotCore : IMoistureBot
+    public class MoistureBotCore : IMoistureBot
     {
 	
         private ILogger Logger;

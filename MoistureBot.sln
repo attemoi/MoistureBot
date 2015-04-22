@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryCommand", "Addins\Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JokeCommand", "Addins\ChatCommand\ChatCommandAddins\JokeCommand\JokeCommand.csproj", "{F1584EB5-D5F0-4BC9-80BF-826743674152}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoistureBotTest", "MoistureBotTest\MoistureBotTest.csproj", "{754301E1-AB13-4DCA-BF88-17C0DD02F9ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -77,6 +79,10 @@ Global
 		{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}.Debug|x86.Build.0 = Debug|Any CPU
 		{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}.Release|x86.ActiveCfg = Release|Any CPU
 		{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}.Release|x86.Build.0 = Release|Any CPU
+		{754301E1-AB13-4DCA-BF88-17C0DD02F9ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{754301E1-AB13-4DCA-BF88-17C0DD02F9ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{754301E1-AB13-4DCA-BF88-17C0DD02F9ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{754301E1-AB13-4DCA-BF88-17C0DD02F9ED}.Release|x86.Build.0 = Release|Any CPU
 		{77F9672A-589A-4817-82CB-162976B03ACC}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{77F9672A-589A-4817-82CB-162976B03ACC}.Debug|x86.Build.0 = Debug|Any CPU
 		{77F9672A-589A-4817-82CB-162976B03ACC}.Release|x86.ActiveCfg = Release|Any CPU
