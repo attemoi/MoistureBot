@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
+    <Compile Include="TestContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -56,5 +57,14 @@
       <Project>{8C1DF2EF-3DE3-4814-887E-A0D5E70E8F32}</Project>
       <Name>ChatCommand</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Addins\Moikkaaja\Moikkaaja.csproj">
+      <Project>{97D07A7E-F506-4192-8299-59BA1721D060}</Project>
+      <Name>Moikkaaja</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Greetings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

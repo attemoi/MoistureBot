@@ -85,7 +85,7 @@ namespace MoistureBot
             //     
             //     </greetings>
 
-            XDocument xdoc = XDocument.Load("addins/Greetings.xml");
+            XDocument xdoc = XDocument.Load("Greetings.xml");
 
             return from greeting in xdoc.Root.Descendants("greeting")
                             select greeting.Value;

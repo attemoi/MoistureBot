@@ -10,7 +10,7 @@ namespace MoistureBot
 
         void InvokeAddins<AddinType>(string path, Action<AddinType> onNext);
 
-        void InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext );
+        void InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext);
 
         T GetInstanceWithContext<T>(Type type);
 

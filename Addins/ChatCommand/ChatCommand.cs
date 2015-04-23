@@ -56,34 +56,8 @@ namespace MoistureBot
                         addin.Help(command);
                     else
                         addin.Execute(command);
-                }
-                
+                } 
             );
-               
-//
-//            var commandNode = AddinManager
-//                .GetExtensionNodes<ChatCommandNode>("/MoistureBot/ChatCommand/IChatCommand")
-//                .FirstOrDefault((node) => node.CommandName.Equals(command.Name));
-//
-//            if (commandNode != null)
-//            {
-//                try
-//                {
-//                    Logger.Info("Chat command received, executing addin.");
-//                    if (command.HasArguments() && command.FirstArgument.Equals("help"))
-//                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Help(command);
-//                    else
-//                        Context.GetInstanceWithContext<IChatCommand>(commandNode.Type).Execute(command);
-//                }
-//                catch (Exception e)
-//                {
-//                    Logger.Error("Error while executing chat command.", e);
-//                }
-//            }
-//            else
-//            {
-//                Bot.SendChatMessage("Command not recognized. Type !help for a list of commands.", command.SenderId);
-//            }
 
         }
 
@@ -92,7 +66,8 @@ namespace MoistureBot
             return message.Equals("help") || Regex.IsMatch(message, COMMAND_REGEX);
         }
 
-        private Command parseCommand(String input) {
+        private Command parseCommand(String input) 
+        {
 
             var command = new Command();
             var commandParts = input.Split(' ');
