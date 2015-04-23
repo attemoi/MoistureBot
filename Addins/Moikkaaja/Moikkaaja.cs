@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text.RegularExpressions;
-using MoistureBot;
-using MoistureBot.Model;
-using System.Xml;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
+using MoistureBot.Model;
 
 namespace MoistureBot
 {
 
-    public class Moikkaaja: IReceiveFriendChatMessages, IReceiveGroupChatMessages
+    public class Moikkaaja : IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
         
-        Dictionary<String, String> ReplyDict;
+        Dictionary<String, String> ReplyDict = new Dictionary<String, String>();
 
         IMoistureBot Bot;
         ILogger Logger;
@@ -22,23 +20,32 @@ namespace MoistureBot
         public Moikkaaja(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Logger = context.GetLogger(typeof(Moikkaaja));
 
-            // Convert greetings to a dictionary with a stripped lowercase string as the key.
-            ReplyDict = readGreetings()
-                .Select((str) => new { 
-                    Value = str, 
-                    Key = stripMessage(str)
-                })
-                .GroupBy(e => e.Key) // This is needed to handle duplicates
-                .ToDictionary(
-                    x => x.First().Key,
-                    x => x.First().Value
-                );
+            Logger.Info("Reading greetings from xml file.");
+
+            try 
+            {
+                // Convert greetings to a dictionary with a stripped lowercase string as the key.
+                ReplyDict = ReadGreetings()
+                    .Select((str) => new { 
+                        Value = str, 
+                        Key = stripMessage(str)
+                    })
+                    .GroupBy(e => e.Key) // This is needed to handle duplicates
+                    .ToDictionary(
+                        x => x.First().Key,
+                        x => x.First().Value
+                    );
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Failed to read greetings.", e);
+            }
+
+            Logger.Info("Found " + ReplyDict.Count + " greetings.");
+
         }
-
-       
-
 
         public void MessageReceived(GroupChatMessage message)
         {
@@ -71,7 +78,7 @@ namespace MoistureBot
 
         }
 
-        private IEnumerable<String> readGreetings()
+        private IEnumerable<String> ReadGreetings()
         {
 
             //     Greetings.xml example data:
@@ -85,7 +92,7 @@ namespace MoistureBot
             //     
             //     </greetings>
 
-            XDocument xdoc = XDocument.Load("Greetings.xml");
+            XDocument xdoc = XDocument.Load("addins/Greetings.xml");
 
             return from greeting in xdoc.Root.Descendants("greeting")
                             select greeting.Value;

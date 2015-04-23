@@ -10,7 +10,7 @@ namespace MoistureBot
         private log4net.ILog Log;
 
         public MoistureBotLogger(Type type) {
-            this.Log = log4net.LogManager.GetLogger(type /*System.Reflection.MethodBase.GetCurrentMethod().DeclaringType*/);
+            this.Log = log4net.LogManager.GetLogger(type);
         }
 	
         #region ILogger implementation

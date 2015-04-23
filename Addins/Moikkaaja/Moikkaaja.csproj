@@ -45,7 +45,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Moikkaaja.addin.xml" />
     <None Include="Moikkaaja.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -57,4 +56,7 @@
     <Copy SourceFiles="$(OutDir)Greetings.xml" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
+  <ItemGroup>
+    <EmbeddedResource Include="Moikkaaja.addin.xml" />
+  </ItemGroup>
 </Project>
