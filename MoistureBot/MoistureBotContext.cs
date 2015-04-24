@@ -14,6 +14,8 @@ namespace MoistureBot
         private IConfig Config;
         private ILogger Logger;
 
+        Dictionary<Type, Object> nodeCache = new Dictionary<Type, Object>();
+
         public MoistureBotContext() {
             Logger = GetLogger(typeof(MoistureBotContext));
         }
@@ -74,6 +76,12 @@ namespace MoistureBot
     
         public T GetInstanceWithContext<T>(Type type)
         {
+            
+            object instance = null;
+            if (nodeCache.TryGetValue(type, out instance))
+            {
+                return (T)instance;
+            }
 
             // Check if addin has a constructor with [Provide] a attribute.
             ConstructorInfo ctor = type
@@ -96,16 +104,19 @@ namespace MoistureBot
                     else
                     {
                         values.Add(default(T));
-                    }
-                         
+                    }     
                 }
 
-                return (T)ctor.Invoke(values.ToArray());
+                instance = ctor.Invoke(values.ToArray());
+
             }
             else
             {
-                return (T)Activator.CreateInstance<T>();
+                instance = Activator.CreateInstance<T>();
             }
+
+            nodeCache.Add(type, instance);
+            return (T)instance;
         }
 
     }
