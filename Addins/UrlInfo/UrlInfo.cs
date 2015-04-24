@@ -19,7 +19,7 @@ namespace MoistureBot
             this.Context = context;
             this.Bot = context.GetBot();
         }
-        const string URL_REGEX = @"\b(?:https?://|www\.)\S+\b";
+        const string URL_REGEX = @"\b(?:https?://|www\.)\S+\.\S+\b";
 
         public void MessageReceived(FriendChatMessage message)
         {
@@ -48,10 +48,15 @@ namespace MoistureBot
 
             foreach (Match m in matches)
             {
-                Uri uri = new Uri(m.Value);
-
-                Context.InvokeAddins<IReceiveUrl>("MoistureBot/UrlInfo/IReceiveUrl", addin => addin.ReplyToUrl(uri));
-
+                try 
+                {
+                    Uri uri = new Uri(m.Value);             
+                    Context.InvokeAddins<IReceiveUrl>("MoistureBot/UrlInfo/IReceiveUrl", addin => addin.ReplyToUrl(uri));
+                } 
+                catch (UriFormatException e) 
+                { 
+                    return null; 
+                }
             }
 
             return null;

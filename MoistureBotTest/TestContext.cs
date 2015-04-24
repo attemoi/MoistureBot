@@ -24,6 +24,10 @@ namespace MoistureBotTest
             Calls.Add(GetCurrentMethod());
         }
 
+        public void Reset() {
+            Calls.Clear();
+        }
+
         [MethodImpl(MethodImplOptions.NoInlining)]
         public string GetCurrentMethod ()
         {
@@ -36,8 +40,6 @@ namespace MoistureBotTest
 
     public class TestContext : IContext 
     {
-
-        List<String> Invokations = new List<String>();
 
         public CallTracker Tracker;
 

@@ -50,6 +50,42 @@ namespace MoistureBotTest
 
         }
 
+        [Test()]
+        public void TestUrlInfo()
+        {
+            UrlInfo urlInfo = new UrlInfo(Context);
+
+            String[] invalid = { 
+                "wwwgithubcom", 
+                "https://www", 
+                "www.github",
+                "www.github.com" 
+            };
+            String[] valid = { 
+                "http://www.github.com", 
+                "https://www.github.com",
+                "http://www.github.com:4546",
+                "http://github.com", 
+                "http://github.com/attemoi/" 
+            };
+
+            foreach (var url in invalid)
+            {
+                urlInfo.MessageReceived(new FriendChatMessage(url, 123));
+                Assert.IsFalse(Tracker.HasCalled("InvokeAddins"), url);
+                Tracker.Reset();
+            }
+
+            foreach (var url in valid)
+            {
+                urlInfo.MessageReceived(new FriendChatMessage(url, 123));
+                Assert.IsTrue(Tracker.HasCalled("InvokeAddins"), url);
+                Tracker.Reset();
+            }
+               
+
+        }
+
     }
 
 

@@ -61,6 +61,10 @@
       <Project>{97D07A7E-F506-4192-8299-59BA1721D060}</Project>
       <Name>Moikkaaja</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Addins\UrlInfo\UrlInfo.csproj">
+      <Project>{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}</Project>
+      <Name>UrlInfo</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Greetings.xml">
