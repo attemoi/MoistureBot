@@ -51,7 +51,9 @@ namespace MoistureBot
                 try 
                 {
                     Uri uri = new Uri(m.Value);             
-                    Context.InvokeAddins<IReceiveUrl>("MoistureBot/UrlInfo/IReceiveUrl", addin => addin.ReplyToUrl(uri));
+                    string response = null;
+                    Context.InvokeAddins<IReceiveUrl>("MoistureBot/UrlInfo/IReceiveUrl", addin => response = addin.ReplyToUrl(uri));
+                    return response;
                 } 
                 catch (UriFormatException e) 
                 { 
