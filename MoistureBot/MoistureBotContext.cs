@@ -7,6 +7,10 @@ using System.Reflection;
 
 namespace MoistureBot
 {
+
+    /// <summary>
+    /// A central part of MoistureBot's core functionality.
+    /// </summary>
     public class MoistureBotContext : IContext
     {
 

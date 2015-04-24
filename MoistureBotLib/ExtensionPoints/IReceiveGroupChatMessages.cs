@@ -5,7 +5,6 @@ using MoistureBot.Model;
 namespace MoistureBot
 {
 
-
     /// <summary>
     /// Extension point for receiving messages in a group chat.
     /// Closely related to <see cref="IReceiveFriendChatMessages"/> 

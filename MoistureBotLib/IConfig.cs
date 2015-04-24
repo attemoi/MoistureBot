@@ -6,6 +6,9 @@ using MoistureBot.Config;
 namespace MoistureBot
 {
 
+    /// <summary>
+    /// Interface to managing application configuration (moisturebot.ini).
+    /// </summary>
     public interface IConfig
     {
         /// <summary>

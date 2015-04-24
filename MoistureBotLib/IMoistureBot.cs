@@ -7,6 +7,9 @@ using MoistureBot.Model;
 namespace MoistureBot
 {
 
+    /// <summary>
+    /// Interface to all Steam related operations of MoistureBot.
+    /// </summary>
     public interface IMoistureBot
     {
 
