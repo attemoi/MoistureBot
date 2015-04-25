@@ -5,11 +5,11 @@ using Mono.Addins;
 namespace MoistureBot
 {
     /// <summary>
-    /// Interface to global information and components of MoistureBot. The implementation will be provided by the core application.
-    /// <see cref="IContext"/> allows access to application-specific resources and classes, and provides methods for invoking addins. 
+    /// Interface for accessing application-specific resources and classes, and provides methods for invoking addins. 
+    /// The implementation will be provided by the core application.
     /// </summary>
     /// <remarks> 
-    /// An instance of <see cref="IContext"/> can be used within addins by defining a single parameter constructor with a [<see cref="Provide"/>] attribute.
+    /// An instance of <see cref="IContext"/> can be passed to addins by using the [<see cref="Provide"/>] attribute with a single parameter constructor.
     /// </remarks>
     public interface IContext
     {

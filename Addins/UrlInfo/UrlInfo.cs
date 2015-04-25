@@ -3,6 +3,7 @@ using Mono.Addins;
 using MoistureBot;
 using System.Text.RegularExpressions;
 using MoistureBot.Model;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

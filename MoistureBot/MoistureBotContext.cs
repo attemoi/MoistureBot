@@ -4,6 +4,7 @@ using Mono.Addins;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

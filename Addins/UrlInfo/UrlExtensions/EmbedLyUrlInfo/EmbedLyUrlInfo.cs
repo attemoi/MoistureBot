@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using MoistureBot;
 using Json;
 using System.Web;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

@@ -5,6 +5,7 @@ using System.Linq;
 using MoistureBot;
 using MoistureBot.Utils;
 using MoistureBot.Config;
+using MoistureBot.Extensions;
 
 namespace MoistureBot.ConsoleCommands
 {

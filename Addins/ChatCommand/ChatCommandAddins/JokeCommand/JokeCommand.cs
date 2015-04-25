@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using System.Linq;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

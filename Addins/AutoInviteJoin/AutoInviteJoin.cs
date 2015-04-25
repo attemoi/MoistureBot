@@ -1,6 +1,7 @@
 ﻿using System;
 using MoistureBot;
 using MoistureBot.Model;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

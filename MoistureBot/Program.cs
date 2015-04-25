@@ -13,6 +13,7 @@ using MoistureBot.ConsoleCommands;
 using MoistureBot;
 using System.Collections;
 using System.Runtime.Serialization;
+using MoistureBot.Extensions;
 
 [assembly:AddinRoot("MoistureBot", "1.0")]
 [assembly:AddinAuthor("Atte Moisio")]

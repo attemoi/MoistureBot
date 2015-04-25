@@ -4,6 +4,7 @@ using MoistureBot.Model;
 using Mono.Addins;
 using System.Text.RegularExpressions;
 using System.Linq;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

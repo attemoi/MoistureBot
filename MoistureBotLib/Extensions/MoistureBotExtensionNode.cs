@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MoistureBot
+namespace MoistureBot.Extensions
 {
     public class MoistureBotExtensionNode : TypeExtensionNode
     {

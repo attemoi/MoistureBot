@@ -3,6 +3,7 @@ using MoistureBot;
 using MoistureBot.Model;
 using Mono.Addins;
 using System.Linq;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

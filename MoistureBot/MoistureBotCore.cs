@@ -10,6 +10,7 @@ using System.Reflection;
 using MoistureBot;
 using MoistureBot.Model;
 using MoistureBot.Config;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

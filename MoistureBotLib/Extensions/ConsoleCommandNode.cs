@@ -1,7 +1,7 @@
 ﻿using System;
 using Mono.Addins;
 
-namespace MoistureBot
+namespace MoistureBot.Extensions
 {
   
     [ExtensionNode ("ConsoleCommand")]

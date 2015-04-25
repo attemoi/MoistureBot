@@ -7,6 +7,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 using System.Collections.Generic;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {

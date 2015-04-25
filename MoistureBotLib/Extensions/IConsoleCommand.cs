@@ -4,7 +4,7 @@ using Mono.Options;
 using MoistureBot;
 using Mono.Addins;
 
-namespace MoistureBot
+namespace MoistureBot.Extensions
 {
 
     /// <summary>
