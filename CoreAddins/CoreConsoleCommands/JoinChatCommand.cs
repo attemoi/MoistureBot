@@ -4,21 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "join",
-        Description = "Join chat room(s).",
-        ShortDescription = "Join chat room(s).",
-        ShortUsage = "join <chat_id|favorite_key>",
-        Usage = 
-		"join <chat_id|favorite_key>\n" +
-        "join -favorites"
-    )]
     public class JoinChatCommand : IConsoleCommand
     {
 

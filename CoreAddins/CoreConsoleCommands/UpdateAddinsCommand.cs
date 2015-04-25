@@ -3,20 +3,12 @@ using Mono.Options;
 using Mono.Addins;
 using System.Linq;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 using MoistureBot.Config;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "update-addins",
-        Description = "Update and reload all addins.",
-        ShortDescription = "Update and reload all addins.",
-        ShortUsage = "update-addins",
-        Usage = "update-addins"
-    )]
     public class UpdateAddinsCommand : IConsoleCommand
     {
 	

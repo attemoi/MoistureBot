@@ -7,7 +7,7 @@ namespace MoistureBot
     /// <summary>
     /// Extension point for receiving game lobby invites.
     /// </summary>
-    [TypeExtensionPoint("/MoistureBot/IReceiveGameLobbyInvites")]
+    [TypeExtensionPoint("/MoistureBot/IReceiveGameLobbyInvites", NodeType=typeof(MoistureBotExtensionNode))]
     public interface IReceiveGameLobbyInvites
     {
         /// <summary>

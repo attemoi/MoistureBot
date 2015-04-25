@@ -11,7 +11,6 @@ using System.Threading;
 using System.Linq;
 using MoistureBot.ConsoleCommands;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using System.Collections;
 using System.Runtime.Serialization;
 
@@ -66,7 +65,7 @@ namespace MoistureBot
 
 		private static void InitializeAddinManager() {
 
-            AddinManager.AddinLoadError += (sender, args) => Logger.Error("Failed to load addin (" + args.Message + ")",args.Exception);
+            AddinManager.AddinLoadError += (sender, args) => Logger.Error("Failed to load addin (" + args.Message + ")", args.Exception);
             AddinManager.AddinLoaded += (sender, args) => Logger.Info("Add-in loaded: " + args.AddinId);
 			AddinManager.AddinUnloaded += (sender, args) => Logger.Info("Add-in unloaded: " + args.AddinId);
 
@@ -97,31 +96,27 @@ namespace MoistureBot
 					var commandName = commandParts[0];
 					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
-                    var commandNode = AddinManager
-						.GetExtensionNodes<TypeExtensionNode<ConsoleCommandAttribute>>(typeof(IConsoleCommand))
-						.FirstOrDefault((node) => node.Data.Name.Equals(commandName));
+                    try {
+                        bool invoked = Context.InvokeAddins<IConsoleCommand, ConsoleCommandNode>(
+                                "/MoistureBot/IConsoleCommand", 
+                                node => node.Name.Equals(commandName),
+                                addin => exit = addin.Execute(args));
 
-                    if (commandNode != null)
-					{
-						try {
-                            
-                            IConsoleCommand command = Context.GetInstanceWithContext<IConsoleCommand>(commandNode.Type);
-                            exit = command.Execute(args);
-
-						} catch (Exception e) {
-							Console.WriteLine("Error while executing command!");
-							Console.WriteLine("Message: " + e.Message);
-							Logger.Error("Error while executing command.", e);
-						}
-					}
-					else
-					{
-						Console.WriteLine("Unknown command: '" + input + "'");
-					}
+                        if (!invoked)
+                        {
+                            Console.WriteLine("Unknown command: '" + input + "'");
+                        }
+                        
+                    } 
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error while executing command!");
+                        Console.WriteLine("Message: " + e.Message);
+                        Logger.Error("Error while executing console command.", e);
+                    }
 
 				}
-
-
+                    
 			}
 		}
 

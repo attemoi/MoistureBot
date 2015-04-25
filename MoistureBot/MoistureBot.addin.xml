@@ -1,0 +1,46 @@
+﻿<Addin id="MoistureBot" version="1.0" isroot="false">
+    <Runtime>
+        <Import assembly="ChatCommand.dll" />
+    </Runtime>
+
+<!--    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>-->
+
+
+
+<!--    <Extension path="/MoistureBot/I">
+        <Type 
+            type="MoistureBot.Command" 
+            name="" 
+            shortDescription=""
+            shortUsage="help &lt;command&gt;"
+            description=""
+            usage="help &lt;command&gt;"
+              />
+    </Extension>-->
+
+    <Extension path="/MoistureBot/IConsoleCommand">
+        <Type
+            type="MoistureBot.ConsoleCommands.HelpCommand" 
+            name="help" 
+            shortDescription="Print help for a command."
+            shortUsage="help &lt;command&gt;"
+            description="Print help for a command."
+            usage="help &lt;command&gt;"
+              />
+    </Extension>
+
+    <Extension path="/MoistureBot/IConsoleCommand">
+        <Type
+            type="MoistureBot.ConsoleCommands.ExitCommand" 
+            name="exit" 
+            shortDescription="Disconnect from Steam and exit program."
+            shortUsage="exit"
+            description="Disconnect from Steam and exit program."
+            usage="exit"
+              />
+    </Extension>
+
+
+</Addin>

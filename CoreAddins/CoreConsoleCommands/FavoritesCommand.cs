@@ -4,22 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "favorites",
-        ShortUsage = "favorites [OPTIONS]+", ShortDescription = "Manage favorite rooms and users.", 
-        Description = "Manage favorite rooms and users.",
-        Usage = 
-			"favorites -list\n" +
-        "  favorites add user/room <key> <id>\n" +
-        "  favorites remove user/room <key>\n" +
-        "  favorites remove-all users/rooms"
-    )]
     public class FavoritesCommand : IConsoleCommand
     {
       

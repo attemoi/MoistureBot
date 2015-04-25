@@ -5,19 +5,11 @@ using Mono.Addins;
 using System.Linq;
 using System.Collections.Generic;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "exit",
-        Description = "Disconnect from Steam and exit program.",
-        ShortDescription = "Disconnect from Steam and exit program.",
-        ShortUsage = "exit",
-        Usage = "exit"
-    )]
     public class ExitCommand : IConsoleCommand
     {
 	

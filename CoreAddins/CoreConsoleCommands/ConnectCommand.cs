@@ -3,20 +3,13 @@ using Mono.Options;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "connect",
-        ShortDescription = "Connect and sign in to Steam.",
-        ShortUsage = "connect [<username> [<password>]]",
-        Description = "Connect and sign in to Steam.",
-        Usage = "connect [<username> [<password>]]"
-    )]
+   
     public class ConnectCommand : IConsoleCommand
     {
 	

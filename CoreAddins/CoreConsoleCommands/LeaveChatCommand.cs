@@ -4,21 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "leave",
-        Description = "Leave chat room(s).",
-        ShortDescription = "Leave chat room(s).",
-        ShortUsage = "leave <chat_id|favorite_key>",
-        Usage = 
-		"leave <chat_id|favorite_key>\n" +
-        "leave -favorites"
-    )]
     public class LeaveChatCommand : IConsoleCommand
     {
 

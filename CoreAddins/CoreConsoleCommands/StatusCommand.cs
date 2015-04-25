@@ -4,18 +4,11 @@ using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Config;
 
 namespace MoistureBot.ConsoleCommands
 {
-    [ConsoleCommand(
-        Name = "status",
-        Description = "Show bot status.",
-        ShortDescription = "Show bot status.",
-        ShortUsage = "status [OPTIONS]+",
-        Usage = "status [OPTIONS]+"
-    )]
+    
     public class StatusCommand : IConsoleCommand
     {
     
@@ -76,7 +69,7 @@ namespace MoistureBot.ConsoleCommands
                 {
                     foreach (Addin addin in addins)
                     {
-                        Console.WriteLine("  {0} {1}", addin.Name, addin.Version);
+                        Console.WriteLine("  {0}", addin.Name);
                     }
                 }
             }

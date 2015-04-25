@@ -4,18 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommandAttribute(
-        Name = "help",
-        ShortDescription = "Print help for a command.",
-        ShortUsage = "help <command>",
-        Description = "Print help for a command.",
-        Usage = "help <command>"
-    )]
     public class HelpCommand : IConsoleCommand
     {
 
@@ -44,19 +36,18 @@ namespace MoistureBot.ConsoleCommands
             {
                 command = extra.First();
 
-                foreach (TypeExtensionNode<ConsoleCommandAttribute> node in AddinManager.GetExtensionNodes (typeof(IConsoleCommand)))
+                foreach (var node in AddinManager.GetExtensionNodes<ConsoleCommandNode>("/MoistureBot/IConsoleCommand"))
                 {
-                    if (command.Equals(node.Data.Name))
+                    if (command.Equals(node.Name))
                     {
                         Console.WriteLine();
                         Console.WriteLine("Description:");
                         Console.WriteLine();
-                        // TODO Wrap to 80 chars
-                        Console.WriteLine("  {0}", node.Data.Description);
+                        Console.WriteLine("  {0}", node.Description);
                         Console.WriteLine();
                         Console.WriteLine("Usage:");
                         Console.WriteLine();
-                        Console.WriteLine("  {0}", node.Data.Usage);
+                        Console.WriteLine("  {0}", node.Usage);
                         Console.WriteLine();
                         var cmd = (IConsoleCommand)node.CreateInstance();
                         if (cmd.Options.Count > 0)
@@ -67,7 +58,6 @@ namespace MoistureBot.ConsoleCommands
                         }
 
                         return false;
-
                     }
                 }
 
@@ -81,13 +71,11 @@ namespace MoistureBot.ConsoleCommands
                 Console.WriteLine("Available commands: ");
                 Console.WriteLine();
 
-                ExtensionNodeList commands = AddinManager.GetExtensionNodes(typeof(IConsoleCommand));
-
-                foreach (TypeExtensionNode<ConsoleCommandAttribute> node in commands)
+                foreach (var node in AddinManager.GetExtensionNodes<ConsoleCommandNode>("/MoistureBot/IConsoleCommand"))
                 {
-                    Console.WriteLine("  {0} - {1}", node.Data.ShortUsage.PadRight(35), node.Data.ShortDescription.PadRight(35));
+                    Console.WriteLine("  {0} - {1}", node.ShortUsage.PadRight(35), node.ShortDescription.PadRight(35));
                 }
-
+                    
             }
             return false;
         }

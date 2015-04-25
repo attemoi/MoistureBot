@@ -18,8 +18,6 @@ namespace MoistureBot
         private IConfig Config;
         private ILogger Logger;
 
-        Dictionary<Type, Object> nodeCache = new Dictionary<Type, Object>();
-
         public MoistureBotContext() {
             Logger = GetLogger(typeof(MoistureBotContext));
         }
@@ -43,84 +41,44 @@ namespace MoistureBot
             return Config;
         }
 
-        public void InvokeAddins<AddinType>(Action<AddinType> onNext)
+        public bool InvokeAddins<AddinType>(Action<AddinType> onNext)
         {
             String path = "/MoistureBot/" + typeof(AddinType).Name;
-            InvokeAddins<AddinType>(path, onNext);
+            return InvokeAddins<AddinType>(path, onNext);
         }
 
-        public void InvokeAddins<AddinType>(string path, Action<AddinType> onNext)
+        public bool InvokeAddins<AddinType>(string path, Action<AddinType> onNext)
         {
-            InvokeAddins<AddinType, TypeExtensionNode>(path, node => true, onNext);
+            return InvokeAddins<AddinType, MoistureBotExtensionNode>(path, node => true, onNext);
         }
             
-        public void InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext )
+        public bool InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext)
         {
 
-            foreach (var node in AddinManager.GetExtensionNodes(path))
+            bool invoked = false;
+            foreach (var node in AddinManager
+                .GetExtensionNodes(path, typeof(NodeType)))
             {
-                var typeNode = node as TypeExtensionNode;
-                if (typeNode != null && typeof(AddinType).IsAssignableFrom(typeNode.Type) && predicate.Invoke((NodeType)node) == true)
+                if (predicate.Invoke((NodeType)node))
                 {
-                    AddinType addin = GetInstanceWithContext<AddinType>(typeNode.Type);
-
-                    try
+                    var moistureBotNode = node as MoistureBotExtensionNode;
+                    if (typeof(AddinType).IsAssignableFrom(moistureBotNode.Type))
                     {
-                        onNext.Invoke(addin);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Error("Failed to invoke " + addin.GetType().Name, e);
+                        invoked = true;
+                        Object addin = ((MoistureBotExtensionNode)node).GetInstance();
+                        try {
+                            onNext.Invoke((AddinType)addin);
+                        } 
+                        catch (Exception e)
+                        {
+                            Logger.Error("Error when invoking instance of " + addin.GetType().Name + ": " + e.Message, e);
+                        }
                     }
                 }
-
             }
 
-        }
-    
-        public T GetInstanceWithContext<T>(Type type)
-        {
-            
-            object instance = null;
-            if (nodeCache.TryGetValue(type, out instance))
-            {
-                return (T)instance;
-            }
-
-            // Check if addin has a constructor with [Provide] a attribute.
-            ConstructorInfo ctor = type
-                .GetConstructors()
-                .Where(c => c.IsDefined(typeof(ProvideAttribute), false))
-                .SingleOrDefault();
-
-            // If constructor was found, inject context object.
-            if (ctor != null)
-            {
-                var parameters = ctor.GetParameters();
-
-                var values = new List<object>();
-                foreach (var parameter in parameters)
-                {
-                    if (parameter.ParameterType == typeof(IContext))
-                    {
-                        values.Add(this);  
-                    }
-                    else
-                    {
-                        values.Add(default(T));
-                    }     
-                }
-
-                instance = ctor.Invoke(values.ToArray());
-
-            }
-            else
-            {
-                instance = Activator.CreateInstance<T>();
-            }
-
-            nodeCache.Add(type, instance);
-            return (T)instance;
+            return invoked;
+                
         }
 
     }

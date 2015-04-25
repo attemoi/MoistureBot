@@ -4,7 +4,6 @@ using MoistureBot.Model;
 using Mono.Addins;
 using System.Text.RegularExpressions;
 using System.Linq;
-using MoistureBot.ExtensionAttributes;
 
 namespace MoistureBot
 {
@@ -48,7 +47,7 @@ namespace MoistureBot
             command.ChatRoomId = chatId;
             command.SenderId = senderId;
 
-            Context.InvokeAddins<IChatCommand, ChatCommandNode>(
+            bool invoked = Context.InvokeAddins<IChatCommand, ChatCommandNode>(
                 "/MoistureBot/ChatCommand/IChatCommand",
                 node => node.CommandName.Equals(command.Name),
                 addin => {
@@ -58,6 +57,11 @@ namespace MoistureBot
                         addin.Execute(command);
                 } 
             );
+
+            if (!invoked)
+            {
+                Bot.SendChatMessage("Command not recognized. Type !help for a list of commands.", command.SenderId);
+            }
 
         }
 

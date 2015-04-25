@@ -3,20 +3,12 @@ using Mono.Options;
 using Mono.Addins;
 using System.Linq;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 using MoistureBot.Config;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "set",
-        Description = "Configure Bot.",
-        ShortDescription = "Configure Bot.",
-        ShortUsage = "set [OPTIONS]+",
-        Usage = "set [OPTIONS]+"
-    )]
     public class SetCommand : IConsoleCommand
     {
 

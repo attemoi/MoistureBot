@@ -18,27 +18,21 @@ namespace MoistureBot
         /// Invokes all addins that are registered to extend the interface defined by AddinType. 
         /// Extension point path will be set to "MoistureBot/AddinTypeName", where AddinTypeName is the class name of AddinType.
         /// </summary>
+        /// <returns><c>true</c>, if one or more addins were invoked, <c>false</c> otherwise.</returns>
         /// <param name="onNext">Action to be executed for each addin.</param>
         /// <typeparam name="AddinType">Type of the extensions.</typeparam>
-        void InvokeAddins<AddinType>(Action<AddinType> onNext);
+        bool InvokeAddins<AddinType>(Action<AddinType> onNext);
       
         /// <summary>
         /// Invokes the addins in the given path and extension type.
         /// </summary>
+        /// <returns><c>true</c>, if one or more addins were invoked, <c>false</c> otherwise.</returns>
         /// <param name="path">Path of extension point.</param>
         /// <param name="onNext">Action to be executed for each addin.</param>
         /// <typeparam name="AddinType">Type of the extensions.</typeparam>
-        void InvokeAddins<AddinType>(string path, Action<AddinType> onNext);
+        bool InvokeAddins<AddinType>(string path, Action<AddinType> onNext);
 
-        void InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext);
-       
-        /// <summary>
-        /// Creates an instance of an object injected with the context.
-        /// </summary>
-        /// <returns>The instance with the context injected.</returns>
-        /// <param name="type">Type.</param>
-        /// <typeparam name="T">The 1st type parameter.</typeparam>
-        T GetInstanceWithContext<T>(Type type);
+        bool InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext);
 
         /// <summary>
         /// Gets an instance of <see cref="IMoistureBot"/> for managing actions related to the Steam client.

@@ -38,6 +38,8 @@ namespace MoistureBot
         public MoistureBotCore(IContext context)
         {
 
+            MoistureBotAddinManager.Context = context;
+
             this.context = context;
             Logger = context.GetLogger(typeof(MoistureBotCore));
             Config = context.GetConfig();

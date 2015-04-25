@@ -49,19 +49,22 @@ namespace MoistureBotTest
 
         #region IContext implementation
 
-        public void InvokeAddins<AddinType>(Action<AddinType> onNext)
+        public bool InvokeAddins<AddinType>(Action<AddinType> onNext)
         {
             Tracker.TrackMethod();
+            return true;
         }
 
-        public void InvokeAddins<AddinType>(string path, Action<AddinType> onNext)
+        public bool InvokeAddins<AddinType>(string path, Action<AddinType> onNext)
         {
             Tracker.TrackMethod();
+            return true;
         }
 
-        public void InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext)
+        public bool InvokeAddins<AddinType, NodeType>(string path, Func<NodeType, bool> predicate, Action<AddinType> onNext)
         {
             Tracker.TrackMethod();
+            return true;
         }
 
         public T GetInstanceWithContext<T>(Type type)

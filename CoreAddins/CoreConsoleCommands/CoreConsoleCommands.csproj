@@ -53,6 +53,7 @@
     <None Include="Properties\AssemblyInfo.cs" />
     <None Include="packages.config" />
     <None Include="LICENSE" />
+    <None Include="CoreConsoleCommands.csproj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MoistureBotLib\MoistureBotLib.csproj">
@@ -64,4 +65,7 @@
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
+  <ItemGroup>
+    <EmbeddedResource Include="CoreConsoleCommands.addin.xml" />
+  </ItemGroup>
 </Project>

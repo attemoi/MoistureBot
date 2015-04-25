@@ -3,20 +3,12 @@ using Mono.Options;
 using System.Collections.Generic;
 using Mono.Addins;
 using System.Linq;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "disconnect",
-        Description = "Sign out and disconnect from Steam.",
-        ShortDescription = "Sign out and disconnect from Steam.",
-        ShortUsage = "disconnect",
-        Usage = "disconnect"
-    )]
     public class DisconnectCommand : IConsoleCommand
     {
 

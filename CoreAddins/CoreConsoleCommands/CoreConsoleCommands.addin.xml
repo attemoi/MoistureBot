@@ -1,0 +1,99 @@
+﻿<Addin id="CoreConsoleCommands" version="1.0" isroot="false">
+    <Runtime>
+        <Import assembly="CoreConsoleCommands.dll" />
+    </Runtime>
+
+    <Dependencies>
+        <Addin id="MoistureBot" version="1.0" />
+    </Dependencies>
+
+    <Extension path="/MoistureBot/IConsoleCommand">
+        <Type 
+            type="MoistureBot.ConsoleCommands.DisconnectCommand" 
+            name="disconnect" 
+            shortDescription="Sign out and disconnect from Steam"
+            shortUsage="disconnect"
+            description="Sign out and disconnect from Steam"
+            usage="disconnect"
+              />
+
+         <Type 
+            type="MoistureBot.ConsoleCommands.ConnectCommand" 
+            name="connect" 
+            shortDescription="Connect and sign in to Steam."
+            shortUsage="connect [&lt;username&gt; [&lt;password&gt;]]"
+            description="Connect and sign in to Steam."
+            usage="connect [&lt;username&gt; [&lt;password&gt;]]"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.FavoritesCommand" 
+            name="favorites" 
+            shortDescription="Manage favorite rooms and users"
+            shortUsage="favorites [OPTIONS]+"
+            description="Manage favorite rooms and users."
+            usage="favorites -list
+  favorites add user/room &lt;key&gt; &lt;id&gt;
+  favorites remove user/room &lt;key&gt;
+  favorites remove-all users/rooms"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.JoinChatCommand" 
+            name="join" 
+            shortDescription="Join chat room(s)."
+            shortUsage="join &lt;chat_id|favorite_key&gt;"
+            description="Join chat room(s)."
+            usage="join &lt;chat_id|favorite_key&gt;
+  join -favorites"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.LeaveChatCommand" 
+            name="leave" 
+            shortDescription="Leave chat room(s)."
+            shortUsage="Leave &lt;chat_id|favorite_key&gt;"
+            description="Leave chat room(s)."
+            usage="leave &lt;chat_id|favorite_key&gt;
+  leave -favorites"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.SendMessageCommand" 
+            name="msg" 
+            shortDescription="Send message to user or room."
+            shortUsage="msg ..."
+            description="Send message to user or room."
+            usage="msg user &lt;user_id|favorite_key&gt; &lt;message&gt;
+  msg room &lt;room_id|favorite_key&gt;"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.SetCommand" 
+            name="set" 
+            shortDescription="Configure Bot."
+            shortUsage="set [OPTIONS]+"
+            description="Configure Bot."
+            usage="set [OPTIONS]+"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.StatusCommand" 
+            name="status" 
+            shortDescription="Show bot status."
+            shortUsage="status [OPTIONS]+"
+            description="Show bot status."
+            usage="status [OPTIONS]+"
+              />
+
+        <Type 
+            type="MoistureBot.ConsoleCommands.UpdateAddinsCommand" 
+            name="update-addins" 
+            shortDescription="Update and reload all addins."
+            shortUsage="update-addins"
+            description="Update and reload all addins."
+            usage="update-addins"
+              />
+    </Extension>
+
+</Addin>

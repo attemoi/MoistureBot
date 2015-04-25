@@ -55,7 +55,6 @@
     <Compile Include="Config\SectionAttribute.cs" />
     <Compile Include="Config\StringAttribute.cs" />
     <Compile Include="Config\DefaultValueAttribute.cs" />
-    <Compile Include="ExtensionAttributes\ConsoleCommandAttribute.cs" />
     <Compile Include="Utils\ConsoleMessage.cs" />
     <Compile Include="Utils\ConsoleHelper.cs" />
     <Compile Include="Config\ConfigUtils.cs" />
@@ -71,6 +70,9 @@
     <Compile Include="ProvideAttribute.cs" />
     <Compile Include="IContext.cs" />
     <Compile Include="Mono.Options\Options.cs" />
+    <Compile Include="MoistureBotExtensionNode.cs" />
+    <Compile Include="MoistureBotAddinManager.cs" />
+    <Compile Include="ConsoleCommandNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -79,7 +81,6 @@
   <ItemGroup>
     <Folder Include="ExtensionPoints\" />
     <Folder Include="Config\" />
-    <Folder Include="ExtensionAttributes\" />
     <Folder Include="Utils\" />
     <Folder Include="Model\" />
   </ItemGroup>

@@ -4,19 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Mono.Addins;
 using MoistureBot;
-using MoistureBot.ExtensionAttributes;
 using MoistureBot.Utils;
 
 namespace MoistureBot.ConsoleCommands
 {
 
-    [ConsoleCommand(
-        Name = "msg",
-        Description = "Send message to user or room.",
-        ShortDescription = "Send message to user or room.",
-        ShortUsage = "msg ...",
-        Usage = "msg user <user_id|favorite_key> <message>\n  msg room <user_id|favorite_key> <message>"
-    )]
     public class SendMessageCommand : IConsoleCommand
     {
 
