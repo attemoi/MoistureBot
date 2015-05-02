@@ -15,13 +15,11 @@ namespace MoistureBot.ConsoleCommands
     {
 	
         IMoistureBot Bot;
-        ILogger Logger;
 
         [Provide]
         public ConnectCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(typeof(ConnectCommand));
         }
 
         public OptionSet Options {

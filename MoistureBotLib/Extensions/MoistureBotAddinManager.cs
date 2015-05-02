@@ -7,9 +7,7 @@ namespace MoistureBot.Extensions
     {
         public static IContext Context { get; set; }
 
-        private MoistureBotAddinManager ()
-        {
-        }
+
 
     }
 }

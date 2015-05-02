@@ -13,7 +13,6 @@ namespace MoistureBot
     {
 
         private IMoistureBot Bot;
-        private ILogger Logger;
         private IContext Context;
 
         [Provide]
@@ -21,7 +20,6 @@ namespace MoistureBot
         {
             this.Context = context;
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
 
         const string COMMAND_REGEX = @"^!+.";

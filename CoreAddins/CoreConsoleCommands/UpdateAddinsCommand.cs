@@ -12,14 +12,6 @@ namespace MoistureBot.ConsoleCommands
 
     public class UpdateAddinsCommand : IConsoleCommand
     {
-	
-        ILogger Logger;
-
-        [Provide]
-        public UpdateAddinsCommand(IContext context)
-        {
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        }
 
         public OptionSet Options {
             get

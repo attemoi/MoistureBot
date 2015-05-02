@@ -531,7 +531,7 @@ namespace MoistureBot
 
             if (status == null)
             {
-                Logger.Error("Failed to set online status: Status cannot be null.");
+                Logger.Warn("Failed to set online status: Status cannot be null.");
                 throw new ArgumentException("Invalid status");
             }
 
@@ -545,7 +545,7 @@ namespace MoistureBot
                 }
             }
 
-            Logger.Error("Failed to set online status: Invalid value '" + status + "'");
+            Logger.Warn("Failed to set online status: Invalid value '" + status + "'");
 
             throw new ArgumentException("Invalid status");
 

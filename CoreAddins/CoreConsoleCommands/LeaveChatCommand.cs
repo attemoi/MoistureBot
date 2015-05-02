@@ -14,14 +14,12 @@ namespace MoistureBot.ConsoleCommands
     {
 
         IMoistureBot Bot;
-        ILogger Logger;
         IConfig Config;
 
         [Provide]
         public LeaveChatCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(typeof(LeaveChatCommand));
             this.Config = context.GetConfig();
         }
 

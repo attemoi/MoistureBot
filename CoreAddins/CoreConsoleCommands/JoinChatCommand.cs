@@ -14,14 +14,12 @@ namespace MoistureBot.ConsoleCommands
     {
 
         IMoistureBot Bot;
-        ILogger Logger;
         IConfig Config;
 
         [Provide]
         public JoinChatCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(typeof(JoinChatCommand));
             this.Config = context.GetConfig();
         }
 

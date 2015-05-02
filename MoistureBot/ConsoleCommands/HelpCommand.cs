@@ -11,16 +11,8 @@ namespace MoistureBot.ConsoleCommands
 
     public class HelpCommand : IConsoleCommand
     {
-
-        private ILogger Logger;
-
+         
         public string command;
-
-        [Provide]
-        public HelpCommand(IContext context)
-        {
-            this.Logger = context.GetLogger(typeof(HelpCommand));
-        }
 
         public OptionSet Options {
             get { return new OptionSet(); }

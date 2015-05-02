@@ -16,7 +16,6 @@ namespace MoistureBot.ConsoleCommands
 	{
 
         private IMoistureBot Bot;
-        private ILogger Logger;
         private IConfig Config;
 
 		private bool connect;
@@ -29,7 +28,6 @@ namespace MoistureBot.ConsoleCommands
         public LaunchCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(typeof(LaunchCommand));
             this.Config = context.GetConfig();
         }
 

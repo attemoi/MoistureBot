@@ -14,13 +14,11 @@ namespace MoistureBot.ConsoleCommands
     {
     
         IMoistureBot Bot;
-        ILogger Logger;
 
         [Provide]
         public StatusCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         }
 
         private bool showAddins;
