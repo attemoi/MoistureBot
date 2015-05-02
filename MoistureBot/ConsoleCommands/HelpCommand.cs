@@ -19,7 +19,7 @@ namespace MoistureBot.ConsoleCommands
         [Provide]
         public HelpCommand(IContext context)
         {
-            this.Logger = context.GetLogger(typeof(ExitCommand));
+            this.Logger = context.GetLogger(typeof(HelpCommand));
         }
 
         public OptionSet Options {
@@ -28,8 +28,6 @@ namespace MoistureBot.ConsoleCommands
 
         public bool Execute(string[] args)
         {
-
-            Logger.Info("Executing command...");
 
             List<string> extra = Options.Parse(args);
 

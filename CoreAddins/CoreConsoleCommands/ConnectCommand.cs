@@ -21,7 +21,7 @@ namespace MoistureBot.ConsoleCommands
         public ConnectCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Logger = context.GetLogger(typeof(ConnectCommand));
         }
 
         public OptionSet Options {
@@ -33,8 +33,7 @@ namespace MoistureBot.ConsoleCommands
 
         public bool Execute(string[] args)
         {
-            Logger.Info("Executing command...");
-		
+
             List<string> extra = Options.Parse(args);
 
             string user = null;

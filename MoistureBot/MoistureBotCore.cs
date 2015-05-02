@@ -328,7 +328,7 @@ namespace MoistureBot
         private void ChatMsgCallback(SteamFriends.ChatMsgCallback callback)
         {
 
-            // TODO: Only the EChatEntryType.ChatMsg callbacks seem to be getting called
+            // NOTE: Only the EChatEntryType.ChatMsg callbacks seem to be getting called
 
             Logger.Info("Chat room message callback fired");
 
@@ -414,8 +414,6 @@ namespace MoistureBot
                                                callback.PatronID.ConvertToUInt64()
                                            );
 
-
-
                         context.InvokeAddins<IReceiveFriendGroupChatInvites>(
                             (addin) => addin.InviteReceived(friendInvite)
                         );
@@ -489,7 +487,7 @@ namespace MoistureBot
 
         public void Connect(string username, string password)
         {
-            Logger.Info("Connecting to Steam.");
+            Logger.Info("Connecting to Steam...");
             user = username;
             pass = password;
             steamClient.Connect();
@@ -498,7 +496,7 @@ namespace MoistureBot
 
         public void Disconnect()
         {
-            Logger.Info("Disconnecting client...");
+            Logger.Info("Disconnecting Steam client...");
             user = null;
             pass = null;
             steamClient.Disconnect();
@@ -532,7 +530,10 @@ namespace MoistureBot
         {
 
             if (status == null)
+            {
+                Logger.Error("Failed to set online status: Status cannot be null.");
                 throw new ArgumentException("Invalid status");
+            }
 
             foreach (OnlineStatus ps in Enum.GetValues(typeof(OnlineStatus)))
             {
@@ -544,7 +545,10 @@ namespace MoistureBot
                 }
             }
 
+            Logger.Error("Failed to set online status: Invalid value '" + status + "'");
+
             throw new ArgumentException("Invalid status");
+
         }
 
         public void SetOnlineStatus(OnlineStatus status)
@@ -584,16 +588,20 @@ namespace MoistureBot
 
         public void JoinChatRoom(ulong roomId)
         {
+            Logger.Info("Joining chat room " + roomId + "...");
             steamFriends.JoinChat(new SteamID(roomId));
         }
 
         public void LeaveChatRoom(ulong roomId)
         {
+            Logger.Info("Leaving chat room " + roomId + "...");
             steamFriends.LeaveChat(new SteamID(roomId));
         }
 
         public void SendChatRoomMessage(String message, ulong chatRoomId)
         {
+
+            Logger.Info("Sending message to chat room " + chatRoomId);
 
             if (string.IsNullOrEmpty(message))
             {
@@ -601,7 +609,6 @@ namespace MoistureBot
                 return;
             }
 				
-            // TODO: remove try catch
             try
             {
                 steamFriends.SendChatRoomMessage(
@@ -651,7 +658,15 @@ namespace MoistureBot
 
         public void Terminate()
         {
+            Logger.Info("Terminating Steam client.");
+
+            if (steamUser != null)
+                steamUser.LogOff();
+            if (steamClient != null)
+                steamClient.Disconnect();
+
             terminated = true;
+                
         }
 
         public void BanChatMember(ulong roomId, ulong userId)

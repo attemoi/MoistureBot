@@ -19,7 +19,7 @@ namespace MoistureBot.ConsoleCommands
         [Provide]
         public FavoritesCommand(IContext context)
         {
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Logger = context.GetLogger(typeof(FavoritesCommand));
             this.Config = context.GetConfig();
         }
 
@@ -38,8 +38,6 @@ namespace MoistureBot.ConsoleCommands
         public bool Execute(string[] args)
         {
 
-            Logger.Info("Executing command...");
-		
             List<string> extra = Options.Parse(args);
 
             if (list || extra.Count == 0)

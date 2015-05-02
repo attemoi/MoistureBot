@@ -20,7 +20,7 @@ namespace MoistureBot.ConsoleCommands
         public DisconnectCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Logger = context.GetLogger(typeof(DisconnectCommand));
         }
 
         public OptionSet Options {
@@ -29,7 +29,7 @@ namespace MoistureBot.ConsoleCommands
 
         public bool Execute(string[] args)
         {
-            Logger.Info("Executing command...");
+
             List<string> extra = Options.Parse(args);
 
             if (extra.Count > 0)
@@ -44,6 +44,7 @@ namespace MoistureBot.ConsoleCommands
             Console.WriteLine("Disconnecting bot...");
             Bot.Disconnect();
             return false;
+
         }
     }
 }

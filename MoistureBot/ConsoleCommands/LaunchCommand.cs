@@ -29,7 +29,7 @@ namespace MoistureBot.ConsoleCommands
         public LaunchCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(typeof(ExitCommand));
+            this.Logger = context.GetLogger(typeof(LaunchCommand));
             this.Config = context.GetConfig();
         }
 
@@ -50,7 +50,6 @@ namespace MoistureBot.ConsoleCommands
 
 		public bool Execute(string[] args)
 		{
-			Logger.Info("Executing command...");
 
 			List<string> extra = Options.Parse(args);
 				

@@ -21,7 +21,7 @@ namespace MoistureBot.ConsoleCommands
         public JoinChatCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Logger = context.GetLogger(typeof(JoinChatCommand));
             this.Config = context.GetConfig();
         }
 
@@ -38,8 +38,6 @@ namespace MoistureBot.ConsoleCommands
 
 		public bool Execute(string[] args)
 		{
-
-			Logger.Debug("Executing command...");
 
 			List<string> extra = Options.Parse(args);
 

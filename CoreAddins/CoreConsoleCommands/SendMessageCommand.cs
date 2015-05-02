@@ -21,7 +21,7 @@ namespace MoistureBot.ConsoleCommands
         public SendMessageCommand(IContext context)
         {
             this.Bot = context.GetBot();
-            this.Logger = context.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            this.Logger = context.GetLogger(typeof(SendMessageCommand));
             this.Config = context.GetConfig();
         }
 
@@ -34,9 +34,7 @@ namespace MoistureBot.ConsoleCommands
 
         public bool Execute(string[] args)
         {
-
-            Logger.Info("Executing command...");
-		
+            
             List<string> extra = Options.Parse(args);
 
             if (!Bot.IsConnected())

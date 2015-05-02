@@ -91,24 +91,27 @@ namespace MoistureBot
 				if (!String.IsNullOrWhiteSpace(input))
 				{
 
-					Logger.Info("Parsing command '" + input + "'");
-					// Parse your string and create Command object
-					var commandParts = input.Split(' ').ToList();
-					var commandName = commandParts[0];
-					var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
+                    Logger.Info("Parsing command '" + input + "'");
+                    // Parse your string and create Command object
+                    var commandParts = input.Split(' ').ToList();
+                    var commandName = commandParts[0];
+                    var args = commandParts.Skip(1).ToArray(); // the arguments is after the command
 
-                    try {
-                        bool invoked = Context.InvokeAddins<IConsoleCommand, ConsoleCommandNode>(
-                                "/MoistureBot/IConsoleCommand", 
+                    try
+                    {
+                        bool invoked = Context.InvokeAddins<IConsoleCommand, ConsoleCommandNode>("/MoistureBot/IConsoleCommand", 
                                 node => node.Name.Equals(commandName),
-                                addin => exit = addin.Execute(args));
+                                addin => {
+                                    Logger.Info("Executing " + addin.GetType().Name + ".");
+                                    exit = addin.Execute(args);
+                                });
 
                         if (!invoked)
                         {
                             Console.WriteLine("Unknown command: '" + input + "'");
                         }
                         
-                    } 
+                    }
                     catch (Exception e)
                     {
                         Console.WriteLine("Error while executing command!");
@@ -116,7 +119,7 @@ namespace MoistureBot
                         Logger.Error("Error while executing console command.", e);
                     }
 
-				}
+                }
                     
 			}
 		}

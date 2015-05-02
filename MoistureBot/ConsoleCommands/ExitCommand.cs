@@ -30,8 +30,7 @@ namespace MoistureBot.ConsoleCommands
 
         public bool Execute(string[] args)
         {
-            Logger.Info("Executing command...");
-
+            
             List<string> extra = Options.Parse(args);
 
             if (extra.Count > 0)
