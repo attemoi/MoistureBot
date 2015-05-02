@@ -28,7 +28,7 @@ After a successful build, the binaries will be in _MoistureBot/bin/Debug_ and ca
 
 ### Building on Windows
 
-Building on Windows is the same as for linux, but you may also use msbuild instead of xbuild if you don't have Mono installed.
+Building on Windows is the same as for linux, but you may also use msbuild instead of xbuild if you don't have Mono installed. In order for SQLite to work on Windows, you need to download the precompiled SQLite3 binaries from [http://www.sqlite.org/download.html](http://www.sqlite.org/download.html). Place the binaries (sqlite3.dll) in the same folder with MoistureBot.exe.
 
 ## Creating addins
 
