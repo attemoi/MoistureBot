@@ -10,14 +10,14 @@ namespace MoistureBot.Extensions
     {
 
         /// <summary>
-        /// Creates a new extension object
+        /// Creates a new extension object.
         /// </summary>
         /// <returns>
         /// The extension object
         /// </returns>
         public override object CreateInstance ()
         {
-            // Check if addin has a constructor with [Provide] a attribute.
+            // Check if addin has a constructor with [Provide] attribute.
             ConstructorInfo ctor = Type
                 .GetConstructors()
                 .Where(c => c.IsDefined(typeof(ProvideAttribute), false))
