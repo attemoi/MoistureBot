@@ -12,7 +12,7 @@ namespace MoistureBot
     public class Moikkaaja : IReceiveFriendChatMessages, IReceiveGroupChatMessages
     {
         
-        Dictionary<String, String> ReplyDict = new Dictionary<String, String>();
+        Dictionary<String, String> ReplyDict;
 
         IMoistureBot Bot;
         ILogger Logger;
@@ -23,17 +23,23 @@ namespace MoistureBot
             this.Bot = context.GetBot();
             this.Logger = context.GetLogger(typeof(Moikkaaja));
 
-            Logger.Info("Reading greetings from xml file.");
+            ReplyDict = createReplyDictionary();
 
+            Logger.Info("Found " + ReplyDict.Count + " greetings.");
+        }
+
+        private Dictionary<String, String> createReplyDictionary() {
+
+            Logger.Info("Parsing Greetings.xml.");
             try 
             {
                 // Convert greetings to a dictionary with a stripped lowercase string as the key.
-                ReplyDict = ReadGreetings()
+                return ParseXmlGreetings()
                     .Select((str) => new { 
                         Value = str, 
                         Key = stripMessage(str)
                     })
-                    .GroupBy(e => e.Key) // This is needed to handle duplicates
+                    .GroupBy(e => e.Key) // Handle duplicates
                     .ToDictionary(
                         x => x.First().Key,
                         x => x.First().Value
@@ -41,10 +47,9 @@ namespace MoistureBot
             }
             catch (Exception e)
             {
-                Logger.Error("Failed to read greetings.", e);
+                Logger.Error("Failed to parse greetings.", e);
+                return new Dictionary<String, String>(); // Empty dictionary
             }
-
-            Logger.Info("Found " + ReplyDict.Count + " greetings.");
 
         }
 
@@ -79,7 +84,7 @@ namespace MoistureBot
 
         }
 
-        private IEnumerable<String> ReadGreetings()
+        private IEnumerable<String> ParseXmlGreetings()
         {
 
             //     Greetings.xml example data:
