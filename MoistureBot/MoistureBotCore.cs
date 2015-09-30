@@ -58,25 +58,27 @@ namespace MoistureBot
             // register a few callbacks we're interested in
             // these are registered upon creation to a callback manager, which will then route the callbacks
             // to the functions specified
-            new Callback<SteamClient.ConnectedCallback>(ConnectedCallback, manager);
-            new Callback<SteamClient.DisconnectedCallback>(DisconnectedCallback, manager);
+            manager.Subscribe<SteamClient.ConnectedCallback>(ConnectedCallback);
+
+            manager.Subscribe<SteamClient.ConnectedCallback>(ConnectedCallback);
+            manager.Subscribe<SteamClient.DisconnectedCallback>(DisconnectedCallback);
 
             // User
-            new Callback<SteamUser.LoggedOnCallback>(LoggedOnCallback, manager);
-            new Callback<SteamUser.LoggedOffCallback>(LoggedOffCallback, manager);
-            new Callback<SteamUser.AccountInfoCallback>(AccountInfoCallback, manager);
+            manager.Subscribe<SteamUser.LoggedOnCallback>(LoggedOnCallback);
+            manager.Subscribe<SteamUser.LoggedOffCallback>(LoggedOffCallback);
+            manager.Subscribe<SteamUser.AccountInfoCallback>(AccountInfoCallback);
 
             // Friends
-            new Callback<SteamFriends.ChatEnterCallback>(ChatEnterCallback, manager);
-            new Callback<SteamFriends.ChatMsgCallback>(ChatMsgCallback, manager);
-            new Callback<SteamFriends.ChatInviteCallback>(ChatInviteCallback, manager);
-            new Callback<SteamFriends.ChatActionResultCallback>(ChatActionResultCallback, manager);
-            new Callback<SteamFriends.ChatMemberInfoCallback>(ChatMemberInfoCallback, manager);
-            new Callback<SteamFriends.FriendsListCallback>(FriendsListCallback, manager);
-            new Callback<SteamFriends.PersonaStateCallback>(PersonaStateCallback, manager);
-            new Callback<SteamFriends.ProfileInfoCallback>(ProfileInfoCallback, manager);
+            manager.Subscribe<SteamFriends.ChatEnterCallback>(ChatEnterCallback);
+            manager.Subscribe<SteamFriends.ChatMsgCallback>(ChatMsgCallback);
+            manager.Subscribe<SteamFriends.ChatInviteCallback>(ChatInviteCallback);
+            manager.Subscribe<SteamFriends.ChatActionResultCallback>(ChatActionResultCallback);
+            manager.Subscribe<SteamFriends.ChatMemberInfoCallback>(ChatMemberInfoCallback);
+            manager.Subscribe<SteamFriends.FriendsListCallback>(FriendsListCallback);
+            manager.Subscribe<SteamFriends.PersonaStateCallback>(PersonaStateCallback);
+            manager.Subscribe<SteamFriends.ProfileInfoCallback>(ProfileInfoCallback);
 
-            new Callback<SteamFriends.FriendMsgCallback>(FriendMsgCallback, manager);
+            manager.Subscribe<SteamFriends.FriendMsgCallback>(FriendMsgCallback);
 
         }
 
@@ -356,9 +358,6 @@ namespace MoistureBot
                     break;
                 case EChatEntryType.WasKicked:
                     Logger.Info(chatterId + " was kicked from " + chatId);
-                    break;
-                case EChatEntryType.LobbyGameStart:
-                    Logger.Info(chatterId + " started game " + chatId);
                     break;
                 case EChatEntryType.Entered:
                     Logger.Info(chatterId + " entered room " + chatId);
