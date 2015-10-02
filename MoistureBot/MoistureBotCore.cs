@@ -21,15 +21,12 @@ namespace MoistureBot
     public class MoistureBotCore : IMoistureBot
     {
 
-
-
         private ILogger Logger;
         private IConfig Config;
 
         private IContext context;
 	
         private volatile bool terminated;
-
 
         private SteamClient steamClient;
         private CallbackManager manager;
@@ -38,7 +35,6 @@ namespace MoistureBot
         private SteamFriends steamFriends;
 
         // Bot steam user properties
-
         private volatile string user;
         private volatile string pass;
 
@@ -53,19 +49,13 @@ namespace MoistureBot
             Logger = context.GetLogger(typeof(MoistureBotCore));
             Config = context.GetConfig();
 
-            // create our steamclient instance
             steamClient = new SteamClient();
 
-            // create the callback manager which will route callbacks to function calls
-            manager = new CallbackManager(steamClient);
-
-            // get the steamuser handler, which is used for logging on after successfully connecting
             steamUser = steamClient.GetHandler<SteamUser>();
             steamFriends = steamClient.GetHandler<SteamFriends>();
 
-            // register a few callbacks we're interested in
-            // these are registered upon creation to a callback manager, which will then route the callbacks
-            // to the functions specified
+            manager = new CallbackManager(steamClient);
+
             manager.Subscribe<SteamClient.ConnectedCallback>(ConnectedCallback);
             manager.Subscribe<SteamClient.ConnectedCallback>(ConnectedCallback);
             manager.Subscribe<SteamClient.DisconnectedCallback>(DisconnectedCallback);
@@ -89,64 +79,37 @@ namespace MoistureBot
 
         }
 
-        private void configureServers()
+        private void BotThread()
         {
-            
-            int cellid = 0;
-            try
+            Logger.Info("Configuring Steam servers.");
+            ConfigureServers();
+            while (!terminated)
             {
-                cellid = Int32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
-            }
-            catch
-            {
-                Logger.Warn("Failed to parse cell id from settings. Using default value 0");
-            }
-
-            if (File.Exists("servers.bin"))
-            {
-                readServerListFromDisk("servers.bin");
-            }
-            else
-            {
-                // since we don't have a list of servers saved, load the latest list of Steam servers
-                // from the Steam Directory.
-                var loadServersTask = SteamDirectory.Initialize(cellid);
-                loadServersTask.Wait();
-
-                if (loadServersTask.IsFaulted)
+                try
                 {
-                    Console.WriteLine("Error loading server list from directory: {0}",loadServersTask.Exception.Message);
-                    return;
+                    manager.RunWaitCallbacks(TimeSpan.FromSeconds(3));
+                }
+                catch(InvalidOperationException e)
+                {
+                    // There is probably a bug in SteamKit2 causing this exception sometimes when connecting
+                    Logger.Error("Error in bot callback thread",e);
+                }
+                catch(Exception e)
+                {
+                    Logger.Error("Error in bot callback thread",e);
                 }
             }
         }
 
-        private void readServerListFromDisk(String filename)
+        private string GetPersonaName(SteamID id)
         {
-
-            using(var fs = File.OpenRead(filename))
-            using(var reader = new BinaryReader(fs))
-            {
-                while (fs.Position < fs.Length)
-                {
-                    var numAddressBytes = reader.ReadInt32();
-                    var addressBytes = reader.ReadBytes(numAddressBytes);
-                    var port = reader.ReadInt32();
-
-                    var ipaddress = new IPAddress(addressBytes);
-                    var endPoint = new IPEndPoint(ipaddress, port);
-
-                    CMClient.Servers.TryAdd(endPoint);
-                }
-            }
-
+            return steamFriends.GetFriendPersonaName(id);
         }
 
         void ProfileInfoCallback(SteamFriends.ProfileInfoCallback obj)
         {
             Logger.Info("Profile info callback fired.");
         }
-
 
         void PersonaStateCallback(SteamFriends.PersonaStateCallback obj)
         {
@@ -196,53 +159,6 @@ namespace MoistureBot
                         Logger.Info("Failed to unban user: " + obj.Result);
                     break;
             } 
-        }
-
-        private string GetPersonaName(SteamID id)
-        {
-            return steamFriends.GetFriendPersonaName(id);
-        }
-
-        public void Start()
-        {
-            Logger.Info("Bot started.");
-
-            configureServers();
-
-            Thread t = new Thread(CallbackWaitThread);
-
-            try
-            {
-                t.Start();
-            }
-            catch(ThreadStateException e)
-            {
-                Logger.Error("Failed to start bot thread",e);
-            }
-            catch(ThreadInterruptedException e)
-            {
-                Logger.Error("Bot thread interrupted",e);
-            }
-        }
-
-        private void CallbackWaitThread()
-        {
-            while (!terminated)
-            {
-                try
-                {
-                    manager.RunWaitCallbacks(TimeSpan.FromSeconds(3));
-                }
-                catch(InvalidOperationException e)
-                {
-                    // There is probably a bug in SteamKit2 causing this exception sometimes when connecting
-                    Logger.Error("Error in bot callback thread",e);
-                }
-                catch(Exception e)
-                {
-                    Logger.Error("Error in bot callback thread",e);
-                }
-            }
         }
 
         private void ConnectedCallback(SteamClient.ConnectedCallback callback)
@@ -350,31 +266,14 @@ namespace MoistureBot
             isLoggedIn = false;
             try
             {
-                Logger.Info("Saving current server list to disk.");
-                writeServerListToDisk("servers.bin");
+                Logger.Info("Writing server list to disk.");
+                WriteServerListToDisk("servers.bin");
             }
             catch(Exception e)
             {
-                Logger.Error("Failed to write server list to disk",e);
+                Logger.Error("Failed to write server list to disk.",e);
             }
 
-        }
-
-        private void writeServerListToDisk(String filename)
-        {
-            
-            using(var fs = File.OpenWrite(filename))
-            using(var writer = new BinaryWriter(fs))
-            {
-                foreach (var endPoint in CMClient.Servers.GetAllEndPoints())
-                {
-                    var addressBytes = endPoint.Address.GetAddressBytes();
-                    writer.Write(addressBytes.Length);
-                    writer.Write(addressBytes);
-                    writer.Write(endPoint.Port);
-                }
-            }
-            
         }
 
         private void LoggedOnCallback(SteamUser.LoggedOnCallback callback)
@@ -565,6 +464,24 @@ namespace MoistureBot
         public string Username { get { return user; } }
 
         public string Password { get { return pass; } }
+
+        public void Start()
+        {
+            try
+            {
+                Logger.Info("Starting bot...");
+                Thread t = new Thread(BotThread);
+                t.Start();
+            }
+            catch(ThreadStateException e)
+            {
+                Logger.Error("Failed to start bot thread",e);
+            }
+            catch(ThreadInterruptedException e)
+            {
+                Logger.Error("Bot thread interrupted",e);
+            }
+        }
 
         public string PersonaName
         {
@@ -791,6 +708,83 @@ namespace MoistureBot
         }
 
         #endregion
+
+        private void ConfigureServers()
+        {
+
+            if (File.Exists("servers.bin"))
+            {
+                try 
+                {
+                    var endPoints = ReadServerListFromDisk("servers.bin");
+                    CMClient.Servers.TryAddRange(endPoints);
+                }
+                catch ( Exception e )
+                {
+                    Logger.Error("Failed to read server list from disk.", e);
+                }
+            }
+            else
+            {
+                int cellid = 0;
+                try
+                {
+                    cellid = Int32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
+                }
+                catch
+                {
+                    Logger.Warn("Failed to parse cell id from settings. Using default value 0.");
+                }
+                    
+                var loadTask = SteamDirectory.Initialize(cellid);
+                loadTask.Wait();
+
+                if (loadTask.IsFaulted)
+                {
+                    Logger.Error("Error while loading server list from directory.", loadTask.Exception);
+                    return;
+                }
+            }
+        }
+
+        private List<IPEndPoint> ReadServerListFromDisk(String filename)
+        {
+            var endPointList = new List<IPEndPoint>();
+            using(var fs = File.OpenRead(filename))
+            using(var reader = new BinaryReader(fs))
+            {
+                while (fs.Position < fs.Length)
+                {
+                    var numAddressBytes = reader.ReadInt32();
+                    var addressBytes = reader.ReadBytes(numAddressBytes);
+                    var port = reader.ReadInt32();
+
+                    var ipaddress = new IPAddress(addressBytes);
+                    var endPoint = new IPEndPoint(ipaddress, port);
+
+                    endPointList.Add(endPoint);
+                }
+            }
+            return endPointList;
+
+        }
+
+        private void WriteServerListToDisk(String filename)
+        {
+
+            using(var fs = File.OpenWrite(filename))
+            using(var writer = new BinaryWriter(fs))
+            {
+                foreach (var endPoint in CMClient.Servers.GetAllEndPoints())
+                {
+                    var addressBytes = endPoint.Address.GetAddressBytes();
+                    writer.Write(addressBytes.Length);
+                    writer.Write(addressBytes);
+                    writer.Write(endPoint.Port);
+                }
+            }
+
+        }
 
     }
 }
