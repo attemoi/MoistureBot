@@ -21,12 +21,15 @@ namespace MoistureBot
     public class MoistureBotCore : IMoistureBot
     {
 
+
+
         private ILogger Logger;
         private IConfig Config;
 
         private IContext context;
 	
         private volatile bool terminated;
+
 
         private SteamClient steamClient;
         private CallbackManager manager;
@@ -36,8 +39,10 @@ namespace MoistureBot
 
         // Bot steam user properties
 
-        private string user;
-        private string pass;
+        private volatile string user;
+        private volatile string pass;
+
+        private volatile bool isLoggedIn = false;
 
         public MoistureBotCore(IContext context)
         {
@@ -226,7 +231,7 @@ namespace MoistureBot
             {
                 try
                 {
-                    manager.RunWaitCallbacks(TimeSpan.FromSeconds(1));
+                    manager.RunWaitCallbacks(TimeSpan.FromSeconds(3));
                 }
                 catch(InvalidOperationException e)
                 {
@@ -243,21 +248,28 @@ namespace MoistureBot
         private void ConnectedCallback(SteamClient.ConnectedCallback callback)
         {
 
-            Logger.Info("Connected callback fired.");
+            Logger.Info("Connected callback fired with result: " + callback.Result);
 
             if (callback.Result != EResult.OK)
             {
                 Logger.Info("Unable to connect to Steam: " + callback.Result.ToString());
                 return;
             }
-
             Logger.Info("Connected to Steam!");
             Logger.Info("Logging in '" + user + "'...");
 
-            steamUser.LogOn(new SteamUser.LogOnDetails {
-                Username = user,
-                Password = pass,
-            });
+            if (!isLoggedIn)
+            {
+                isLoggedIn = true;
+                steamUser.LogOn(new SteamUser.LogOnDetails {
+                    Username = user,
+                    Password = pass,
+                });
+            }
+            else
+            {
+                Logger.Info("User already logged in!");
+            }
         }
 
         void ChatMemberInfoCallback(SteamFriends.ChatMemberInfoCallback callback)
@@ -335,7 +347,7 @@ namespace MoistureBot
         private void DisconnectedCallback(SteamClient.DisconnectedCallback callback)
         {
             Logger.Info("Disconnected from Steam.");
-
+            isLoggedIn = false;
             try
             {
                 Logger.Info("Saving current server list to disk.");
@@ -372,7 +384,7 @@ namespace MoistureBot
 
             if (callback.Result != EResult.OK)
             {
-
+                isLoggedIn = false;
                 if (callback.Result == EResult.AccountLogonDenied)
                 {
                     // if we recieve AccountLogonDenied or one of it's flavors (AccountLogonDeniedNoMailSent, etc)
@@ -384,11 +396,11 @@ namespace MoistureBot
                 }
 
                 Logger.Info("Unable to logon to Steam: " + callback.ExtendedResult);
+               
                 return;
             }
-                
-            Config.SetSetting(ConfigSetting.CELL_ID,callback.CellID.ToString());
 
+            Config.SetSetting(ConfigSetting.CELL_ID,callback.CellID.ToString());
             Logger.Info("Successfully logged on!");
 
         }
@@ -543,6 +555,9 @@ namespace MoistureBot
         private void LoggedOffCallback(SteamUser.LoggedOffCallback callback)
         {
             Logger.Info("Logged off of Steam: " + callback.Result);
+            isLoggedIn = false;
+            Logger.Info("Disconnecting steam client...");
+            steamClient.Disconnect();
         }
 
         #region PUBLIC
@@ -581,10 +596,19 @@ namespace MoistureBot
 
         public void Disconnect()
         {
-            Logger.Info("Disconnecting Steam client...");
+            
             user = null;
             pass = null;
-            steamClient.Disconnect();
+            if (isLoggedIn)
+            {
+                Logger.Info("Logging out...");
+                steamUser.LogOff();
+            }
+            else
+            {
+                Logger.Info("Disconnecting Steam client...");
+                steamClient.Disconnect();
+            }
         }
 
         public OnlineStatus GetOnlineStatus()
