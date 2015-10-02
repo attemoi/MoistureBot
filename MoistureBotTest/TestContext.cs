@@ -180,6 +180,10 @@ namespace MoistureBotTest
             get { return _personaName; }
             set { _personaName = value; }
         }
+        public void Start()
+        {
+            Tracker.TrackMethod();
+        }
         #endregion
 
     }

@@ -11,13 +11,16 @@ using MoistureBot;
 using MoistureBot.Model;
 using MoistureBot.Config;
 using MoistureBot.Extensions;
+using System.IO;
+using System.Net;
+using SteamKit2.Internal;
 
 namespace MoistureBot
 {
 
     public class MoistureBotCore : IMoistureBot
     {
-	
+
         private ILogger Logger;
         private IConfig Config;
 
@@ -81,6 +84,59 @@ namespace MoistureBot
 
         }
 
+        private void configureServers()
+        {
+            
+            int cellid = 0;
+            try
+            {
+                cellid = Int32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
+            }
+            catch
+            {
+                Logger.Warn("Failed to parse cell id from settings. Using default value 0");
+            }
+
+            if (File.Exists("servers.bin"))
+            {
+                readServerListFromDisk("servers.bin");
+            }
+            else
+            {
+                // since we don't have a list of servers saved, load the latest list of Steam servers
+                // from the Steam Directory.
+                var loadServersTask = SteamDirectory.Initialize(cellid);
+                loadServersTask.Wait();
+
+                if (loadServersTask.IsFaulted)
+                {
+                    Console.WriteLine("Error loading server list from directory: {0}",loadServersTask.Exception.Message);
+                    return;
+                }
+            }
+        }
+
+        private void readServerListFromDisk(String filename)
+        {
+
+            using(var fs = File.OpenRead(filename))
+            using(var reader = new BinaryReader(fs))
+            {
+                while (fs.Position < fs.Length)
+                {
+                    var numAddressBytes = reader.ReadInt32();
+                    var addressBytes = reader.ReadBytes(numAddressBytes);
+                    var port = reader.ReadInt32();
+
+                    var ipaddress = new IPAddress(addressBytes);
+                    var endPoint = new IPEndPoint(ipaddress, port);
+
+                    CMClient.Servers.TryAdd(endPoint);
+                }
+            }
+
+        }
+
         void ProfileInfoCallback(SteamFriends.ProfileInfoCallback obj)
         {
             Logger.Info("Profile info callback fired.");
@@ -102,7 +158,7 @@ namespace MoistureBot
             // TODO: This one never gets called. SteamKit2 problem?
             Logger.Info("Chat action callback fired.");
 
-            switch (obj.Action)
+            switch(obj.Action)
             {
                 case EChatAction.Ban:
                     if (obj.Result != EChatActionResult.Success)
@@ -142,10 +198,11 @@ namespace MoistureBot
             return steamFriends.GetFriendPersonaName(id);
         }
 
-        private void Start()
+        public void Start()
         {
-
             Logger.Info("Bot started.");
+
+            configureServers();
 
             Thread t = new Thread(CallbackWaitThread);
 
@@ -153,13 +210,13 @@ namespace MoistureBot
             {
                 t.Start();
             }
-            catch (ThreadStateException e)
+            catch(ThreadStateException e)
             {
-                Logger.Error("Error in bot callback thread", e);
+                Logger.Error("Failed to start bot thread",e);
             }
-            catch (ThreadInterruptedException e)
+            catch(ThreadInterruptedException e)
             {
-                Logger.Error("Bot thread interrupted", e);
+                Logger.Error("Bot thread interrupted",e);
             }
         }
 
@@ -169,16 +226,16 @@ namespace MoistureBot
             {
                 try
                 {
-                    manager.RunWaitCallbacks();
+                    manager.RunWaitCallbacks(TimeSpan.FromSeconds(1));
                 }
-                catch (InvalidOperationException e)
+                catch(InvalidOperationException e)
                 {
                     // There is probably a bug in SteamKit2 causing this exception sometimes when connecting
-                    Logger.Error("Error in bot callback thread", e);
+                    Logger.Error("Error in bot callback thread",e);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
-                    Logger.Error("Error in bot callback thread", e);
+                    Logger.Error("Error in bot callback thread",e);
                 }
             }
         }
@@ -257,9 +314,9 @@ namespace MoistureBot
             {
                 configState = Config.GetSetting(ConfigSetting.STATUS);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Logger.Error("Failed to read online status from config file", e);
+                Logger.Error("Failed to read online status from config file",e);
                 return;
             }
 
@@ -267,7 +324,7 @@ namespace MoistureBot
             {
                 SetOnlineStatus(configState);
             }
-            catch (ArgumentException)
+            catch(ArgumentException)
             {
                 Logger.Info("Invalid value for online status in config, setting to default value.");
                 SetOnlineStatus(ConfigUtils.GetValue<DefaultValueAttribute>(ConfigSetting.STATUS));
@@ -278,6 +335,34 @@ namespace MoistureBot
         private void DisconnectedCallback(SteamClient.DisconnectedCallback callback)
         {
             Logger.Info("Disconnected from Steam.");
+
+            try
+            {
+                Logger.Info("Saving current server list to disk.");
+                writeServerListToDisk("servers.bin");
+            }
+            catch(Exception e)
+            {
+                Logger.Error("Failed to write server list to disk",e);
+            }
+
+        }
+
+        private void writeServerListToDisk(String filename)
+        {
+            
+            using(var fs = File.OpenWrite(filename))
+            using(var writer = new BinaryWriter(fs))
+            {
+                foreach (var endPoint in CMClient.Servers.GetAllEndPoints())
+                {
+                    var addressBytes = endPoint.Address.GetAddressBytes();
+                    writer.Write(addressBytes.Length);
+                    writer.Write(addressBytes);
+                    writer.Write(endPoint.Port);
+                }
+            }
+            
         }
 
         private void LoggedOnCallback(SteamUser.LoggedOnCallback callback)
@@ -301,6 +386,8 @@ namespace MoistureBot
                 Logger.Info("Unable to logon to Steam: " + callback.ExtendedResult);
                 return;
             }
+                
+            Config.SetSetting(ConfigSetting.CELL_ID,callback.CellID.ToString());
 
             Logger.Info("Successfully logged on!");
 
@@ -310,7 +397,7 @@ namespace MoistureBot
         {
             Logger.Info("Chat enter callback fired");
 
-            switch (callback.EnterResponse)
+            switch(callback.EnterResponse)
             {
                 case EChatRoomEnterResponse.Success:
                     Logger.Info("Successfully joined chat!");
@@ -337,7 +424,7 @@ namespace MoistureBot
             ulong chatterId = callback.ChatterID.ConvertToUInt64();
             ulong chatId = callback.ChatRoomID.ConvertToUInt64();
 
-            switch (callback.ChatMsgType)
+            switch(callback.ChatMsgType)
             {
                 case EChatEntryType.ChatMsg:
 
@@ -372,7 +459,7 @@ namespace MoistureBot
             string message = callback.Message;
             ulong chatterId = callback.Sender.ConvertToUInt64();
 
-            switch (callback.EntryType)
+            switch(callback.EntryType)
             {
                 case EChatEntryType.ChatMsg:
                     Logger.Info("Received message from " + chatterId + ": " + message);
@@ -401,7 +488,7 @@ namespace MoistureBot
             Logger.Debug("Callback invited id: " + callback.InvitedID);
             Logger.Debug("Callback patron id: " + callback.PatronID);
 
-            switch (callback.ChatRoomType)
+            switch(callback.ChatRoomType)
             {
                 case EChatRoomType.MUC: // both community and friend group chat
 				
@@ -464,7 +551,8 @@ namespace MoistureBot
 
         public string Password { get { return pass; } }
 
-        public string PersonaName {
+        public string PersonaName
+        {
             get
             {
                 Logger.Info("Getting bot persona name");
@@ -480,7 +568,7 @@ namespace MoistureBot
         public void KickChatMember(ulong roomId, ulong userId)
         {
             Logger.Info("Kicking user " + userId + " from room " + roomId);
-            steamFriends.KickChatMember(new SteamID(roomId), new SteamID(userId));
+            steamFriends.KickChatMember(new SteamID(roomId),new SteamID(userId));
         }
 
         public void Connect(string username, string password)
@@ -489,7 +577,6 @@ namespace MoistureBot
             user = username;
             pass = password;
             steamClient.Connect();
-            Start();
         }
 
         public void Disconnect()
@@ -503,7 +590,7 @@ namespace MoistureBot
         public OnlineStatus GetOnlineStatus()
         {
             var state = steamFriends.GetPersonaState();
-            switch (state)
+            switch(state)
             {
                 case EPersonaState.Away:
                     return OnlineStatus.AWAY;
@@ -554,7 +641,7 @@ namespace MoistureBot
 
             Logger.Info("Setting online status to " + status);
 
-            switch (status)
+            switch(status)
             {
                 case OnlineStatus.AWAY:
                     steamFriends.SetPersonaState(EPersonaState.Away);
@@ -615,9 +702,9 @@ namespace MoistureBot
                     message
                 );
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Logger.Error("Failed to send message to chat room " + chatRoomId, e);
+                Logger.Error("Failed to send message to chat room " + chatRoomId,e);
             }
         }
 
@@ -638,9 +725,9 @@ namespace MoistureBot
                     message
                 );
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Logger.Error("Failed to send message to user " + userId, e);
+                Logger.Error("Failed to send message to user " + userId,e);
             }
         }
 
@@ -670,13 +757,13 @@ namespace MoistureBot
         public void BanChatMember(ulong roomId, ulong userId)
         {
             Logger.Info("Banning chat member " + userId + " in room " + roomId);
-            steamFriends.BanChatMember(new SteamID(roomId), new SteamID(userId));
+            steamFriends.BanChatMember(new SteamID(roomId),new SteamID(userId));
         }
 
         public void UnbanChatMember(ulong roomId, ulong userId)
         {
             Logger.Info("Unbanning chat member " + userId + " in room " + roomId);
-            steamFriends.UnbanChatMember(new SteamID(roomId), new SteamID(userId));
+            steamFriends.UnbanChatMember(new SteamID(roomId),new SteamID(userId));
         }
 
         #endregion

@@ -38,6 +38,11 @@ namespace MoistureBot
         Boolean IsConnected();
 
         /// <summary>
+        /// Start the bot. Does not do anything if the bot is already started.
+        /// </summary>
+        void Start();
+
+        /// <summary>
         /// Connects and signs in to Steam.
         /// </summary>
         /// <param name="username">Steam username</param>

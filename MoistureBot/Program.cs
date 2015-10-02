@@ -54,6 +54,8 @@ namespace MoistureBot
 			if (!Config.ConfigExists())
 				Config.CreateConfig();
 				
+            Bot.Start();
+
             if (new LaunchCommand(Context).Execute(args))
 				return; 
 
@@ -61,6 +63,8 @@ namespace MoistureBot
             Context.InvokeAddins<IStartupCommand>(addin => addin.ProgramStarted());
 
 			HandleConsoleInput();
+
+
 
 		}
 
