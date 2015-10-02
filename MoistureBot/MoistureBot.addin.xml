@@ -1,24 +1,14 @@
-﻿<Addin id="MoistureBot" version="1.0" isroot="false">
+﻿<Addin 
+        id="MoistureBot" 
+        name="MoistureBot"
+        version="1.0" 
+        isroot="true" 
+        author="Atte Moisio" 
+        description="MoistureBot core">
+
     <Runtime>
-        <Import assembly="ChatCommand.dll" />
+        <Import assembly="MoistureBotLib.dll" />
     </Runtime>
-
-<!--    <Dependencies>
-        <Addin id="MoistureBot" version="1.0" />
-    </Dependencies>-->
-
-
-
-<!--    <Extension path="/MoistureBot/I">
-        <Type 
-            type="MoistureBot.Command" 
-            name="" 
-            shortDescription=""
-            shortUsage="help &lt;command&gt;"
-            description=""
-            usage="help &lt;command&gt;"
-              />
-    </Extension>-->
 
     <Extension path="/MoistureBot/IConsoleCommand">
         <Type

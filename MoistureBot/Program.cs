@@ -15,12 +15,12 @@ using System.Collections;
 using System.Runtime.Serialization;
 using MoistureBot.Extensions;
 
-[assembly:AddinRoot("MoistureBot", "1.0")]
-[assembly:AddinAuthor("Atte Moisio")]
-[assembly:AddinDescription("Extensible chat bot for Steam.")]
-[assembly:AddinName("MoistureBot")]
-[assembly:AddinUrl("")]
-[assembly:ImportAddinAssembly("MoistureBotLib.dll")]
+//[assembly:AddinRoot("MoistureBot", "1.0")]
+//[assembly:AddinAuthor("Atte Moisio")]
+//[assembly:AddinDescription("Extensible chat bot for Steam.")]
+//[assembly:AddinName("MoistureBot")]
+//[assembly:AddinUrl("")]
+//[assembly:ImportAddinAssembly("MoistureBotLib.dll")]
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -129,7 +129,6 @@ namespace MoistureBot
 		
 			try
 			{
-
 				Run(args);
 
 				if (Bot != null)
@@ -141,7 +140,7 @@ namespace MoistureBot
 			catch(Exception e)
 			{
 				Logger.Error("Program failure", e);
-				Console.WriteLine(e);
+                Console.WriteLine(e);
 				return Environment.ExitCode != 0
 					? Environment.ExitCode : 100;
 			}

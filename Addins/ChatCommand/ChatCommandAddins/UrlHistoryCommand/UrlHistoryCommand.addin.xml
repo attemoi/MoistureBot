@@ -10,8 +10,8 @@
 
     <Extension path = "/MoistureBot/ChatCommand/IChatCommand"> 
         <ChatCommand
-            type="MoistureBot.UrlHistoryCommand"
             commandName="urlhistory" 
+            type="MoistureBot.UrlHistoryCommand"
             commandDescription="Displays group chat url history."
             /> 
     </Extension> 

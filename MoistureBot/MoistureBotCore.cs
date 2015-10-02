@@ -59,7 +59,6 @@ namespace MoistureBot
             // these are registered upon creation to a callback manager, which will then route the callbacks
             // to the functions specified
             manager.Subscribe<SteamClient.ConnectedCallback>(ConnectedCallback);
-
             manager.Subscribe<SteamClient.ConnectedCallback>(ConnectedCallback);
             manager.Subscribe<SteamClient.DisconnectedCallback>(DisconnectedCallback);
 
@@ -90,7 +89,7 @@ namespace MoistureBot
 
         void PersonaStateCallback(SteamFriends.PersonaStateCallback obj)
         {
-            Logger.Info("Persona state callback fired with state " + obj.StatusFlags);
+            Logger.Debug("Persona state callback fired with state " + obj.StatusFlags);
         }
 
         void FriendsListCallback(SteamFriends.FriendsListCallback obj)

@@ -26,8 +26,19 @@ namespace MoistureBot
         public IMoistureBot GetBot()
         {
             if (Bot == null)
-                Bot = new MoistureBotCore(this);
+            {
+                try {
+                    Bot = new MoistureBotCore(this);
+                    return Bot;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("Failed to instantiate MoistureBot core.", e);
+                }
+            }
+
             return Bot;
+       
         }
 
         public ILogger GetLogger(Type type)
@@ -38,7 +49,18 @@ namespace MoistureBot
         public IConfig GetConfig()
         {
             if (Config == null)
-                Config = new MoistureBotConfig(this);
+            {
+                try {
+                    Config = new MoistureBotConfig(this);
+                    return Config;
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("Failed to instantiate MoistureBot configurator.", e);
+                }
+                    
+            }
+
             return Config;
         }
 
@@ -57,29 +79,37 @@ namespace MoistureBot
         {
 
             bool invoked = false;
-            foreach (var node in AddinManager
-                .GetExtensionNodes(path, typeof(NodeType)))
-            {
-                if (predicate.Invoke((NodeType)node))
+
+            try {
+                
+                foreach (var node in AddinManager.GetExtensionNodes(path, typeof(NodeType)))
                 {
-                    var moistureBotNode = node as MoistureBotExtensionNode;
-                    if (typeof(AddinType).IsAssignableFrom(moistureBotNode.Type))
+                    if (predicate.Invoke((NodeType)node))
                     {
-                        invoked = true;
-                        Object addin = ((MoistureBotExtensionNode)node).GetInstance();
-                        try {
-                            onNext.Invoke((AddinType)addin);
-                        } 
-                        catch (Exception e)
+                        var moistureBotNode = node as MoistureBotExtensionNode;
+                        if (typeof(AddinType).IsAssignableFrom(moistureBotNode.Type))
                         {
-                            Logger.Error("Error when invoking instance of " + addin.GetType().Name + ": " + e.Message, e);
+                            invoked = true;
+                            Object addin = ((MoistureBotExtensionNode)node).GetInstance();
+                            try {
+                                onNext.Invoke((AddinType)addin);
+                            } 
+                            catch (Exception e)
+                            {
+                                Logger.Error("Error when invoking instance of " + addin.GetType().Name + ": " + e.Message, e);
+                            }
                         }
                     }
                 }
+
+            } 
+            catch ( Exception e )
+            {
+                Logger.Error("Error while trying to invoke addins", e);
             }
 
             return invoked;
-                
+
         }
 
     }

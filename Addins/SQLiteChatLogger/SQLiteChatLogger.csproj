@@ -26,6 +26,18 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x86\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -57,7 +69,6 @@
     <EmbeddedResource Include="SQLiteChatLogger.addin.xml" />
   </ItemGroup>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(OutDir)Json.dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)Mono.Data.Sqlite.dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\addins" ContinueOnError="true" />
   </Target>
