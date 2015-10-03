@@ -17,7 +17,8 @@ namespace MoistureBot
     {
 
         private ILogger Logger;
-
+        private FileIniDataParser Parser;
+        
         private static string SECTION_FAVORITE_USERS = "favorite_users";
         private static string SECTION_FAVORITE_ROOMS = "favorite_rooms";
 
@@ -26,15 +27,10 @@ namespace MoistureBot
 
         private static readonly object iniLock = new object();
 
-        public MoistureBotConfig(IContext context)
+        public MoistureBotConfig(IContext context, FileIniDataParser parser)
         {
-            Logger = context.GetLogger(typeof(MoistureBotConfig));
-        }
-
-        private FileIniDataParser getParser()
-        {
-            var parser = new FileIniDataParser();
-            return parser;
+            this.Logger = context.GetLogger(typeof(MoistureBotConfig));
+            this.Parser = parser;
         }
 
         private void WriteData(IniData data, FileIniDataParser parser)
@@ -95,7 +91,7 @@ namespace MoistureBot
             var data = new IniData();
             data.Sections.AddSection(SECTION_FAVORITE_ROOMS);
             data.Sections.AddSection(SECTION_FAVORITE_USERS);
-            WriteData(data, getParser());
+            WriteData(data, Parser);
 
             SetSetting(
                 ConfigSetting.STATUS, 
@@ -110,7 +106,7 @@ namespace MoistureBot
                 CreateConfig();
 
 
-            var parser = getParser();
+            var parser = Parser;
             var data = new IniData();
             parser.WriteFile(FILENAME, data, ENCODING);
         }
@@ -122,7 +118,7 @@ namespace MoistureBot
 
         public Dictionary<string, ulong> GetFavoriteUsers()
         {
-            IniData data = ReadData(getParser());
+            IniData data = ReadData(Parser);
             KeyDataCollection users = data[SECTION_FAVORITE_USERS];
 
             return IniCollectionToDictionary(users);
@@ -130,7 +126,7 @@ namespace MoistureBot
 
         public Dictionary<string, ulong> GetFavoriteChatRooms()
         {
-            IniData data = ReadData(getParser());
+            IniData data = ReadData(Parser);
             KeyDataCollection rooms = data[SECTION_FAVORITE_ROOMS];
 
             return IniCollectionToDictionary(rooms);
@@ -164,7 +160,7 @@ namespace MoistureBot
         {
             Logger.Info("Adding favorite user: key '" + key + "' + id: '" + userId + "'");
 
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
 
             CreateSectionIfNotExists(data, SECTION_FAVORITE_USERS);
@@ -182,7 +178,7 @@ namespace MoistureBot
         {
             Logger.Info("Adding favorite room: key '" + key + "' + id: '" + chatRoomId + "'");
 
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
 
             CreateSectionIfNotExists(data, SECTION_FAVORITE_ROOMS);
@@ -199,7 +195,7 @@ namespace MoistureBot
         {
             Logger.Info("Removing favorite user with key '" + key + "'");
 
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
 
             CreateSectionIfNotExists(data, SECTION_FAVORITE_USERS);
@@ -214,7 +210,7 @@ namespace MoistureBot
 
         public bool RemoveFavoriteChatRoom(string key)
         {
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
 
             CreateSectionIfNotExists(data, SECTION_FAVORITE_ROOMS);
@@ -232,7 +228,7 @@ namespace MoistureBot
 
             Logger.Info("Changing ini setting '" + key + "' in section '" + section + "'");
 
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
 
             CreateSectionAndKeyIfNotExists(data, section, key);
@@ -279,7 +275,7 @@ namespace MoistureBot
             try
             {
                 Logger.Info("Reading ini setting '" + key + "' in section '" + section + "'");
-                var data = ReadData(getParser());
+                var data = ReadData(Parser);
 
                 if (!data.Sections.ContainsSection(section))
                 {
@@ -293,7 +289,7 @@ namespace MoistureBot
                     return null;
                 }
 
-                var value = ReadData(getParser())[section][key];
+                var value = ReadData(Parser)[section][key];
                 Logger.Info("Found value '" + value + "'");
                 return value;
             }
@@ -308,7 +304,7 @@ namespace MoistureBot
         {
             Logger.Info("Removing all favorite users...");
 
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
             data.Sections.RemoveSection(SECTION_FAVORITE_USERS);
             data.Sections.AddSection(SECTION_FAVORITE_USERS);
@@ -319,7 +315,7 @@ namespace MoistureBot
         {
             Logger.Info("Removing all favorite chatrooms...");
 
-            var parser = getParser();
+            var parser = Parser;
             var data = ReadData(parser);
             data.Sections.RemoveSection(SECTION_FAVORITE_ROOMS);
             data.Sections.AddSection(SECTION_FAVORITE_ROOMS);
@@ -330,7 +326,7 @@ namespace MoistureBot
         {
             try
             {
-                return ReadData(getParser())[SECTION_FAVORITE_USERS][key];
+                return ReadData(Parser)[SECTION_FAVORITE_USERS][key];
             }
             catch
             {
@@ -342,7 +338,7 @@ namespace MoistureBot
         {
             try
             {
-                return ReadData(getParser())[SECTION_FAVORITE_ROOMS][key];
+                return ReadData(Parser)[SECTION_FAVORITE_ROOMS][key];
             }
             catch
             {

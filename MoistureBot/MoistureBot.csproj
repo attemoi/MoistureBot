@@ -45,7 +45,6 @@
     <Compile Include="ConsoleCommands\HelpCommand.cs" />
     <Compile Include="ConsoleCommands\LaunchCommand.cs" />
     <Compile Include="ConsoleCommands\ExitCommand.cs" />
-    <Compile Include="AddinUtils.cs" />
     <Compile Include="MoistureBotConfig.cs" />
     <Compile Include="MoistureBotCore.cs">
       <DeployService-Deploy>True</DeployService-Deploy>
@@ -53,6 +52,8 @@
     <Compile Include="MoistureBotLogger.cs" />
     <Compile Include="MoistureBotContext.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="MoistureBotConverter.cs" />
+    <Compile Include="MoistureBotFileUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

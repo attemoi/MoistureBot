@@ -43,8 +43,6 @@ namespace MoistureBot
         public MoistureBotCore(IContext context)
         {
 
-            MoistureBotAddinManager.Context = context;
-
             this.context = context;
             Logger = context.GetLogger(typeof(MoistureBotCore));
             Config = context.GetConfig();
@@ -81,7 +79,7 @@ namespace MoistureBot
 
         private void BotThread()
         {
-            Logger.Info("Configuring Steam servers.");
+            Logger.Info("Initializing Steam server list.");
             ConfigureServers();
             while (!terminated)
             {
@@ -97,6 +95,43 @@ namespace MoistureBot
                 catch(Exception e)
                 {
                     Logger.Error("Error in bot callback thread",e);
+                }
+            }
+        }
+
+        private void ConfigureServers()
+        {
+
+            var endPoints = new List<IPEndPoint>();
+            try 
+            {
+                endPoints = MoistureBotFileUtils.ReadServerListFromDisk("servers.bin");
+                CMClient.Servers.TryAddRange(endPoints);
+            }
+            catch ( Exception e )
+            {
+                Logger.Error("Failed to read server list from disk.", e);
+            }
+
+            if (endPoints.Count == 0)
+            {
+                int cellid = 0;
+                try
+                {
+                    cellid = Int32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
+                }
+                catch
+                {
+                    Logger.Warn("Failed to parse cell id from settings. Using default value 0.");
+                }
+
+                var loadTask = SteamDirectory.Initialize(cellid);
+                loadTask.Wait();
+
+                if (loadTask.IsFaulted)
+                {
+                    Logger.Error("Error while loading server list from Steam directory.", loadTask.Exception);
+                    return;
                 }
             }
         }
@@ -267,7 +302,8 @@ namespace MoistureBot
             try
             {
                 Logger.Info("Writing server list to disk.");
-                WriteServerListToDisk("servers.bin");
+                var servers = CMClient.Servers.GetAllEndPoints();
+                MoistureBotFileUtils.WriteServerListToDisk(servers, "servers.bin");
             }
             catch(Exception e)
             {
@@ -513,7 +549,6 @@ namespace MoistureBot
 
         public void Disconnect()
         {
-            
             user = null;
             pass = null;
             if (isLoggedIn)
@@ -531,25 +566,7 @@ namespace MoistureBot
         public OnlineStatus GetOnlineStatus()
         {
             var state = steamFriends.GetPersonaState();
-            switch(state)
-            {
-                case EPersonaState.Away:
-                    return OnlineStatus.AWAY;
-                case EPersonaState.Busy:
-                    return OnlineStatus.BUSY;
-                case EPersonaState.LookingToPlay:
-                    return OnlineStatus.LOOKING_TO_PLAY;
-                case EPersonaState.LookingToTrade:
-                    return OnlineStatus.LOOKING_TO_TRADE;
-                case EPersonaState.Offline:
-                    return OnlineStatus.OFFLINE;
-                case EPersonaState.Online:
-                    return OnlineStatus.ONLINE;
-                case EPersonaState.Snooze:
-                    return OnlineStatus.SNOOZE;
-                default:
-                    return OnlineStatus.OFFLINE;
-            }
+            return MoistureBotConverter.ToOnlineStatus(state);
         }
 
         public void SetOnlineStatus(string status)
@@ -582,30 +599,7 @@ namespace MoistureBot
 
             Logger.Info("Setting online status to " + status);
 
-            switch(status)
-            {
-                case OnlineStatus.AWAY:
-                    steamFriends.SetPersonaState(EPersonaState.Away);
-                    break;
-                case OnlineStatus.BUSY:
-                    steamFriends.SetPersonaState(EPersonaState.Busy);
-                    break;
-                case OnlineStatus.LOOKING_TO_PLAY:
-                    steamFriends.SetPersonaState(EPersonaState.LookingToPlay);
-                    break;
-                case OnlineStatus.LOOKING_TO_TRADE:
-                    steamFriends.SetPersonaState(EPersonaState.LookingToTrade);
-                    break;
-                case OnlineStatus.OFFLINE:
-                    steamFriends.SetPersonaState(EPersonaState.Offline);
-                    break;
-                case OnlineStatus.ONLINE:
-                    steamFriends.SetPersonaState(EPersonaState.Online);
-                    break;
-                case OnlineStatus.SNOOZE:
-                    steamFriends.SetPersonaState(EPersonaState.Snooze);
-                    break;
-            }
+            steamFriends.SetPersonaState(MoistureBotConverter.ToEPersonaState(status));
 
             Config.SetSetting(
                 ConfigSetting.STATUS,
@@ -654,10 +648,10 @@ namespace MoistureBot
 
             if (string.IsNullOrEmpty(message))
             {
-                Logger.Info("Trying to send empty message to user");
+                Logger.Info("Trying to send empty message to user " + userId);
                 return;
             }
-            // TODO: remove try catch?
+
             try
             {
                 steamFriends.SendChatMessage(
@@ -707,84 +701,7 @@ namespace MoistureBot
             steamFriends.UnbanChatMember(new SteamID(roomId),new SteamID(userId));
         }
 
-        #endregion
-
-        private void ConfigureServers()
-        {
-
-            if (File.Exists("servers.bin"))
-            {
-                try 
-                {
-                    var endPoints = ReadServerListFromDisk("servers.bin");
-                    CMClient.Servers.TryAddRange(endPoints);
-                }
-                catch ( Exception e )
-                {
-                    Logger.Error("Failed to read server list from disk.", e);
-                }
-            }
-            else
-            {
-                int cellid = 0;
-                try
-                {
-                    cellid = Int32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
-                }
-                catch
-                {
-                    Logger.Warn("Failed to parse cell id from settings. Using default value 0.");
-                }
-                    
-                var loadTask = SteamDirectory.Initialize(cellid);
-                loadTask.Wait();
-
-                if (loadTask.IsFaulted)
-                {
-                    Logger.Error("Error while loading server list from directory.", loadTask.Exception);
-                    return;
-                }
-            }
-        }
-
-        private List<IPEndPoint> ReadServerListFromDisk(String filename)
-        {
-            var endPointList = new List<IPEndPoint>();
-            using(var fs = File.OpenRead(filename))
-            using(var reader = new BinaryReader(fs))
-            {
-                while (fs.Position < fs.Length)
-                {
-                    var numAddressBytes = reader.ReadInt32();
-                    var addressBytes = reader.ReadBytes(numAddressBytes);
-                    var port = reader.ReadInt32();
-
-                    var ipaddress = new IPAddress(addressBytes);
-                    var endPoint = new IPEndPoint(ipaddress, port);
-
-                    endPointList.Add(endPoint);
-                }
-            }
-            return endPointList;
-
-        }
-
-        private void WriteServerListToDisk(String filename)
-        {
-
-            using(var fs = File.OpenWrite(filename))
-            using(var writer = new BinaryWriter(fs))
-            {
-                foreach (var endPoint in CMClient.Servers.GetAllEndPoints())
-                {
-                    var addressBytes = endPoint.Address.GetAddressBytes();
-                    writer.Write(addressBytes.Length);
-                    writer.Write(addressBytes);
-                    writer.Write(endPoint.Port);
-                }
-            }
-
-        }
+        #endregion 
 
     }
 }

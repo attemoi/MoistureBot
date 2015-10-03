@@ -51,7 +51,7 @@ namespace MoistureBot
             if (Config == null)
             {
                 try {
-                    Config = new MoistureBotConfig(this);
+                    Config = new MoistureBotConfig(this, new IniParser.FileIniDataParser());
                     return Config;
                 }
                 catch (Exception e)

@@ -40,6 +40,7 @@ namespace MoistureBot
 		{
 
             Context = new MoistureBotContext();
+            MoistureBotAddinManager.Context = Context;
 
             Logger = Context.GetLogger(typeof(Program));
             Config = Context.GetConfig();
@@ -48,7 +49,7 @@ namespace MoistureBot
 			InitializeAddinManager();
 
 			Console.WriteLine();
-			var version = AddinUtils.getAddinRoot("MoistureBot").Version;
+			var version = GetAddinRoot("MoistureBot").Version;
 			Console.WriteLine("Moisturebot " + version);
 
 			if (!Config.ConfigExists())
@@ -64,9 +65,12 @@ namespace MoistureBot
 
 			HandleConsoleInput();
 
-
-
 		}
+
+        public static Addin GetAddinRoot(String name)
+        {
+            return AddinManager.Registry.GetAddinRoots().FirstOrDefault(addin => addin.Name.Equals(name));
+        }
 
 		private static void InitializeAddinManager() {
 
