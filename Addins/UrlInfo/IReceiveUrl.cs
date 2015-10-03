@@ -1,11 +1,12 @@
 ﻿using System;
 using Mono.Addins;
+using MoistureBot.Extensions;
 
 namespace MoistureBot
 {
 
-    [TypeExtensionPoint("/MoistureBot/UrlInfo/IReceiveUrl")]
-    public interface IReceiveUrl
+    [TypeExtensionPoint("/MoistureBot/UrlInfo/IReceiveUrl", NodeType=typeof(MoistureBotExtensionNode))]
+    public interface IReceiveUrl 
     {
         /// <summary>
         /// Called when the bot receives an url in any chat.

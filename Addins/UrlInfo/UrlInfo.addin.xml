@@ -1,14 +1,23 @@
 ﻿<Addin id="UrlInfo" version="1.0" isroot="false">
+
     <Runtime>
         <Import assembly="UrlInfo.dll" />
     </Runtime>
+
     <Dependencies>
         <Addin id="MoistureBot" version="1.0" />
     </Dependencies>
+
     <Extension path="/MoistureBot/IReceiveFriendChatMessages">
         <Type type="MoistureBot.UrlInfo" />
     </Extension>
+
     <Extension path="/MoistureBot/IReceiveGroupChatMessages">
         <Type type="MoistureBot.UrlInfo" />
     </Extension>
+
+    <ExtensionPoint path="/MoistureBot/UrlInfo/IReceiveUrl">
+        <ExtensionNode name="ChatCommand" type="MoistureBot.ChatCommandNode" objectType="MoistureBot.IChatCommand" />
+    </ExtensionPoint>
+
 </Addin>

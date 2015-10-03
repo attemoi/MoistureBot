@@ -44,8 +44,8 @@
     <Folder Include="UrlExtensions\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ChatCommand.csproj" />
     <None Include="packages.config" />
+    <None Include="UrlInfo.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UrlInfo.addin.xml" />
