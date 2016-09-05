@@ -7,27 +7,31 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MoistureBotTest</RootNamespace>
     <AssemblyName>MoistureBotTest</AssemblyName>
+	<UseMSBuildEngine>False</UseMSBuildEngine>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\x86\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <NoStdLib>false</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\x86\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <NoStdLib>false</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Addins">
-      <HintPath>..\packages\Mono.Addins.1.2\lib\net40\Mono.Addins.dll</HintPath>
+      <HintPath>..\packages\Mono.Addins.1.3\lib\net40\Mono.Addins.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test.cs" />
@@ -50,13 +54,13 @@
       <Project>{8C1DF2EF-3DE3-4814-887E-A0D5E70E8F32}</Project>
       <Name>ChatCommand</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Addins\Moikkaaja\Moikkaaja.csproj">
-      <Project>{97D07A7E-F506-4192-8299-59BA1721D060}</Project>
-      <Name>Moikkaaja</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Addins\UrlInfo\UrlInfo.csproj">
       <Project>{5C1A0EE4-60F8-4AAD-8035-525EA3831BB9}</Project>
       <Name>UrlInfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Addins\Moikkaaja\Moikkaaja.csproj">
+      <Project>{97D07A7E-F506-4192-8299-59BA1721D060}</Project>
+      <Name>Moikkaaja</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

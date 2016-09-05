@@ -14,6 +14,7 @@ using MoistureBot.Extensions;
 using System.IO;
 using System.Net;
 using SteamKit2.Internal;
+using SteamKit2.Discovery;
 
 namespace MoistureBot
 {
@@ -102,38 +103,28 @@ namespace MoistureBot
         private void ConfigureServers()
         {
 
-            var endPoints = new List<IPEndPoint>();
-            try 
+            CMClient.Servers.ServerListProvider = new FileStorageServerListProvider("servers.bin");
+
+
+            var cellid = 0u;
+            try
             {
-                endPoints = MoistureBotFileUtils.ReadServerListFromDisk("servers.bin");
-                CMClient.Servers.TryAddRange(endPoints);
+                cellid = UInt32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
             }
-            catch ( Exception e )
+            catch
             {
-                Logger.Error("Failed to read server list from disk.", e);
+                Logger.Warn("Failed to parse cell id from settings. Using default value 0u.");
             }
 
-            if (endPoints.Count == 0)
+            var loadTask = SteamDirectory.Initialize(cellid);
+            loadTask.Wait();
+
+            if (loadTask.IsFaulted)
             {
-                int cellid = 0;
-                try
-                {
-                    cellid = Int32.Parse(Config.GetSetting(ConfigSetting.CELL_ID));
-                }
-                catch
-                {
-                    Logger.Warn("Failed to parse cell id from settings. Using default value 0.");
-                }
-
-                var loadTask = SteamDirectory.Initialize(cellid);
-                loadTask.Wait();
-
-                if (loadTask.IsFaulted)
-                {
-                    Logger.Error("Error while loading server list from Steam directory.", loadTask.Exception);
-                    return;
-                }
+                Logger.Error("Error while loading server list from Steam directory.", loadTask.Exception);
+                return;
             }
+
         }
 
         private string GetPersonaName(SteamID id)
@@ -299,17 +290,6 @@ namespace MoistureBot
         {
             Logger.Info("Disconnected from Steam.");
             isLoggedIn = false;
-            try
-            {
-                Logger.Info("Writing server list to disk.");
-                var servers = CMClient.Servers.GetAllEndPoints();
-                MoistureBotFileUtils.WriteServerListToDisk(servers, "servers.bin");
-            }
-            catch(Exception e)
-            {
-                Logger.Error("Failed to write server list to disk.",e);
-            }
-
         }
 
         private void LoggedOnCallback(SteamUser.LoggedOnCallback callback)
@@ -335,7 +315,7 @@ namespace MoistureBot
                 return;
             }
 
-            Config.SetSetting(ConfigSetting.CELL_ID,callback.CellID.ToString());
+            Config.SetSetting(ConfigSetting.CELL_ID, callback.CellID.ToString());
             Logger.Info("Successfully logged on!");
 
         }

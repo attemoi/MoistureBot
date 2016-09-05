@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>EmbedLyUrlInfo</RootNamespace>
     <AssemblyName>EmbedLyUrlInfo</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <Optimize>false</Optimize>
@@ -53,8 +54,7 @@
     <EmbeddedResource Include="EmbedLyUrlInfo.addin.xml" />
   </ItemGroup>
   <Target Name="BeforeBuild">
-    <Exec Command="$(SolutionDir).nuget\nuget restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Windows_NT' " />
-    <Exec Command="mono $(SolutionDir).nuget\NuGet.exe restore -o $(SolutionDir)packages" ContinueOnError="false" Condition=" '$(OS)' == 'Unix' " />
+    <Exec Command="nuget restore -o $(SolutionDir)packages" ContinueOnError="false" />
   </Target>
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)Json.dll" DestinationFolder="$(SolutionDir)bin\$(Configuration)\lib" ContinueOnError="false" />
