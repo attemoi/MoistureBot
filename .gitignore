@@ -1,3 +1,6 @@
+#Autosave files
+*~
+
 #OS junk files
 [Tt]humbs.db
 *.DS_Store
@@ -29,6 +32,7 @@ ipch/
 [Bb]in
 [Dd]ebug*/
 [Rr]elease*/
+TestResults/
 Ankh.NoLoad
 
 #MonoDevelop
@@ -38,6 +42,7 @@ Ankh.NoLoad
 #Tooling
 _ReSharper*/
 *.resharper
+*.Resharper
 [Tt]est[Rr]esult*
 *.sass-cache
 
@@ -56,6 +61,7 @@ _ReSharper*/
 #NuGet
 packages/
 *.nupkg
+*.nuget
 
 #ncrunch
 *ncrunch*
@@ -66,3 +72,10 @@ packages/
 
 #Test files
 *.testsettings
+
+#Mac bundle stuff
+*.dmg
+*.app
+
+#dotCover
+*.dotCover
