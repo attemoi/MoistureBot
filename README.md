@@ -7,20 +7,20 @@ It uses [Mono.Addins](http://monoaddins.codeplex.com/) to provide extensibility.
 
 ## Dependencies
 
-In order to run or build MoistureBot, you will need .NET 4.0 or [Mono ≥ 2.8](http://mono-project.com). You can check your current Mono version by typing `mono --version` into your command line.
+In order to run or build MoistureBot, you will need .NET 4.5 or [Mono ≥ 3.0.0](http://mono-project.com). You can check your current Mono version by typing `mono --version` into your command line.
 
 ### Building on Linux
 
-Tested on: Debian GNU/Linux 7 (wheezy), Mono JIT compiler version 2.10.8.1 (Debian 2.10.8.1-8)
+Tested on: Debian GNU/Linux 8.5 (jessie), Mono JIT compiler version 3.2.8 (Debian 3.2.8+dfsg-10)
 
 ```
 cd ~
 git clone https://github.com/attemoi/MoistureBot.git
 cd MoistureBot
-xbuild
+xbuild /p:Configuration=Release
 ```
 
-After a successful build, the binaries will be in _MoistureBot/bin/Debug_ and can be run with `mono MoistureBot.exe`
+After a successful build, the binaries will be in _MoistureBot/bin/Release_ and can be run with `mono MoistureBot.exe`
 
 #### Possible issues
   - Nuget can't find referenced libraries:
@@ -39,7 +39,7 @@ You can start by taking a look at some of the sample plugins listed below. In sh
 
 If you want to know more about how the addin system works, see [http://monoaddins.codeplex.com/](http://monoaddins.codeplex.com/).
 
-The project includes the following sample addins: 
+The project includes the following addins: 
 
   - **Moikkaaja:** reply to greetings defined in an xml file.
   - **AutoInviteJoin:** automatically join group chats when invited.
