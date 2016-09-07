@@ -1,4 +1,6 @@
-# MoistureBot
+[![Build Status](https://travis-ci.org/attemoi/MoistureBot.svg?branch=master)](https://travis-ci.org/attemoi/MoistureBot)
+
+# MoistureBot 
 
 MoistureBot is an extensible chat bot for steam based on [SteamKit2](https://github.com/SteamRE/SteamKit). 
 It uses [Mono.Addins](http://monoaddins.codeplex.com/) to provide extensibility.
