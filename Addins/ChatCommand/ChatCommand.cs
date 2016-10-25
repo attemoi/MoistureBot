@@ -22,7 +22,7 @@ namespace MoistureBot
             this.Bot = context.GetBot();
         }
 
-        const string COMMAND_REGEX = @"^!+.";
+        const string COMMAND_REGEX = @"^![^!]+";
 
         public void MessageReceived(FriendChatMessage message)
         {
